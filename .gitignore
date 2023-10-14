@@ -17,7 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.DS_Store
-.editorconfig
-.env.example
-.gitattributes
+-.DS_Store
+-.editorconfig
+-.gitattributes
