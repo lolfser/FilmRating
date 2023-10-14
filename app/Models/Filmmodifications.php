@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Model Filmmodifications
+ *
+ * @property int id
+ * @property string name
+ * @property-read \App\Models\Films films // from belongsToMany
+ * @package App\Models
+*/
+class Filmmodifications extends Model {
+    protected $table    = 'filmmodifications';
+    protected $fillable = ['name'];
+    protected $casts    = ['id' => 'int'];
+
+    public function films() {
+        return $this->belongsToMany('App\Models\Films');
+    }
+}

@@ -1,0 +1,23 @@
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateFilmsFilmsTable extends Migration {
+
+    /**
+     * Run the migrations.
+     * @return void
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function up() {
+        Schema::create('films_films', function (Blueprint $table) {
+            $table->integer('films1_id');
+            $table->integer('films2_id');
+            $table->integer('relationkinds_id');
+
+            $table->unique(["films1_id","films2_id","relationkinds_id"]); // isUnique => Unique
+        });
+    }
+}
