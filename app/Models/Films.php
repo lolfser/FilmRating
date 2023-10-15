@@ -19,8 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null audio_lang
  * @property string|null subtitle_lang
  * @property string filmstatus_id
- * @property Carbon|null created
- * @property Carbon|null updated
+ * @property Carbon|null created_at
+ * @property Carbon|null updated_at
  * @property-read \App\Models\Filmstatus filmstatus // from belongsTo
  * @property-read \App\Models\Filmmodifications filmmodifications // from belongsToMany
  * @property-read \App\Models\Films films // from belongsToMany
@@ -30,8 +30,10 @@ use Illuminate\Database\Eloquent\Model;
 */
 class Films extends Model {
     protected $table    = 'films';
-    protected $fillable = ['name','description','sources_id','film_nr','year','duration','audio_lang','subtitle_lang','filmstatus_id','created','updated'];
-    protected $casts    = ['id' => 'int', 'sources_id' => 'int', 'film_nr' => 'int', 'year' => 'int', 'duration' => 'int', 'created' => 'datetime', 'updated' => 'datetime'];
+    protected $fillable = [
+        'name','description','sources_id','film_nr','year','duration','audio_lang','subtitle_lang','filmstatus_id'
+    ];
+    protected $casts    = ['id' => 'int', 'sources_id' => 'int', 'film_nr' => 'int', 'year' => 'int', 'duration' => 'int', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function filmstatus() {
         return $this->belongsTo('App\Models\Filmstatus', 'filmstatus_id');
@@ -39,10 +41,6 @@ class Films extends Model {
 
     public function filmmodifications() {
         return $this->belongsToMany('App\Models\Filmmodifications');
-    }
-
-    public function films() {
-        return $this->belongsToMany('App\Models\Films');
     }
 
     public function films() {

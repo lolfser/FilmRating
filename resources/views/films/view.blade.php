@@ -39,12 +39,4 @@
   <td>{{ __('filmstatus_id') }}</td>
   <td>{{ $films->filmstatus_id }}</td>
 </tr>
-<tr>
-  <td>{{ __('created') }}</td>
-  <td>{{ $films->created }}</td>
-</tr>
-<tr>
-  <td>{{ __('updated') }}</td>
-  <td>{{ $films->updated }}</td>
-</tr>
 </table>
