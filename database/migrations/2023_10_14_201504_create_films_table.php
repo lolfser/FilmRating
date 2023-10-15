@@ -8,7 +8,7 @@ class CreateFilmsTable extends Migration {
     /**
      * Run the migrations.
      * @return void
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function up() {
@@ -23,8 +23,6 @@ class CreateFilmsTable extends Migration {
             $table->string('audio_lang', 10)->nullable();
             $table->string('subtitle_lang', 10)->nullable();
             $table->string('filmstatus_id', 250);
-            $table->datetime('created')->nullable()->default('CURRENT_TIMESTAMP');
-            $table->datetime('updated')->nullable()->default('CURRENT_TIMESTAMP');
 
         });
     }

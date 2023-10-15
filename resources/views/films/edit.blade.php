@@ -43,14 +43,6 @@
   <td>{{ __('filmstatus_id') }}</td>
   <td><input name="filmstatus_id" value="{{ isset($films) ? $films->filmstatus_id : '' }}"></td>
 </tr>
-<tr>
-  <td>{{ __('created') }}</td>
-  <td><input name="created" value="{{ isset($films) ? $films->created : '' }}"></td>
-</tr>
-<tr>
-  <td>{{ __('updated') }}</td>
-  <td><input name="updated" value="{{ isset($films) ? $films->updated : '' }}"></td>
-</tr>
 </table>
 <input type="submit" value="{{ __('Save') }}" />
 </form>
