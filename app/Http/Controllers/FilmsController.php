@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Films;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Laravel\Jetstream\Jetstream;
 
 class FilmsController extends Controller {
 
@@ -14,7 +18,12 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view("films.list", ['films' => Films::all()]);
+        // return view("films.list", ['films' => Films::all()]);
+        // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
+
+        return Inertia::render('Films', [
+            'films' => Films::all()
+        ]);
     }
 
     /**
