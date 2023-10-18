@@ -43,13 +43,11 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    Route::get('/films', function () {
-        return Inertia::render('Films');
-    });
 
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
 });
 
+// http://localhost/films/1 - show ansicht
 
 //Route::get('/films', [\App\Http\Controllers\FilmsController::class, 'index'])->name('films.index');
 //Route::get('/films/create', [\App\Http\Controllers\FilmsController::class, 'create']);

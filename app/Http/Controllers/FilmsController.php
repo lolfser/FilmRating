@@ -21,8 +21,8 @@ class FilmsController extends Controller {
         // return view("films.list", ['films' => Films::all()]);
         // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
 
-        return Inertia::render('Films', [
-            'films' => Films::all()
+        return Inertia::render('FilmsList', [
+            'films' => Films::all(),
         ]);
     }
 

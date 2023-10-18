@@ -7,11 +7,19 @@
             <p class="mt-6 text-gray-500 leading-relaxed">
                 <table class="table">
                     <tr>
-                      <td></td>
+                      <th>Nr.</th>
+                      <th>Name</th>
+                      <th>audio / subtitle</th>
+                      <th>Genre</th>
+                      <th>edit</th>
                     </tr>
-                 @foreach ($films as $film)
-                 blaaa
-                 @endforeach
+                    <tr v-for="film in films">
+                        <td>{{film.film_nr}}</td>
+                        <td>{{film.name}}</td>
+                        <td>{{film.audio_lang}} / {{film.subtitle_lang}}</td>
+                        <td>{{film.genre}}</td>
+                        <td><a v-bind:href="'films/'+film.id+'/edit'"> Edit </a></td>
+                    </tr>
                 </table>
             </p>
         </div>
@@ -28,3 +36,8 @@
 
     </div>
 </template>
+<script>
+export default {
+  props: ['films'],
+}
+</script>
