@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Films;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Jetstream\Jetstream;
@@ -18,7 +18,6 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // return view("films.list", ['films' => Films::all()]);
         // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
 
         return Inertia::render('FilmsList', [
@@ -33,7 +32,10 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view("films.edit");
+        return Inertia::render('FilmsCreate', [
+            '_token' => csrf_token(),
+            'film' => new Films(),
+        ]);
     }
 
     /**
@@ -45,6 +47,27 @@ class FilmsController extends Controller {
      */
     public function store(Request $request) {
         // TODO complete validation
+
+        try {
+            $this->validate($request, [
+                'name' => 'required',
+                'description' => 'required',
+                'sources_id' => 'required',
+                'film_nr' => 'required',
+                'year' => 'required',
+                'duration' => '',
+                'audio_lang' => '',
+                'subtitle_lang' => '',
+                'filmstatus_id' => 'required',
+                'created' => '',
+                'updated' => '',
+            ]);
+        } catch (\Throwable $t) {
+            // und nu?
+            var_dump($t->getMessage());
+            exit;
+        };
+
         $data = $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
@@ -58,7 +81,6 @@ class FilmsController extends Controller {
             'created' => '',
             'updated' => '',
         ]);
-
         Films::create($data);
 
         return redirect(route("films.index"));
@@ -72,7 +94,9 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Films $film) {
-        return view("films.view", ["films" => $film]);
+        return Inertia::render('FilmsShow', [
+            "film" => $film
+        ]);
     }
 
     /**
@@ -83,7 +107,10 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Films $film) {
-        return view("films.edit", ["films" => $film]);
+        return Inertia::render('FilmsEdit', [
+            "film" => $film,
+            '_token' => csrf_token(),
+        ]);
     }
 
     /**

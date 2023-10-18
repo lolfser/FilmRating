@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompFilmsList from '@/Components/FilmsList.vue';
+import CompFilmsShow from '@/Components/FilmsShow.vue';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import CompFilmsList from '@/Components/FilmsList.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmsList :films="films" :headline="headline" />
+                    <CompFilmsShow :film="film" />
                 </div>
             </div>
         </div>
@@ -21,9 +21,6 @@ import CompFilmsList from '@/Components/FilmsList.vue';
 </template>
 <script>
 export default {
-  props: ['films'],
-  computed: {
-    headline: function () {return "Liste aller Filme";},
-  }
+  props: ['film'],
 }
 </script>

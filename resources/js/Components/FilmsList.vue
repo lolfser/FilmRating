@@ -1,9 +1,10 @@
+<script setup>
+import Headline from './Headline.vue';
+</script>
 <template>
+    <Headline :headline="headline" />
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-            <h1 class="mt-8 text-2xl font-medium text-gray-900">
-                Liste aller Filme
-            </h1>
             <p class="mt-6 text-gray-500 leading-relaxed">
                 <table class="table">
                     <tr>
@@ -18,7 +19,7 @@
                         <td>{{film.name}}</td>
                         <td>{{film.audio_lang}} / {{film.subtitle_lang}}</td>
                         <td>{{film.genre}}</td>
-                        <td><a v-bind:href="'films/'+film.id+'/edit'"> Edit </a></td>
+                        <td><a v-bind:href="'/films/'+film.id+'/edit'"> Edit </a></td>
                     </tr>
                 </table>
             </p>
@@ -38,6 +39,9 @@
 </template>
 <script>
 export default {
-  props: ['films'],
+  props: [
+    'films',
+    'headline'
+  ],
 }
 </script>
