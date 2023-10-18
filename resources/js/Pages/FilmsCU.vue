@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompFilmsCreate from '@/Components/FilmsCreate.vue';
+import CompFilmsCU from '@/Components/FilmsCU.vue';
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import CompFilmsCreate from '@/Components/FilmsCreate.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmsCreate :film="film" :_token="_token" :headline="headline" :errors="errors" />
+                    <CompFilmsCU :film="film" :_token="_token" :errors="errors" />
                 </div>
             </div>
         </div>
@@ -16,9 +16,6 @@ import CompFilmsCreate from '@/Components/FilmsCreate.vue';
 </template>
 <script>
 export default {
-  props: ['film', '_token', 'errors'],
-  computed: {
-    headline: function() {return "Film bearbeiten";},
-  },
+  props: ['film', '_token', "errors"],
 }
 </script>

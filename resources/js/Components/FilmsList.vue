@@ -19,7 +19,7 @@ import Headline from './Headline.vue';
                         <td>{{film.name}}</td>
                         <td>{{film.audio_lang}} / {{film.subtitle_lang}}</td>
                         <td>{{film.genre}}</td>
-                        <td><a v-bind:href="'/films/'+film.id+'/edit'"> Edit </a></td>
+                        <td><a v-bind:href="'/films/'+film.id+'/cu'"> Edit </a></td>
                     </tr>
                 </table>
             </p>

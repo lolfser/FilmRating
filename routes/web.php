@@ -34,8 +34,8 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
-    Route::post('/films/{id}',[\App\Http\Controllers\FilmsController::class, 'update']);
-    // Route::get('/films', [\App\Http\Controllers\FilmsController::class, 'index'])->name('films.list');
+    Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate']);
+    Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
     // Route::post('/films', [\App\Http\Controllers\FilmsController::class, 'store'])->name('films.store');
     // Route::get('/films/create', [\App\Http\Controllers\FilmsController::class, 'create'])->name('films.create');
 });

@@ -9,7 +9,7 @@ import InputError from './InputError.vue';
 <Headline :headline="headline" />
 <form v-bind:action="computedAction" method="POST">
     <input type="hidden" name="_token" v-model="token" />
-    <input type="hidden" name="id" v-model="film.id" />
+    <input type="hidden" name="id" v-bind:value="computedId" />
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             // Dropdowns für attribute<br>
@@ -105,9 +105,16 @@ export default {
       return this._token
     },
     computedAction: function () {
-        if (typeof this.film.id === "undefined") return '/films/';
-        return '/films/' + this.film.id;
+        return '/films/update';
     },
+    computedId: function () {
+        if (typeof this.film.id === "undefined") return 0;
+        return this.film.id;
+    },
+    headline: function() {
+        if (typeof this.film.id === "undefined") return 'Film erstellen';
+         return 'Film bearbeiten';
+    }
   }
 }
 </script>

@@ -41,26 +41,6 @@ class FilmsController extends Controller {
     }
 
     /**
-     * GET|HEAD  /films/create
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(array $data = [], array $errors = []) {
-
-        $film = new Films();
-
-        if ($errors !== []) {
-            $film->fill($data);
-        }
-        return Inertia::render('FilmsCreate', [
-            '_token' => csrf_token(),
-            'film' => $film,
-            'errors' => $errors,
-        ]);
-    }
-
-    /**
      * POST  /films
      * Store a newly created resource in storage.
      *
@@ -74,7 +54,7 @@ class FilmsController extends Controller {
         $data = $validator->getData();
 
         if ($errors !== []) {
-            return $this->create($request->all(), $validator->messages()->getMessages());
+            return $this->createAndUpdate($request->all(), $validator->messages()->getMessages());
         }
 
         Films::create($data);
@@ -96,17 +76,18 @@ class FilmsController extends Controller {
     }
 
     /**
-     * GET|HEAD /films/{film}/edit
+     * GET|HEAD /films/{film}/cu
      * Show the form for editing the specified resource.
      *
-     * @param  Films $film
      * @return \Illuminate\Http\Response
      */
-    public function edit(Films $film, array $errors = []) {
-        return Inertia::render('FilmsEdit', [
+    public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
+        $film = $films ?? Films::find($filmId) ?? new Films();
+
+        return Inertia::render('FilmsCU', [
             "film" => $film,
             '_token' => csrf_token(),
-            'errors' => [],
+            'errors' => $errors,
         ]);
     }
 
@@ -115,18 +96,20 @@ class FilmsController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  Films $film
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Films $film) {
+    public function update(Request $request) {
+
         $newData = $request->except(['_method', '_token', 'id']);
+
+        $film = Films::find($request->all()['id']) ?? new Films();
 
         $validator = Validator::make($newData, self::VALIDATION_DEFINITION);
         $errors = $validator->messages()->getMessages();
 
         if ($errors !== []) {
             $film->fill($newData);
-            return $this->edit($film, $validator->messages()->getMessages());
+            return $this->createAndUpdate($request->all()['id'], $validator->messages()->getMessages(), $film);
         }
 
         $film->fill($newData);
