@@ -24,17 +24,6 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified',
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('dashboard');
-//     Route::resource('films', \App\Http\Controllers\FilmsController::class);
-// });
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -50,9 +39,3 @@ Route::middleware([
     // Route::post('/films', [\App\Http\Controllers\FilmsController::class, 'store'])->name('films.store');
     // Route::get('/films/create', [\App\Http\Controllers\FilmsController::class, 'create'])->name('films.create');
 });
-
-// http://localhost/films/1 - show ansicht
-
-//Route::get('/films', [\App\Http\Controllers\FilmsController::class, 'index'])->name('films.index');
-//Route::get('/films/create', [\App\Http\Controllers\FilmsController::class, 'create']);
-//Route::post('/films/store', [\App\Http\Controllers\FilmsController::class, 'store'])->name('films.store');

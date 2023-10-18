@@ -8,8 +8,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Validator;
 
 class FilmsController extends Controller {
+
+    protected const VALIDATION_DEFINITION = [
+        'name' => 'required',
+        'description' => 'required',
+        'sources_id' => 'required|integer',
+        'film_nr' => 'required|integer',
+        'year' => 'required|integer',
+        'duration' => '',
+        'audio_lang' => '',
+        'subtitle_lang' => '',
+        'filmstatus_id' => 'required|integer',
+        'created' => '',
+        'updated' => '',
+    ];
 
     /**
      * GET|HEAD  /films
@@ -31,10 +46,17 @@ class FilmsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create(array $data = [], array $errors = []) {
+
+        $film = new Films();
+
+        if ($errors !== []) {
+            $film->fill($data);
+        }
         return Inertia::render('FilmsCreate', [
             '_token' => csrf_token(),
-            'film' => new Films(),
+            'film' => $film,
+            'errors' => $errors,
         ]);
     }
 
@@ -46,41 +68,15 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // TODO complete validation
 
-        try {
-            $this->validate($request, [
-                'name' => 'required',
-                'description' => 'required',
-                'sources_id' => 'required',
-                'film_nr' => 'required',
-                'year' => 'required',
-                'duration' => '',
-                'audio_lang' => '',
-                'subtitle_lang' => '',
-                'filmstatus_id' => 'required',
-                'created' => '',
-                'updated' => '',
-            ]);
-        } catch (\Throwable $t) {
-            // und nu?
-            var_dump($t->getMessage());
-            exit;
-        };
+        $validator = Validator::make($request->all(), self::VALIDATION_DEFINITION);
+        $errors = $validator->messages()->getMessages();
+        $data = $validator->getData();
 
-        $data = $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-            'sources_id' => 'required',
-            'film_nr' => 'required',
-            'year' => 'required',
-            'duration' => '',
-            'audio_lang' => '',
-            'subtitle_lang' => '',
-            'filmstatus_id' => 'required',
-            'created' => '',
-            'updated' => '',
-        ]);
+        if ($errors !== []) {
+            return $this->create($request->all(), $validator->messages()->getMessages());
+        }
+
         Films::create($data);
 
         return redirect(route("films.index"));
@@ -106,10 +102,11 @@ class FilmsController extends Controller {
      * @param  Films $film
      * @return \Illuminate\Http\Response
      */
-    public function edit(Films $film) {
+    public function edit(Films $film, array $errors = []) {
         return Inertia::render('FilmsEdit', [
             "film" => $film,
             '_token' => csrf_token(),
+            'errors' => [],
         ]);
     }
 
@@ -123,6 +120,15 @@ class FilmsController extends Controller {
      */
     public function update(Request $request, Films $film) {
         $newData = $request->except(['_method', '_token', 'id']);
+
+        $validator = Validator::make($newData, self::VALIDATION_DEFINITION);
+        $errors = $validator->messages()->getMessages();
+
+        if ($errors !== []) {
+            $film->fill($newData);
+            return $this->edit($film, $validator->messages()->getMessages());
+        }
+
         $film->fill($newData);
         $film->save();
         return redirect(route("films.show", [$film->id]));
