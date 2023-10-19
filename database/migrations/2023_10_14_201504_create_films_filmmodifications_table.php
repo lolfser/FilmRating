@@ -16,7 +16,7 @@ class CreateFilmsFilmmodificationsTable extends Migration {
             $table->unsignedInteger('films_id');
             $table->unsignedInteger('filmmodifications_id');
 
-            $table->unique(["films_id","filmmodifications_id"]); // isUnique => Unique
+            $table->unique(["films_id","filmmodifications_id"]); // isUnique => films_filmmodifications_films_id_filmmodifications_id_unique
         });
     }
 }

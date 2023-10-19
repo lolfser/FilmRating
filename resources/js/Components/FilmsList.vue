@@ -12,14 +12,17 @@ import Headline from './Headline.vue';
                       <th>Name</th>
                       <th>audio / subtitle</th>
                       <th>Genre</th>
-                      <th>edit</th>
+                      <th>Actions</th>
                     </tr>
                     <tr v-for="film in films">
                         <td>{{film.film_nr}}</td>
                         <td>{{film.name}}</td>
                         <td>{{film.audio_lang}} / {{film.subtitle_lang}}</td>
                         <td>{{film.genre}}</td>
-                        <td><a v-bind:href="'/films/'+film.id+'/cu'"> Edit </a></td>
+                        <td>
+                            <a v-bind:href="'/films/'+film.id+'/cu'"> edit </a>
+                            <a v-bind:href="'/films/'+film.id+'/cu'"> edit </a>
+                        </td>
                     </tr>
                 </table>
             </p>

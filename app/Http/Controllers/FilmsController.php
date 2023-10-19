@@ -85,6 +85,18 @@ class FilmsController extends Controller {
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
         $film = $films ?? Films::find($filmId) ?? new Films();
 
+        // try {
+        // $film = Films::find(1);
+        // foreach ($film->viewers as $viewer)
+        //     var_dump($viewer->pivot->comment);
+        //     $film->viewers()->attach(1, ['comment' => 'wuhuuu', 'grades_id' => 1]);
+        // exit;
+
+        // } catch (\Throwable $t) {
+        //    var_dump($t->getMessage());
+        // }
+        // exit;
+
         return Inertia::render('FilmsCU', [
             "film" => $film,
             'filmsources' => Filmsources::all(),

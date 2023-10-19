@@ -19,20 +19,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null audio_lang
  * @property string|null subtitle_lang
  * @property string filmstatus_id
- * @property Carbon|null created_at
- * @property Carbon|null updated_at
+ * @property Carbon created_at
+ * @property Carbon updated_at
  * @property-read \App\Models\Filmstatus filmstatus // from belongsTo
  * @property-read \App\Models\Filmmodifications filmmodifications // from belongsToMany
  * @property-read \App\Models\Films films // from belongsToMany
  * @property-read \App\Models\Films films // from belongsToMany
+ * @property-read \App\Models\Genres genres // from belongsToMany
+ * @property-read \App\Models\Keywords keywords // from belongsToMany
  * @property-read \App\Models\Viewers viewers // from belongsToMany
  * @package App\Models
 */
 class Films extends Model {
     protected $table    = 'films';
-    protected $fillable = [
-        'name','description','sources_id','film_nr','year','duration','audio_lang','subtitle_lang','filmstatus_id'
-    ];
+    protected $fillable = ['name','description','sources_id','film_nr','year','duration','audio_lang','subtitle_lang','filmstatus_id'];
     protected $casts    = ['id' => 'int', 'sources_id' => 'int', 'film_nr' => 'int', 'year' => 'int', 'duration' => 'int', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function filmstatus() {
@@ -47,7 +47,16 @@ class Films extends Model {
         return $this->belongsToMany('App\Models\Films');
     }
 
+    public function genres() {
+        return $this->belongsToMany('App\Models\Genres');
+    }
+
+    public function keywords() {
+        return $this->belongsToMany('App\Models\Keywords');
+    }
+
     public function viewers() {
-        return $this->belongsToMany('App\Models\Viewers');
+        return $this->belongsToMany('App\Models\Viewers', 'film_viewer')
+            ->withPivot('comment', 'grades_id');
     }
 }
