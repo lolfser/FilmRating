@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Films;
+use App\Models\Filmsources;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -86,6 +87,7 @@ class FilmsController extends Controller {
 
         return Inertia::render('FilmsCU', [
             "film" => $film,
+            'filmsources' => Filmsources::all(),
             '_token' => csrf_token(),
             'errors' => $errors,
         ]);

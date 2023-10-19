@@ -31,7 +31,7 @@ import { translate } from './../trans';
                       </td>
                     </tr>
                     <tr>
-                      <td>Beschreibung</td>
+                        <td>{{ translate('attributes.description') }}</td>
                       <td>
                         <TextInput name="description" v-model="film.description" />
                         <InputError class="mt-2" :message="errors.description" />
@@ -54,7 +54,9 @@ import { translate } from './../trans';
                     <tr>
                       <td>{{ translate('attributes.sources_id') }}</td>
                       <td>
-                        <TextInput name="sources_id" v-model="film.sources_id" />
+                          <select name="sources_id">
+                              <option v-for="filmsource in filmsources" :value="filmsource.id">{{ filmsource.name }}</option>
+                          </select>
                         <InputError class="mt-2" :message="errors.sources_id" />
                       </td>
                     </tr>
@@ -100,7 +102,7 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', '_token', 'headline', 'errors'],
   computed: {
     token: function () {
       return this._token
