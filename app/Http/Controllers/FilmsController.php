@@ -4,8 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Films;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Validator;
 
 class FilmsController extends Controller {
+
+    protected const VALIDATION_DEFINITION = [
+        'name' => 'required',
+        'description' => 'required',
+        'sources_id' => 'required|integer',
+        'film_nr' => 'required|integer',
+        'year' => 'required|integer',
+        'duration' => '',
+        'audio_lang' => '',
+        'subtitle_lang' => '',
+        'filmstatus_id' => 'required|integer',
+        'created' => '',
+        'updated' => '',
+    ];
 
     /**
      * GET|HEAD  /films
@@ -14,17 +33,11 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view("films.list", ['films' => Films::all()]);
-    }
+        // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
 
-    /**
-     * GET|HEAD  /films/create
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        return view("films.edit");
+        return Inertia::render('FilmsList', [
+            'films' => Films::all(),
+        ]);
     }
 
     /**
@@ -35,20 +48,14 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // TODO complete validation
-        $data = $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-            'sources_id' => 'required',
-            'film_nr' => 'required',
-            'year' => 'required',
-            'duration' => '',
-            'audio_lang' => '',
-            'subtitle_lang' => '',
-            'filmstatus_id' => 'required',
-            'created' => '',
-            'updated' => '',
-        ]);
+
+        $validator = Validator::make($request->all(), self::VALIDATION_DEFINITION);
+        $errors = $validator->messages()->getMessages();
+        $data = $validator->getData();
+
+        if ($errors !== []) {
+            return $this->createAndUpdate($request->all(), $validator->messages()->getMessages());
+        }
 
         Films::create($data);
 
@@ -63,18 +70,25 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Films $film) {
-        return view("films.view", ["films" => $film]);
+        return Inertia::render('FilmsShow', [
+            "film" => $film
+        ]);
     }
 
     /**
-     * GET|HEAD /films/{film}/edit
+     * GET|HEAD /films/{film}/cu
      * Show the form for editing the specified resource.
      *
-     * @param  Films $film
      * @return \Illuminate\Http\Response
      */
-    public function edit(Films $film) {
-        return view("films.edit", ["films" => $film]);
+    public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
+        $film = $films ?? Films::find($filmId) ?? new Films();
+
+        return Inertia::render('FilmsCU', [
+            "film" => $film,
+            '_token' => csrf_token(),
+            'errors' => $errors,
+        ]);
     }
 
     /**
@@ -82,11 +96,22 @@ class FilmsController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  Films $film
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Films $film) {
+    public function update(Request $request) {
+
         $newData = $request->except(['_method', '_token', 'id']);
+
+        $film = Films::find($request->all()['id']) ?? new Films();
+
+        $validator = Validator::make($newData, self::VALIDATION_DEFINITION);
+        $errors = $validator->messages()->getMessages();
+
+        if ($errors !== []) {
+            $film->fill($newData);
+            return $this->createAndUpdate($request->all()['id'], $validator->messages()->getMessages(), $film);
+        }
+
         $film->fill($newData);
         $film->save();
         return redirect(route("films.show", [$film->id]));

@@ -15,9 +15,12 @@
                     <a href="/films" class="inline-flex items-center font-semibold text-indigo-700">
                         Liste aller Filme
                     </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/films/0/cu" class="inline-flex items-center font-semibold text-indigo-700">
+                        Film erstellen
+                    </a>
                 </p>
             </div>
         </div>
-
     </div>
 </template>

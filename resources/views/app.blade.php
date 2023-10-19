@@ -16,6 +16,10 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <script>
+            window._locale = '{{ app()->getLocale() }}';
+            window._translations = {!! cache('translations') !!};
+        </script>
         @inertia
     </body>
 </html>
