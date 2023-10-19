@@ -3,6 +3,7 @@ import TextInput from './TextInput.vue';
 import PrimaryButton from './PrimaryButton.vue';
 import Headline from './Headline.vue';
 import InputError from './InputError.vue';
+import { translate } from './../trans';
 
 </script>
 <template>
@@ -16,14 +17,14 @@ import InputError from './InputError.vue';
             <p class="mt-6 text-gray-500 leading-relaxed">
                 <table class="table">
                     <tr>
-                      <td>Nr.</td>
+                      <td>{{ translate('attributes.film_nr') }}</td>
                       <td>
                         <TextInput name="film_nr" v-model="film.film_nr" />
                         <InputError class="mt-2" :message="errors.film_nr" />
                       </td>
                     </tr>
                     <tr>
-                      <td>Name</td>
+                      <td>{{ translate('attributes.name') }}</td>
                       <td>
                         <TextInput name="name" v-model="film.name" />
                         <InputError class="mt-2" :message="errors.name" />
@@ -37,42 +38,42 @@ import InputError from './InputError.vue';
                       </td>
                     </tr>
                     <tr>
-                      <td>Audio</td>
+                      <td>{{ translate('attributes.audio_lang') }}</td>
                       <td>
                         <TextInput name="audio_lang" v-model="film.audio_lang" />
                         <InputError class="mt-2" :message="errors.audio_lang" />
                       </td>
                     </tr>
                     <tr>
-                      <td>Subtitle</td>
+                      <td>{{ translate('attributes.subtitle_lang') }}</td>
                       <td>
                         <TextInput name="subtitle_lang" v-model="film.subtitle_lang" />
                         <InputError class="mt-2" :message="errors.subtitle_lang" />
                       </td>
                     </tr>
                     <tr>
-                      <td>sources_id</td>
+                      <td>{{ translate('attributes.sources_id') }}</td>
                       <td>
                         <TextInput name="sources_id" v-model="film.sources_id" />
                         <InputError class="mt-2" :message="errors.sources_id" />
                       </td>
                     </tr>
                     <tr>
-                      <td>year</td>
+                      <td>{{ translate('attributes.year') }}</td>
                       <td>
                         <TextInput name="year" v-model="film.year" />
                         <InputError class="mt-2" :message="errors.year" />
                       </td>
                     </tr>
                     <tr>
-                      <td>Dauer (in sek)</td>
+                      <td>{{ translate('attributes.duration') }}</td>
                       <td>
                         <TextInput name="duration" v-model="film.duration" />
                         <InputError class="mt-2" :message="errors.duration" />
                       </td>
                     </tr>
                     <tr>
-                      <td>Filmstatus</td>
+                      <td>{{ translate('attributes.filmstatus_id') }}</td>
                       <td>
                         <TextInput name="filmstatus_id" v-model="film.filmstatus_id" />
                         <InputError class="mt-2" :message="errors.filmstatus_id" />
