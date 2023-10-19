@@ -18,4 +18,5 @@ class Grades extends Model {
     protected $table    = 'grades';
     protected $fillable = ['value','trend'];
     protected $casts    = ['id' => 'int', 'value' => 'int'];
+    public $timestamps = false;
 }

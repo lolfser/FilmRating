@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 use App\Models\Genres;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class GenresSeeder extends Seeder {
 
     /**
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function run() {

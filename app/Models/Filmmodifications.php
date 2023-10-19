@@ -18,6 +18,7 @@ class Filmmodifications extends Model {
     protected $table    = 'filmmodifications';
     protected $fillable = ['name'];
     protected $casts    = ['id' => 'int'];
+    public $timestamps = false;
 
     public function films() {
         return $this->belongsToMany('App\Models\Films');

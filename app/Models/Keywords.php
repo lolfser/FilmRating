@@ -17,4 +17,5 @@ class Keywords extends Model {
     protected $table    = 'keywords';
     protected $fillable = ['name'];
     protected $casts    = ['id' => 'int'];
+    public $timestamps = false;
 }
