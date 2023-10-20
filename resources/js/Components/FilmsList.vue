@@ -11,14 +11,14 @@ import Footer from './Footer.vue';
                     <tr>
                       <th>Nr.</th>
                       <th>Name</th>
-                      <th>audio / subtitle</th>
+                      <th>Sprache</th>
                       <th>Genre</th>
                       <th>Actions</th>
                     </tr>
                     <tr v-for="film in films">
                         <td>{{film.film_nr}}</td>
                         <td>{{film.name}}</td>
-                        <td>{{film.audio_lang}} / {{film.subtitle_lang}}</td>
+                        <td>{{calculateLanguage(film)}}</td>
                         <td>{{film.genre}}</td>
                         <td>
                             <a v-bind:href="'/films/'+film.id+'/cu'"> edit </a>
@@ -39,5 +39,16 @@ export default {
     'films',
     'headline'
   ],
+  methods: {
+    calculateLanguage: function(film) {
+        let result = '';
+        film.languages.every(function(language) {
+            if (result !== '') result = result + ' / ';
+            result += language.type + ' ' + language.language;
+            return true;
+        });
+        return result;
+    }
+  }
 }
 </script>

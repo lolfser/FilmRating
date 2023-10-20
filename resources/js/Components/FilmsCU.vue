@@ -14,7 +14,6 @@ import { translate } from './../trans';
     <input type="hidden" name="id" v-bind:value="computedId" />
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-            // Dropdowns für attribute<br>
             <table class="table">
                 <tr>
                   <td>{{ translate('attributes.film_nr') }}</td>
@@ -37,27 +36,23 @@ import { translate } from './../trans';
                     <InputError class="mt-2" :message="errors.description" />
                   </td>
                 </tr>
-                <tr>
-                  <td>{{ translate('attributes.audio_lang') }}</td>
+                <tr v-for="(language, type) in languages">
+                  <td>Sprache: {{ type }}</td>
                   <td>
-                    <TextInput name="audio_lang" v-model="film.audio_lang" />
-                    <InputError class="mt-2" :message="errors.audio_lang" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ translate('attributes.subtitle_lang') }}</td>
-                  <td>
-                    <TextInput name="subtitle_lang" v-model="film.subtitle_lang" />
-                    <InputError class="mt-2" :message="errors.subtitle_lang" />
+                    <span v-for="lang in language" value="a">
+                        <label><input :checked="isSelected(film.languages, lang.id)" type="radio" :name="'language_' + type" :value="lang.id" /> {{lang.language}}</label>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
                   </td>
                 </tr>
                 <tr>
                   <td>{{ translate('attributes.sources_id') }}</td>
                   <td>
-                      <select name="sources_id">
-                          <option v-for="filmsource in filmsources" :value="filmsource.id">{{ filmsource.name }}</option>
-                      </select>
-                    <InputError class="mt-2" :message="errors.sources_id" />
+                    <span v-for="filmsource in filmsources">
+                        <label><input :checked="isSelected([{id: filmsource.id}], film.filmsources_id)" type="radio" name="filmsources_id" :value="filmsource.id" /> {{filmsource.name}}</label>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
+                    <InputError class="mt-2" :message="errors.filmsources_id" />
                   </td>
                 </tr>
                 <tr>
@@ -93,7 +88,21 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors'],
+  methods: {
+    isSelected: function (filmLanguages, currentLanguage) {
+        let result = false;
+        filmLanguages.every(function (l) {
+            if (l.id == currentLanguage) {
+                result = true;
+                return false; // break
+            }
+            return true; // continue;
+        })
+        if (typeof this.film.id === "undefined") return 0;
+        return result;
+    },
+  },
   computed: {
     token: function () {
       return this._token

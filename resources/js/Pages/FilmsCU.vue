@@ -9,7 +9,7 @@ import CompFilmsCU from '@/Components/FilmsCU.vue';
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <CompFilmsCU :film="film" :_token="_token" :errors="errors"
-                        :filmsources="filmsources"/>
+                        :filmsources="filmsources" :languages="languages"/>
                 </div>
             </div>
         </div>
@@ -17,6 +17,6 @@ import CompFilmsCU from '@/Components/FilmsCU.vue';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', '_token', 'errors'],
+  props: ['film', 'filmsources', '_token', 'errors', 'languages'],
 }
 </script>

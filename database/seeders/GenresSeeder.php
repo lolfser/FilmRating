@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table genres
- * TODO: Don't forget to include `$this->call(\GenresSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class GenresSeeder extends Seeder {
 

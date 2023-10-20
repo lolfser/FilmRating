@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Films;
 use App\Models\Filmsources;
+use App\Models\Languages;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -16,12 +17,10 @@ class FilmsController extends Controller {
     protected const VALIDATION_DEFINITION = [
         'name' => 'required',
         'description' => 'required',
-        'sources_id' => 'required|integer',
+        'filmsources_id' => 'required|integer',
         'film_nr' => 'required|integer',
         'year' => 'required|integer',
         'duration' => '',
-        'audio_lang' => '',
-        'subtitle_lang' => '',
         'filmstatus_id' => 'required|integer',
         'created' => '',
         'updated' => '',
@@ -34,10 +33,16 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
+
+        $films = Films::all();
+        foreach ($films as $film) {
+            foreach ($film->languages as $language) {
+                // Loading pivots
+            }
+        }
 
         return Inertia::render('FilmsList', [
-            'films' => Films::all(),
+            'films' => $films,
         ]);
     }
 
@@ -71,6 +76,9 @@ class FilmsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Films $film) {
+        foreach ($film->languages as $language) {
+            // Loading pivots
+        }
         return Inertia::render('FilmsShow', [
             "film" => $film
         ]);
@@ -84,22 +92,16 @@ class FilmsController extends Controller {
      */
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
         $film = $films ?? Films::find($filmId) ?? new Films();
+        Languages::all()->groupBy('type');
 
-        // try {
-        // $film = Films::find(1);
-        // foreach ($film->viewers as $viewer)
-        //     var_dump($viewer->pivot->comment);
-        //     $film->viewers()->attach(1, ['comment' => 'wuhuuu', 'grades_id' => 1]);
-        // exit;
-
-        // } catch (\Throwable $t) {
-        //    var_dump($t->getMessage());
-        // }
-        // exit;
+        foreach ($film->languages as $language) {
+            // Loading pivots
+        }
 
         return Inertia::render('FilmsCU', [
-            "film" => $film,
+            'film' => $film,
             'filmsources' => Filmsources::all(),
+            'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'errors' => $errors,
         ]);
@@ -128,6 +130,17 @@ class FilmsController extends Controller {
 
         $film->fill($newData);
         $film->save();
+
+        $languages = Languages::all()->groupBy('type');
+        $film->languages()->sync([]);
+
+        foreach ($languages as $type => $language) {
+            $id = $request->all()['language_' . $type] ?? null;
+            if ($id !== null) {
+                $film->languages()->attach($id);
+            }
+        }
+
         return redirect(route("films.show", [$film->id]));
     }
 

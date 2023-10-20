@@ -16,13 +16,11 @@ class CreateFilmsTable extends Migration {
             $table->increments('id');
             $table->string('name', 250);
             $table->string('description', 1000)->default('');
-            $table->unsignedInteger('sources_id');
-            $table->unsignedInteger('film_nr');
+            $table->unsignedInteger('filmsources_id');
+            $table->string('film_nr', 50)->default('');
             $table->unsignedInteger('year');
             $table->integer('duration')->nullable()->comment('in seconds');
-            $table->string('audio_lang', 10)->nullable();
-            $table->string('subtitle_lang', 10)->nullable();
-            $table->string('filmstatus_id', 250);
+            $table->unsignedInteger('filmstatus_id')->nullable();
             $table->timestamps();
 
         });

@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Model Filmsources
  *
- * @property int|null id
- * @property string|null name
+ * @property int id
+ * @property string name
  * @package App\Models
 */
 class Filmsources extends Model {

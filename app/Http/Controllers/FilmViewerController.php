@@ -26,6 +26,9 @@ class FilmViewerController extends Controller {
             foreach ($film->viewers as $viewer) {
                 // Loading pivots
             }
+            foreach ($film->languages as $viewer) {
+                // Loading pivots
+            }
         }
 
         $viewerId = 1; // @todo

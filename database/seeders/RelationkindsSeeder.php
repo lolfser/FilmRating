@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table relationkinds
- * TODO: Don't forget to include `$this->call(\RelationkindsSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class RelationkindsSeeder extends Seeder {
 

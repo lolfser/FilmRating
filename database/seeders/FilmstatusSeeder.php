@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table filmstatus
- * TODO: Don't forget to include `$this->call(\FilmstatusSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class FilmstatusSeeder extends Seeder {
 
