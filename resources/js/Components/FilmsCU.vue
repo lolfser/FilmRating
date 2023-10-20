@@ -2,6 +2,7 @@
 import TextInput from './TextInput.vue';
 import PrimaryButton from './PrimaryButton.vue';
 import Headline from './Headline.vue';
+import Footer from './Footer.vue';
 import InputError from './InputError.vue';
 import { translate } from './../trans';
 
@@ -14,88 +15,78 @@ import { translate } from './../trans';
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             // Dropdowns für attribute<br>
-            <p class="mt-6 text-gray-500 leading-relaxed">
-                <table class="table">
-                    <tr>
-                      <td>{{ translate('attributes.film_nr') }}</td>
-                      <td>
-                        <TextInput name="film_nr" v-model="film.film_nr" />
-                        <InputError class="mt-2" :message="errors.film_nr" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.name') }}</td>
-                      <td>
-                        <TextInput name="name" v-model="film.name" />
-                        <InputError class="mt-2" :message="errors.name" />
-                      </td>
-                    </tr>
-                    <tr>
-                        <td>{{ translate('attributes.description') }}</td>
-                      <td>
-                        <TextInput name="description" v-model="film.description" />
-                        <InputError class="mt-2" :message="errors.description" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.audio_lang') }}</td>
-                      <td>
-                        <TextInput name="audio_lang" v-model="film.audio_lang" />
-                        <InputError class="mt-2" :message="errors.audio_lang" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.subtitle_lang') }}</td>
-                      <td>
-                        <TextInput name="subtitle_lang" v-model="film.subtitle_lang" />
-                        <InputError class="mt-2" :message="errors.subtitle_lang" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.sources_id') }}</td>
-                      <td>
-                          <select name="sources_id">
-                              <option v-for="filmsource in filmsources" :value="filmsource.id">{{ filmsource.name }}</option>
-                          </select>
-                        <InputError class="mt-2" :message="errors.sources_id" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.year') }}</td>
-                      <td>
-                        <TextInput name="year" v-model="film.year" />
-                        <InputError class="mt-2" :message="errors.year" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.duration') }}</td>
-                      <td>
-                        <TextInput name="duration" v-model="film.duration" />
-                        <InputError class="mt-2" :message="errors.duration" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{{ translate('attributes.filmstatus_id') }}</td>
-                      <td>
-                        <TextInput name="filmstatus_id" v-model="film.filmstatus_id" />
-                        <InputError class="mt-2" :message="errors.filmstatus_id" />
-                      </td>
-                    </tr>
-                </table>
-                <br>
-                <PrimaryButton>Speichern</PrimaryButton>
-            </p>
+            <table class="table">
+                <tr>
+                  <td>{{ translate('attributes.film_nr') }}</td>
+                  <td>
+                    <TextInput name="film_nr" v-model="film.film_nr" />
+                    <InputError class="mt-2" :message="errors.film_nr" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.name') }}</td>
+                  <td>
+                    <TextInput name="name" v-model="film.name" />
+                    <InputError class="mt-2" :message="errors.name" />
+                  </td>
+                </tr>
+                <tr>
+                    <td>{{ translate('attributes.description') }}</td>
+                  <td>
+                    <TextInput name="description" v-model="film.description" />
+                    <InputError class="mt-2" :message="errors.description" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.audio_lang') }}</td>
+                  <td>
+                    <TextInput name="audio_lang" v-model="film.audio_lang" />
+                    <InputError class="mt-2" :message="errors.audio_lang" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.subtitle_lang') }}</td>
+                  <td>
+                    <TextInput name="subtitle_lang" v-model="film.subtitle_lang" />
+                    <InputError class="mt-2" :message="errors.subtitle_lang" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.sources_id') }}</td>
+                  <td>
+                      <select name="sources_id">
+                          <option v-for="filmsource in filmsources" :value="filmsource.id">{{ filmsource.name }}</option>
+                      </select>
+                    <InputError class="mt-2" :message="errors.sources_id" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.year') }}</td>
+                  <td>
+                    <TextInput name="year" v-model="film.year" />
+                    <InputError class="mt-2" :message="errors.year" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.duration') }}</td>
+                  <td>
+                    <TextInput name="duration" v-model="film.duration" />
+                    <InputError class="mt-2" :message="errors.duration" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ translate('attributes.filmstatus_id') }}</td>
+                  <td>
+                    <TextInput name="filmstatus_id" v-model="film.filmstatus_id" />
+                    <InputError class="mt-2" :message="errors.filmstatus_id" />
+                  </td>
+                </tr>
+            </table>
+            <br>
+            <PrimaryButton>Speichern</PrimaryButton>
         </div>
 
-        <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8">
-            <div>
-                <p class="mt-4 text-gray-500 text-sm leading-relaxed">
-                    <a href="/dashboard" class="inline-flex items-center font-semibold text-indigo-700">
-                        Zurück zum Dashboard
-                    </a>
-                </p>
-            </div>
-        </div>
+        <Footer />
 
     </div>
 </form>

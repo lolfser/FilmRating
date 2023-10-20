@@ -1,5 +1,6 @@
 <script setup>
 import Headline from './Headline.vue';
+import Footer from './Footer.vue';
 </script>
 <template>
     <Headline :headline="headline" />
@@ -28,15 +29,7 @@ import Headline from './Headline.vue';
             </p>
         </div>
 
-        <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8">
-            <div>
-                <p class="mt-4 text-gray-500 text-sm leading-relaxed">
-                    <a href="/dashboard" class="inline-flex items-center font-semibold text-indigo-700">
-                        Zurück zum Dashboard
-                    </a>
-                </p>
-            </div>
-        </div>
+        <Footer />
 
     </div>
 </template>
