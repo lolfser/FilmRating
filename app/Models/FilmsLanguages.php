@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Model FilmLanguage
+ * Model FilmsLanguages
  *
  * @property int films_id
  * @property int languages_id
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Languages language // from belongsTo
  * @package App\Models
 */
-class FilmLanguage extends Model {
-    protected $table    = 'film_language';
+class FilmsLanguages extends Model {
+    protected $table    = 'films_languages';
     protected $fillable = ['films_id','languages_id'];
     protected $casts    = ['films_id' => 'int', 'languages_id' => 'int'];
 

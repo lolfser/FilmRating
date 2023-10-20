@@ -3,7 +3,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilmLanguageTable extends Migration {
+class CreateFilmsLanguagesTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateFilmLanguageTable extends Migration {
      * @return \Illuminate\Http\Response
      */
     public function up() {
-        Schema::create('film_language', function (Blueprint $table) {
+        Schema::create('films_languages', function (Blueprint $table) {
             $table->unsignedInteger('films_id');
             $table->unsignedInteger('languages_id');
 

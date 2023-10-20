@@ -60,11 +60,11 @@ class Films extends Model {
     }
 
     public function languages() {
-        return $this->belongsToMany('App\Models\Languages', 'film_language');
+        return $this->belongsToMany('App\Models\Languages', 'films_languages');
     }
 
     public function viewers() {
-        return $this->belongsToMany('App\Models\Viewers', 'film_viewer')
+        return $this->belongsToMany('App\Models\Viewers', 'films_viewers')
             ->withPivot('comment', 'grades_id');
     }
 }
