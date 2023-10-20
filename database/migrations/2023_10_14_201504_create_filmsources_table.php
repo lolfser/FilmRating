@@ -13,10 +13,9 @@ class CreateFilmsourcesTable extends Migration {
      */
     public function up() {
         Schema::create('filmsources', function (Blueprint $table) {
-            $table->unsignedInteger('id');
-            $table->string('name', 50)->nullable();
+            $table->increments('id');
+            $table->string('name', 50);
 
-            $table->primary(["id"]); // isPrimary => PRIMARY
         });
     }
 }

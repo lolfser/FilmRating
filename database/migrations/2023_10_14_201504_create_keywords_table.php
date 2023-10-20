@@ -13,11 +13,10 @@ class CreateKeywordsTable extends Migration {
      */
     public function up() {
         Schema::create('keywords', function (Blueprint $table) {
-            $table->unsignedInteger('id');
+            $table->increments('id');
             $table->string('name', 100);
 
-            $table->unique(["name"]); // isUnique => name
-            $table->primary(["id"]); // isPrimary => PRIMARY
+            $table->unique(["name"]); // isUnique => keywords_name_unique
         });
     }
 }
