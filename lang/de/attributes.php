@@ -2,10 +2,10 @@
 
 return [
     'id' => 'ID',
+    'film_identifier' => 'Film-Identifier',
     'name' => 'Name',
     'description' => 'Beschreibung',
     'sources_id' => 'Source ID',
-    'film_nr' => 'Filmnummer',
     'year' => 'Jahr',
     'duration' => 'Dauer',
     'audio_lang' => 'Audio-Sprache',

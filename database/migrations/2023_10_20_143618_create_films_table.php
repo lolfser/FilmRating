@@ -14,10 +14,10 @@ class CreateFilmsTable extends Migration {
     public function up() {
         Schema::create('films', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('film_identifier', 50)->default('')->comment('import identifier');
             $table->string('name', 250);
             $table->string('description', 1000)->default('');
             $table->unsignedInteger('filmsources_id');
-            $table->string('film_nr', 50)->default('');
             $table->unsignedInteger('year');
             $table->integer('duration')->nullable()->comment('in seconds');
             $table->unsignedInteger('filmstatus_id')->nullable();

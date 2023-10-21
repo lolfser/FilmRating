@@ -18,7 +18,7 @@ import Footer from './Footer.vue';
                   <th>Actions</th>
                 </tr>
                 <tr v-for="film in films">
-                    <td>{{film.film_nr}}</td>
+                    <td>{{film.film_identifier}}</td>
                     <td>{{film.name}}</td>
                     <td>{{calculateLanguage(film)}}</td>
                     <td>{{film.genre}}</td>

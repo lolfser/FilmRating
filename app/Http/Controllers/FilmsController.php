@@ -16,9 +16,9 @@ class FilmsController extends Controller {
 
     protected const VALIDATION_DEFINITION = [
         'name' => 'required',
+        'film_identifier' => 'required',
         'description' => 'required',
         'filmsources_id' => 'required|integer',
-        'film_nr' => 'required|integer',
         'year' => 'required|integer',
         'duration' => '',
         'filmstatus_id' => 'required|integer',

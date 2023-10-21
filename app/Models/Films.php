@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Model;
  * Model Films
  *
  * @property int id
+ * @property string film_identifier
  * @property string name
  * @property string description
  * @property int filmsources_id
- * @property string film_nr
  * @property int year
  * @property int|null duration
  * @property int|null filmstatus_id
- * @property Carbon created_at
- * @property Carbon updated_at
+ * @property Carbon|null created_at
+ * @property Carbon|null updated_at
  * @property-read \App\Models\Filmsources filmsource // from belongsTo
  * @property-read \App\Models\Filmstatus filmstatus // from belongsTo
  * @property-read \App\Models\Filmmodifications filmmodifications // from belongsToMany
@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
 */
 class Films extends Model {
     protected $table    = 'films';
-    protected $fillable = ['name','description','filmsources_id','film_nr','year','duration','filmstatus_id'];
+    protected $fillable = ['film_identifier','name','description','filmsources_id','year','duration','filmstatus_id'];
     protected $casts    = ['id' => 'int', 'filmsources_id' => 'int', 'year' => 'int', 'duration' => 'int', 'filmstatus_id' => 'int', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function filmsource() {
@@ -60,7 +60,7 @@ class Films extends Model {
     }
 
     public function languages() {
-        return $this->belongsToMany('App\Models\Languages', 'films_languages');
+        return $this->belongsToMany('App\Models\Languages');
     }
 
     public function viewers() {

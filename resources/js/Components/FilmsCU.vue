@@ -16,10 +16,10 @@ import { translate } from './../trans';
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <table class="table">
                 <tr>
-                  <td>{{ translate('attributes.film_nr') }}</td>
+                  <td>{{ translate('attributes.film_identifier') }}</td>
                   <td>
-                    <TextInput name="film_nr" v-model="film.film_nr" />
-                    <InputError class="mt-2" :message="errors.film_nr" />
+                    <TextInput name="film_identifier" v-model="film.film_identifier" />
+                    <InputError class="mt-2" :message="errors.film_identifier" />
                   </td>
                 </tr>
                 <tr>
