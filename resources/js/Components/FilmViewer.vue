@@ -26,7 +26,7 @@ import Footer from './Footer.vue';
                     <td>{{ viewerGrade(film) }}</td>
                     <td>{{ viewerComment(film) }}</td>
                     <td>
-                        <a v-bind:href="'/rating/'+film.id+'/cu'"> edit - demnächst</a>
+                        <div v-html="generateCULink(film)" />
                     </td>
                 </tr>
             </table>
@@ -63,6 +63,22 @@ export default {
         return true; // continue;
       });
       return returnValue;
+    },
+    generateCULink: function (film) {
+        const reviewId = this.getReviewId(film);
+        return "<a href='/rating/" + film.film_identifier + "/cu'>" + (reviewId != 0 ? "edit" : "neu") + "</a>";
+    },
+    getReviewId: function (film) {
+        const viewerId = this.viewerId;
+        let returnValue = "";
+        film.viewers.every(function (viewer) {
+            if (viewer.id == viewerId) {
+                returnValue = viewer.id;
+                return false; // break;
+            }
+            return true; // continue;
+        });
+        return returnValue;
     },
     viewerGrade: function (film) {
         const viewerId = this.viewerId;

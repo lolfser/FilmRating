@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Films;
-use App\Models\FilmViewer;
+use App\Models\FilmsViewers;
+use App\Models\Languages;
 use App\Models\Viewers;
 use App\Models\Grades;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Laravel\Jetstream\Jetstream;
 
-class FilmViewerController extends Controller {
+class FilmsViewersController extends Controller {
 
     /**
-     * GET|HEAD  /film_viewer
+     * GET|HEAD  /rating
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -33,7 +34,7 @@ class FilmViewerController extends Controller {
 
         $viewerId = 1; // @todo
 
-        return Inertia::render('FilmViewer', [
+        return Inertia::render('FilmsViewers', [
             'films' => $films,
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
@@ -98,10 +99,13 @@ class FilmViewerController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  FilmViewer $film_viewer
+     * @param  FilmsViewers $film_viewer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FilmViewer $film_viewer) {
+    public function update(Request $request, FilmsViewers $film_viewer) {
+        var_dump("demnächst"); exit;
+        var_dump($film_viewer); exit;
+        echo "a"; exit;
         $newData = $request->except(['_method', '_token', 'id']);
         $film_viewer->fill($newData);
         $film_viewer->save();
@@ -119,5 +123,36 @@ class FilmViewerController extends Controller {
     public function destroy() {
         $film_viewer->delete();
         return redirect(route("film_viewer.index"));
+    }
+
+    /**
+     * GET /rating/{filmId}/cu/
+     * Remove the specified resource from storage.
+     *
+     * @param  Films $films
+     * @throws \Exception
+     * @return \Illuminate\Http\Response
+     */
+    public function rate(string $filmIdentifier) {
+        $films = Films::where('film_identifier', $filmIdentifier);
+        if ($films->count() === 0) {
+            return redirect(route("rating.index"));
+        }
+        $film = $films->first();
+        $film->filmsource->name; // loading pivot
+        $film->languages; // loading pivot
+        $viewersId = 1; // TODO
+        $review = FilmsViewers::where('films_id', $film->first()->id)->where('viewers_id', $viewersId);
+        if ($review->count() === 0) {
+            $review = new FilmsReview();
+        }
+
+        return Inertia::render('RatingEdit', [
+            "film" => $film,
+            "review" => $review,
+            'languages' => Languages::all()->groupBy('type'),
+            '_token' => csrf_token(),
+        ]);
+
     }
 }

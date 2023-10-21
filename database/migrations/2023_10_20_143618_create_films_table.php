@@ -14,7 +14,7 @@ class CreateFilmsTable extends Migration {
     public function up() {
         Schema::create('films', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('film_identifier', 50)->default('')->comment('import identifier');
+            $table->string('film_identifier', 50)->comment('import identifier');
             $table->string('name', 250);
             $table->string('description', 1000)->default('');
             $table->unsignedInteger('filmsources_id');
@@ -23,6 +23,7 @@ class CreateFilmsTable extends Migration {
             $table->unsignedInteger('filmstatus_id')->nullable();
             $table->timestamps();
 
+            $table->unique(["film_identifier"]); // isUnique => film_identifier
         });
     }
 }
