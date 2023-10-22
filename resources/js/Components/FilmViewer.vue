@@ -1,6 +1,8 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
+import MultiSelect from './MultiSelect.vue';
+
 </script>
 <template>
     <Headline :headline="headline" />
@@ -30,12 +32,21 @@ import Footer from './Footer.vue';
                     </td>
                 </tr>
             </table>
+
+
+        <MultiSelect :options="grades" :optionLabel="dropdownGrade" :optionValue="dropdownGradeValue" placeholder="wähle"
+            :maxSelectedLabels="3" autoFilterFocus="true"
+            />
+
         </div>
+
         <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
     </div>
 </template>
 <script>
+
 export default {
+
   props: [
     'films',
     'grades',
@@ -44,6 +55,12 @@ export default {
     'PERMISSION_ADD_FILMS'
   ],
   methods: {
+    dropdownGradeValue: function(grade) {
+        return grade.id;
+    },
+    dropdownGrade: function(grade) {
+        return grade.value + "" + grade.trend;
+    },
     calculateLanguage: function(film) {
         let result = '';
         film.languages.every(function(language) {
