@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Model Filmmodifications
+ * Model Languages
  *
  * @property int id
- * @property string name
+ * @property string language
+ * @property string type
  * @property-read \App\Models\Films films // from belongsToMany
  * @package App\Models
 */
-class Filmmodifications extends Model {
-    protected $table    = 'filmmodifications';
-    protected $fillable = ['name'];
+class Languages extends Model {
+    protected $table    = 'languages';
+    protected $fillable = ['language','type'];
     protected $casts    = ['id' => 'int'];
     public $timestamps = false;
 
     public function films() {
-        return $this->belongsToMany('App\Models\Films');
+        return $this->belongsToMany('App\Models\Films', 'film_language');
     }
 }

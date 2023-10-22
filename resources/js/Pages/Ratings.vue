@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompFilmsList from '@/Components/FilmsList.vue';
+import CompFilmViewer from '@/Components/FilmViewer.vue';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import CompFilmsList from '@/Components/FilmsList.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmsList :films="films" :headline="headline" :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+                    <CompFilmViewer :films="films" :headline="headline" :viewerId="viewerId" :grades="grades" :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS"/>
                 </div>
             </div>
         </div>
@@ -21,9 +21,9 @@ import CompFilmsList from '@/Components/FilmsList.vue';
 </template>
 <script>
 export default {
-  props: ['films', 'PERMISSION_ADD_FILMS'],
+  props: ['films', 'grades', 'viewerId', 'PERMISSION_ADD_FILMS'],
   computed: {
-    headline: function () {return "Liste aller Filme";},
+    headline: function () {return "Deine Bewertungen";},
   }
 }
 </script>

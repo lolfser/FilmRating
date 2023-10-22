@@ -14,8 +14,9 @@ class CreateRelationkindsTable extends Migration {
     public function up() {
         Schema::create('relationkinds', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 50)->default(0);
+            $table->string('name', 50)->default('');
 
+            $table->unique(["name"]); // isUnique => relationkinds_name_unique
         });
     }
 }

@@ -1,16 +1,16 @@
 <?php
+namespace Database\Seeders;
 use App\Models\Genres;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table genres
- * TODO: Don't forget to include `$this->call(\GenresSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class GenresSeeder extends Seeder {
 
     /**
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function run() {

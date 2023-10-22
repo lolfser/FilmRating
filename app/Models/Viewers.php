@@ -26,6 +26,6 @@ class Viewers extends Model {
     }
 
     public function films() {
-        return $this->belongsToMany('App\Models\Films');
+        return $this->hasMany('App\Models\Ratings');
     }
 }

@@ -1,16 +1,16 @@
 <?php
+namespace Database\Seeders;
 use App\Models\Filmstatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table filmstatus
- * TODO: Don't forget to include `$this->call(\FilmstatusSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class FilmstatusSeeder extends Seeder {
 
     /**
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function run() {

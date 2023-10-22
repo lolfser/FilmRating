@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Films;
+use App\Models\Filmsources;
+use App\Models\Languages;
+use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -14,90 +17,75 @@ class FilmsController extends Controller {
 
     protected const VALIDATION_DEFINITION = [
         'name' => 'required',
-        'description' => 'required',
-        'sources_id' => 'required|integer',
-        'film_nr' => 'required|integer',
+        'film_identifier' => 'required',
+        'description' => '',
+        'filmsources_id' => 'required|integer',
         'year' => 'required|integer',
         'duration' => '',
-        'audio_lang' => '',
-        'subtitle_lang' => '',
         'filmstatus_id' => 'required|integer',
         'created' => '',
         'updated' => '',
     ];
 
-    /**
-     * GET|HEAD  /films
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index() {
-        // $termsFile = Jetstream::localizedMarkdownPath('terms.md');
+
+        $films = Films::all();
+        foreach ($films as $film) {
+            $film->languages; // Loading pivots
+        }
 
         return Inertia::render('FilmsList', [
-            'films' => Films::all(),
+            'films' => $films,
+            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
         ]);
     }
 
-    /**
-     * POST  /films
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
 
         $validator = Validator::make($request->all(), self::VALIDATION_DEFINITION);
         $errors = $validator->messages()->getMessages();
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            $errors[] = 'no permission';
+        }
+
         $data = $validator->getData();
 
         if ($errors !== []) {
-            return $this->createAndUpdate($request->all(), $validator->messages()->getMessages());
+            return $this->createAndUpdate($request->all(), $errors);
         }
 
         Films::create($data);
-
         return redirect(route("films.index"));
     }
 
-    /**
-     * GET|HEAD /films/{film}
-     * Display the specified resource.
-     *
-     * @param  Films $film
-     * @return \Illuminate\Http\Response
-     */
     public function show(Films $film) {
+        $film->languages; // Loading pivots
         return Inertia::render('FilmsShow', [
-            "film" => $film
+            'film' => $film
         ]);
     }
 
-    /**
-     * GET|HEAD /films/{film}/cu
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            return redirect(route("films.index"));
+        }
         $film = $films ?? Films::find($filmId) ?? new Films();
+        Languages::all()->groupBy('type');
+
+        foreach ($film->languages as $language) {
+            // Loading pivots
+        }
 
         return Inertia::render('FilmsCU', [
-            "film" => $film,
+            'film' => $film,
+            'filmsources' => Filmsources::all(),
+            'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'errors' => $errors,
         ]);
     }
 
-    /**
-     * PUT|PATCH /films/{film}
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request) {
 
         $newData = $request->except(['_method', '_token', 'id']);
@@ -107,26 +95,20 @@ class FilmsController extends Controller {
         $validator = Validator::make($newData, self::VALIDATION_DEFINITION);
         $errors = $validator->messages()->getMessages();
 
-        if ($errors !== []) {
-            $film->fill($newData);
-            return $this->createAndUpdate($request->all()['id'], $validator->messages()->getMessages(), $film);
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            $errors[] = 'no permission';
         }
 
-        $film->fill($newData);
-        $film->save();
-        return redirect(route("films.show", [$film->id]));
-    }
+        if ($errors !== []) {
+            $film->fill($newData);
+            return $this->createAndUpdate($request->all()['id'], $errors, $film);
+        }
 
-    /**
-     * DELETE /films/{film}
-     * Remove the specified resource from storage.
-     *
-     * @param  Films $film
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy() {
-        $film->delete();
-        return redirect(route("films.index"));
+        $film->fill($newData); // @todo unique check of film identifier
+        $film->save();
+
+        $saveFilmsLanguagesServices = (new SaveFilmsLanguagesServices())->save($film, $request->all());
+
+        return redirect(route("films.show", [$film->id]));
     }
 }

@@ -8,22 +8,22 @@ class CreateFilmsTable extends Migration {
     /**
      * Run the migrations.
      * @return void
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function up() {
         Schema::create('films', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('film_identifier', 50)->comment('import identifier');
             $table->string('name', 250);
-            $table->string('description', 1000)->default('');
-            $table->unsignedInteger('sources_id');
-            $table->unsignedInteger('film_nr');
+            $table->string('description', 1000)->nullable()->default('');
+            $table->unsignedInteger('filmsources_id');
             $table->unsignedInteger('year');
             $table->integer('duration')->nullable()->comment('in seconds');
-            $table->string('audio_lang', 10)->nullable();
-            $table->string('subtitle_lang', 10)->nullable();
-            $table->string('filmstatus_id', 250);
+            $table->unsignedInteger('filmstatus_id')->nullable();
+            $table->timestamps();
 
+            $table->unique(["film_identifier"]); // isUnique => film_identifier
         });
     }
 }

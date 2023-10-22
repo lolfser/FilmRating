@@ -13,9 +13,11 @@ class CreateViewersTable extends Migration {
      */
     public function up() {
         Schema::create('viewers', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('users_id');
             $table->string('initials', 5)->default('');
             $table->string('comment', 50)->default('');
+
         });
     }
 }

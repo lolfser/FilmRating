@@ -3,7 +3,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilmsFilmmodificationsTable extends Migration {
+class CreateFilmsLanguagesTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateFilmsFilmmodificationsTable extends Migration {
      * @return \Illuminate\Http\Response
      */
     public function up() {
-        Schema::create('films_filmmodifications', function (Blueprint $table) {
+        Schema::create('films_languages', function (Blueprint $table) {
             $table->unsignedInteger('films_id');
-            $table->unsignedInteger('filmmodifications_id');
+            $table->unsignedInteger('languages_id');
 
-            $table->unique(["films_id","filmmodifications_id"]); // isUnique => films_filmmodifications_films_id_filmmodifications_id_unique
+            $table->unique(["films_id","languages_id"]); // isUnique => film_language_films_id_languages_id_unique
         });
     }
 }

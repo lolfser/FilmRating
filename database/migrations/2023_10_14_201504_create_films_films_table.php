@@ -17,7 +17,7 @@ class CreateFilmsFilmsTable extends Migration {
             $table->integer('films2_id');
             $table->integer('relationkinds_id');
 
-            $table->unique(["films1_id","films2_id","relationkinds_id"]); // isUnique => Unique
+            $table->unique(["films1_id","films2_id","relationkinds_id"]); // isUnique => films_films_films1_id_films2_id_relationkinds_id_unique
         });
     }
 }

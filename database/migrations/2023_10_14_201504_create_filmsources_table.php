@@ -13,8 +13,10 @@ class CreateFilmsourcesTable extends Migration {
      */
     public function up() {
         Schema::create('filmsources', function (Blueprint $table) {
-            $table->integer('id')->nullable();
-            $table->string('name', 50)->nullable();
+            $table->increments('id');
+            $table->string('name', 50);
+
+            $table->unique(["name"]); // isUnique => name
         });
     }
 }

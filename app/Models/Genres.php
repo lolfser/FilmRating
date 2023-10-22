@@ -17,4 +17,5 @@ class Genres extends Model {
     protected $table    = 'genres';
     protected $fillable = ['name'];
     protected $casts    = ['id' => 'int'];
+    public $timestamps = false;
 }

@@ -17,4 +17,5 @@ class Filmstatus extends Model {
     protected $table    = 'filmstatus';
     protected $fillable = ['name'];
     protected $casts    = ['id' => 'int'];
+    public $timestamps = false;
 }

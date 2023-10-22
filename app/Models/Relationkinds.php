@@ -17,4 +17,5 @@ class Relationkinds extends Model {
     protected $table    = 'relationkinds';
     protected $fillable = ['name'];
     protected $casts    = ['id' => 'int'];
+    public $timestamps = false;
 }

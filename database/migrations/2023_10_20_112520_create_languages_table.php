@@ -3,7 +3,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTriggerkindsTable extends Migration {
+class CreateLanguagesTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,11 +12,12 @@ class CreateTriggerkindsTable extends Migration {
      * @return \Illuminate\Http\Response
      */
     public function up() {
-        Schema::create('triggerkinds', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 50)->default('');
+            $table->string('language', 20);
+            $table->string('type', 50)->comment('like audio or subtitle');
 
-            $table->unique(["name"]); // isUnique => triggerkinds_name_unique
+            $table->unique(["language","type"]); // isUnique => languages_language_unique
         });
     }
 }

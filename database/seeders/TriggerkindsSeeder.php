@@ -1,16 +1,16 @@
 <?php
+namespace Database\Seeders;
 use App\Models\Triggerkinds;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table triggerkinds
- * TODO: Don't forget to include `$this->call(\TriggerkindsSeeder::class);` in DatabaseSeeder.php::run() method
 */
 class TriggerkindsSeeder extends Seeder {
 
     /**
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function run() {
