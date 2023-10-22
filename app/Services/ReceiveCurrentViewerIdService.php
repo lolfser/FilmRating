@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Viewers;
 
-class ReceiveCurrentViewerId {
+class ReceiveCurrentViewerIdService {
 
     public function receive(): int {
 

@@ -22,19 +22,19 @@ class RatingsController extends Controller {
             $film->languages; // Loading pivots
         }
 
-        $viewerId = (new \App\Services\ReceiveCurrentViewerId())->receive();
-
+        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
         return Inertia::render('Ratings', [
             'films' => $films,
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
+            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
         ]);
     }
 
     public function update(Request $request, Ratings $film_viewer) {
 
         $films = Films::where('film_identifier', $request->all()['id']);
-        $viewersId = (new \App\Services\ReceiveCurrentViewerId())->receive();
+        $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         if ($films->count() === 0) {
             return redirect(route("rating.index"));
@@ -70,7 +70,7 @@ class RatingsController extends Controller {
         $film = $films->first();
         $film->filmsource->name; // loading pivot
         $film->languages; // loading pivot
-        $viewersId = (new \App\Services\ReceiveCurrentViewerId())->receive();
+        $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         foreach ($film->ratings as $key => $rating) { // loading pivot
             if ($rating->viewers_id != $viewersId) {

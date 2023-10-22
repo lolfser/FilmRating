@@ -18,7 +18,7 @@ class FilmsController extends Controller {
     protected const VALIDATION_DEFINITION = [
         'name' => 'required',
         'film_identifier' => 'required',
-        'description' => 'required',
+        'description' => '',
         'filmsources_id' => 'required|integer',
         'year' => 'required|integer',
         'duration' => '',
@@ -36,6 +36,7 @@ class FilmsController extends Controller {
 
         return Inertia::render('FilmsList', [
             'films' => $films,
+            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
         ]);
     }
 
@@ -43,10 +44,15 @@ class FilmsController extends Controller {
 
         $validator = Validator::make($request->all(), self::VALIDATION_DEFINITION);
         $errors = $validator->messages()->getMessages();
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            $errors[] = 'no permission';
+        }
+
         $data = $validator->getData();
 
         if ($errors !== []) {
-            return $this->createAndUpdate($request->all(), $validator->messages()->getMessages());
+            return $this->createAndUpdate($request->all(), $errors);
         }
 
         Films::create($data);
@@ -61,6 +67,9 @@ class FilmsController extends Controller {
     }
 
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            return redirect(route("films.index"));
+        }
         $film = $films ?? Films::find($filmId) ?? new Films();
         Languages::all()->groupBy('type');
 
@@ -86,9 +95,13 @@ class FilmsController extends Controller {
         $validator = Validator::make($newData, self::VALIDATION_DEFINITION);
         $errors = $validator->messages()->getMessages();
 
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
+            $errors[] = 'no permission';
+        }
+
         if ($errors !== []) {
             $film->fill($newData);
-            return $this->createAndUpdate($request->all()['id'], $validator->messages()->getMessages(), $film);
+            return $this->createAndUpdate($request->all()['id'], $errors, $film);
         }
 
         $film->fill($newData); // @todo unique check of film identifier

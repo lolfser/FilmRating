@@ -16,7 +16,7 @@ class CreateFilmsTable extends Migration {
             $table->increments('id');
             $table->string('film_identifier', 50)->comment('import identifier');
             $table->string('name', 250);
-            $table->string('description', 1000)->default('');
+            $table->string('description', 1000)->nullable()->default('');
             $table->unsignedInteger('filmsources_id');
             $table->unsignedInteger('year');
             $table->integer('duration')->nullable()->comment('in seconds');

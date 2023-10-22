@@ -13,10 +13,18 @@
                     Filmbewertungen
                 </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="/films/0/cu" class="inline-flex items-center font-semibold text-indigo-700">
+                <a href="/films/0/cu" class="inline-flex items-center font-semibold text-indigo-700" v-if="PERMISSION_ADD_FILMS">
                     Film erstellen
                 </a>
             </p>
         </div>
     </div>
 </template>
+<script>
+export default {
+  props: [
+    'PERMISSION_ADD_FILMS',
+  ]
+}
+
+</script>

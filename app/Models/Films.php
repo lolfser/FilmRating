@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int id
  * @property string film_identifier
  * @property string name
- * @property string description
+ * @property string|null description
  * @property int filmsources_id
  * @property int year
  * @property int|null duration
