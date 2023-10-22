@@ -55,9 +55,9 @@ export default {
     viewerComment: function (film) {
       const viewerId = this.viewerId
       let returnValue = "";
-      film.viewers.every(function (viewer) {
-        if (viewer.id == viewerId) {
-            returnValue = viewer.pivot.comment;
+      film.ratings.every(function (rating) {
+        if (rating.viewers_id == viewerId) {
+            returnValue = rating.comment;
             return false; // break
         }
         return true; // continue;
@@ -71,9 +71,9 @@ export default {
     getReviewId: function (film) {
         const viewerId = this.viewerId;
         let returnValue = "";
-        film.viewers.every(function (viewer) {
-            if (viewer.id == viewerId) {
-                returnValue = viewer.id;
+        film.ratings.every(function (rating) {
+            if (rating.viewers_id == viewerId) {
+                returnValue = rating.id;
                 return false; // break;
             }
             return true; // continue;
@@ -84,11 +84,11 @@ export default {
         const viewerId = this.viewerId;
         const grades = this.grades;
         let returnValue = "";
-        film.viewers.every(function (viewer) {
-            if (viewer.id != viewerId) {
+        film.ratings.every(function (rating) {
+            if (rating.viewers_id != viewerId) {
                 return true; // continue;
             }
-            const gradeId = viewer.pivot.grades_id;
+            const gradeId = rating.grades_id;
             grades.every(function (gradeFromList) {
                 if (gradeId == gradeFromList.id) {
                     returnValue = gradeFromList.value + "" +  gradeFromList.trend;
@@ -108,12 +108,12 @@ export default {
         const grades = this.grades;
         let returnValue = "";
 
-        film.viewers.every(function (viewer) {
-            if (viewer.id == viewerId) {
+        film.ratings.every(function (rating) {
+            if (rating.viewers_id == viewerId) {
                 return true; // continue;
             }
 
-            const gradeId = viewer.pivot.grades_id;
+            const gradeId = rating.grades_id;
             grades.every(function (gradeFromList) {
 
                 if (gradeId == gradeFromList.id) {

@@ -26,7 +26,6 @@ class Viewers extends Model {
     }
 
     public function films() {
-        return $this->belongsToMany('App\Models\Films')
-            ->withPivot('comment', 'grades_id');
+        return $this->hasMany('App\Models\Ratings');
     }
 }

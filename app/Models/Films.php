@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Genres genres // from belongsToMany
  * @property-read \App\Models\Keywords keywords // from belongsToMany
  * @property-read \App\Models\Languages languages // from belongsToMany
- * @property-read \App\Models\Viewers viewers // from belongsToMany
+ * @property-read \App\Models\Ratings viewers // from belongsToMany
  * @package App\Models
 */
 class Films extends Model {
@@ -63,8 +63,7 @@ class Films extends Model {
         return $this->belongsToMany('App\Models\Languages');
     }
 
-    public function viewers() {
-        return $this->belongsToMany('App\Models\Viewers', 'films_viewers')
-            ->withPivot('comment', 'grades_id');
+    public function ratings() {
+        return $this->hasMany('App\Models\Ratings');
     }
 }

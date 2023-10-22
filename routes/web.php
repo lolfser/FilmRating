@@ -36,8 +36,8 @@ Route::middleware([
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
     Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate']);
     Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
-    Route::get('rating', [\App\Http\Controllers\FilmsViewersController::class, 'index'])->name('rating.index');
-    // Route::get('/rating/', \App\Http\Controllers\FilmsViewersController::class, 'index');
-    Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\FilmsViewersController::class, 'rate']);
-    Route::post('/rating/update', [\App\Http\Controllers\FilmsViewersController::class, 'update']);
+    Route::get('rating', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
+    // Route::get('/rating/', \App\Http\Controllers\RatingsController::class, 'index');
+    Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\RatingsController::class, 'rate']);
+    Route::post('/rating/update', [\App\Http\Controllers\RatingsController::class, 'update']);
 });

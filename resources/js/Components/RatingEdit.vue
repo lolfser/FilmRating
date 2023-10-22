@@ -11,7 +11,7 @@ import { translate } from './../trans';
 <Headline :headline="headline" />
 <form action="/rating/update" method="POST">
     <input type="hidden" name="_token" v-model="token" />
-    <input type="hidden" name="id" v-bind:value="computedId" />
+    <input type="hidden" name="id" v-bind:value="film.film_identifier" />
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <h1>Allgemeine Informationen</h1><br>
@@ -44,9 +44,24 @@ import { translate } from './../trans';
                 <tr v-for="(language, type) in languages">
                   <td>Sprache: {{ type }}</td>
                   <td>
-                    <span v-for="lang in language" value="a">
+                    <span v-for="lang in language">
                         <label><input :checked="isSelected(film.languages, lang.id)" type="radio" :name="'language_' + type" :value="lang.id" /> {{lang.language}}</label>
                         &nbsp;&nbsp;&nbsp;
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dein persönlicher Kommentar</td>
+                  <td>
+                    <textarea name="comment">{{film.ratings[0]?.comment}}</textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Deine Bewertung</td>
+                  <td>
+                    <span v-for="grade in grades">
+                        <label><input :checked="isSelected([{id: grade.id}], film.ratings[0]?.grades_id)" type="radio" name="grades_id" :value="grade.id" />&nbsp;&nbsp;{{grade.value}}{{grade.trend}}</label>
+                            &nbsp;&nbsp;&nbsp;
                     </span>
                   </td>
                 </tr>
@@ -62,7 +77,7 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages'],
+  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades'],
   computed: {
     token: function () {
       return this._token

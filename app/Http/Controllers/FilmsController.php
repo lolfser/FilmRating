@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Films;
 use App\Models\Filmsources;
 use App\Models\Languages;
+use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -26,19 +27,11 @@ class FilmsController extends Controller {
         'updated' => '',
     ];
 
-    /**
-     * GET|HEAD  /films
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index() {
 
         $films = Films::all();
         foreach ($films as $film) {
-            foreach ($film->languages as $language) {
-                // Loading pivots
-            }
+            $film->languages; // Loading pivots
         }
 
         return Inertia::render('FilmsList', [
@@ -46,13 +39,6 @@ class FilmsController extends Controller {
         ]);
     }
 
-    /**
-     * POST  /films
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
 
         $validator = Validator::make($request->all(), self::VALIDATION_DEFINITION);
@@ -64,32 +50,16 @@ class FilmsController extends Controller {
         }
 
         Films::create($data);
-
         return redirect(route("films.index"));
     }
 
-    /**
-     * GET|HEAD /films/{film}
-     * Display the specified resource.
-     *
-     * @param  Films $film
-     * @return \Illuminate\Http\Response
-     */
     public function show(Films $film) {
-        foreach ($film->languages as $language) {
-            // Loading pivots
-        }
+        $film->languages; // Loading pivots
         return Inertia::render('FilmsShow', [
-            "film" => $film
+            'film' => $film
         ]);
     }
 
-    /**
-     * GET|HEAD /films/{film}/cu
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
         $film = $films ?? Films::find($filmId) ?? new Films();
         Languages::all()->groupBy('type');
@@ -107,13 +77,6 @@ class FilmsController extends Controller {
         ]);
     }
 
-    /**
-     * PUT|PATCH /films/{film}
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request) {
 
         $newData = $request->except(['_method', '_token', 'id']);
@@ -128,32 +91,11 @@ class FilmsController extends Controller {
             return $this->createAndUpdate($request->all()['id'], $validator->messages()->getMessages(), $film);
         }
 
-        $film->fill($newData);
+        $film->fill($newData); // @todo unique check of film identifier
         $film->save();
 
-        $languages = Languages::all()->groupBy('type');
-        $film->languages()->sync([]);
-
-        foreach ($languages as $type => $language) {
-            $id = $request->all()['language_' . $type] ?? null;
-            if ($id !== null) {
-                $film->languages()->attach($id);
-            }
-        }
+        $saveFilmsLanguagesServices = (new SaveFilmsLanguagesServices())->save($film, $request->all());
 
         return redirect(route("films.show", [$film->id]));
-    }
-
-    /**
-     * DELETE /films/{film}
-     * Remove the specified resource from storage.
-     *
-     * @param  Films $film
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy() {
-        $film->delete();
-        return redirect(route("films.index"));
     }
 }

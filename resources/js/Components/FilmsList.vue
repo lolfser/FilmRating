@@ -9,7 +9,7 @@ import Footer from './Footer.vue';
             <p class="mt-6 text-gray-500 leading-relaxed">
                 <table class="table">
                     <tr>
-                      <th>Nr.</th>
+                      <th>Film-Identifikator</th>
                       <th>Name</th>
                       <th>Sprache</th>
                       <th>Genre</th>
