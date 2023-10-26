@@ -13,7 +13,7 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmViewer :films="films" :headline="headline" :viewerId="viewerId" :grades="grades" :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS"/>
+                    <CompFilmViewer :films="films" :headline="headline" :viewerId="viewerId" :grades="grades" :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
                 </div>
             </div>
         </div>

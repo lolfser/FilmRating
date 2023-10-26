@@ -13,20 +13,27 @@ import MultiSelect from 'primevue/multiselect';
       :placeholder="placeholder"
       :autoFilterFocus="autoFilterFocus"
       :name="name"
-      @change="$emit('update:modelValue', vModel)"
+      :maxSelectedLabels="maxSelectedLabels"
+      :selection-limit="selectionLimit"
     />
   </div>
-</template><script>
+</template>
+<script>
+
 export default {
-  props: ['options', 'optionLabel', 'optionValue', 'placeholder', 'name', 'autoFilterFocus', 'modelValue'],
+  props: ['options', 'optionLabel', 'optionValue', 'placeholder', 'name', 'autoFilterFocus', 'modelValue', 'maxSelectedLabels', 'selectionLimit'],
     emits: ['update:modelValue'],
-    mounted() {
-      this.vModel = this.modelValue
-    },
-    data() {
-    return {
-        vModel: null
-    };
+
+    computed: {
+        vModel: {
+          get() {
+              return this.modelValue;
+          },
+          set(vModel)  {
+              this.$emit('update:modelValue', vModel);
+          }
+
+      }
   },
   methods: {},
 };
