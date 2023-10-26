@@ -33,9 +33,8 @@ import MultiSelect from './MultiSelect.vue';
                 </tr>
             </table>
 
-
         <MultiSelect :options="grades" :optionLabel="dropdownGrade" :optionValue="dropdownGradeValue" placeholder="wähle"
-            :maxSelectedLabels="3" autoFilterFocus="true"
+            :maxSelectedLabels="3" autoFilterFocus="true" v-model="selectedOptions"
             />
 
         </div>
@@ -54,6 +53,11 @@ export default {
     'headline',
     'PERMISSION_ADD_FILMS'
   ],
+    data () {
+      return {
+          'selectedOptions' : [3]
+      }
+    },
   methods: {
     dropdownGradeValue: function(grade) {
         return grade.id;

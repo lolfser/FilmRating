@@ -5,7 +5,7 @@ import MultiSelect from 'primevue/multiselect';
 <template>
   <div>
     <MultiSelect
-      v-model="myModel"
+      v-model="vModel"
       filter
       :options="options"
       :optionLabel="optionLabel"
@@ -13,14 +13,19 @@ import MultiSelect from 'primevue/multiselect';
       :placeholder="placeholder"
       :autoFilterFocus="autoFilterFocus"
       :name="name"
+      @change="$emit('update:modelValue', vModel)"
     />
   </div>
 </template><script>
 export default {
-  props: ['options', 'optionLabel', 'optionValue', 'placeholder', 'name', 'autoFilterFocus'],
-  data() {
+  props: ['options', 'optionLabel', 'optionValue', 'placeholder', 'name', 'autoFilterFocus', 'modelValue'],
+    emits: ['update:modelValue'],
+    mounted() {
+      this.vModel = this.modelValue
+    },
+    data() {
     return {
-      myModel: null
+        vModel: null
     };
   },
   methods: {},
