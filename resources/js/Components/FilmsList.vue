@@ -28,7 +28,7 @@ import Footer from './Footer.vue';
             </p>
         </div>
 
-        <Footer />
+        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
 
     </div>
 </template>
