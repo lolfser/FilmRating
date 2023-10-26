@@ -34,7 +34,9 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
-    Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate']);
+    Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate'])->middleware(
+        'can:' . \App\Models\Permissions::PERMISSION_ADD_FILMS . ',App\Models\Films'
+    );
     Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
     Route::get('rating', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
     // Route::get('/rating/', \App\Http\Controllers\RatingsController::class, 'index');
