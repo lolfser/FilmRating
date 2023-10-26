@@ -13,7 +13,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
         <td>
             <MultiSelect :options="grades" :optionLabel="dropdownGrade" :optionValue="dropdownGradeValue"
                          placeholder="wähle"
-                         :maxSelectedLabels="1" :selectionLimit="1" autoFilterFocus="true" v-model="selectedOptions"
+                         :maxSelectedLabels="2" :selectionLimit="2" autoFilterFocus="true" v-model="selectedOptions"
             />
         </td>
         <td>{{ viewerComment(film) }}</td>
