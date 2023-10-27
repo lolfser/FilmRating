@@ -19,7 +19,7 @@ import FilmRow from "@/Components/FilmRow.vue";
                     <th>dein Kommentar</th>
                     <th>Actions</th>
                 </tr>
-               <FilmRow v-for="film in films" :film="film" :rating="rating" :grades="grades" :viewerId="viewerId" />
+               <FilmRow v-for="film in films" :film="film" :ratings="film.ratings" :grades="grades" :viewerId="viewerId" />
             </table>
 
         </div>

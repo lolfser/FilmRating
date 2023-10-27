@@ -13,7 +13,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
         <td>
             <MultiSelect :options="grades" :optionLabel="dropdownGrade" :optionValue="dropdownGradeValue"
                          placeholder="wähle"
-                         :maxSelectedLabels="2" :selectionLimit="2" autoFilterFocus="true" v-model="selectedOptions"
+                         :maxSelectedLabels="2" :selectionLimit="2" autoFilterFocus v-model="selectedOptions"
             />
         </td>
         <td>{{ viewerComment(film) }}</td>
@@ -29,8 +29,7 @@ export default {
         'film',
         'grades',
         'viewerId',
-        'rating',
-        'selectedOptions'
+        'ratings'
     ],
     mounted() {
         this.selectedOptions =  [parseInt(this.viewerGrade())];
@@ -59,7 +58,7 @@ export default {
         viewerComment: function (film) {
             const viewerId = this.viewerId
             let returnValue = "";
-            film.ratings.every(function (rating) {
+            this.ratings.every(function (rating) {
                 if (rating.viewers_id == viewerId) {
                     returnValue = rating.comment;
                     return false; // break
@@ -75,7 +74,7 @@ export default {
         getReviewId: function (film) {
             const viewerId = this.viewerId;
             let returnValue = "";
-            film.ratings.every(function (rating) {
+            this.ratings.every(function (rating) {
                 if (rating.viewers_id == viewerId) {
                     returnValue = rating.id;
                     return false; // break;
@@ -89,14 +88,14 @@ export default {
             const viewerId = this.viewerId;
             const grades = this.grades;
             let returnValue = "";
-            film.ratings.every(function (rating) {
+            this.ratings.every(function (rating) {
                 if (rating.viewers_id != viewerId) {
                     return true; // continue;
                 }
                 const gradeId = rating.grades_id;
                 grades.every(function (gradeFromList) {
                     if (gradeId == gradeFromList.id) {
-                        returnValue = gradeFromList.value + "" + gradeFromList.trend;
+                        returnValue = gradeId;
                         return false; // break;
                     }
                     return true; // continue;
@@ -113,7 +112,7 @@ export default {
             const grades = this.grades;
             let returnValue = "";
 
-            film.ratings.every(function (rating) {
+            this.ratings.every(function (rating) {
                 if (rating.viewers_id == viewerId) {
                     return true; // continue;
                 }
