@@ -4,6 +4,7 @@ import MultiSelect from 'primevue/multiselect';
 </script>
 <template>
   <div>
+    <input type="hidden" :name="name" :value="modelValue">
     <MultiSelect
       v-model="vModel"
       filter
@@ -12,6 +13,7 @@ import MultiSelect from 'primevue/multiselect';
       :optionValue="optionValue"
       :placeholder="placeholder"
       :autoFilterFocus="autoFilterFocus"
+      :inputId="name"
       :name="name"
       :maxSelectedLabels="maxSelectedLabels"
       :selection-limit="selectionLimit"

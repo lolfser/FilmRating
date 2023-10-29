@@ -13,7 +13,16 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmViewer :films="films" :headline="headline" :viewerId="viewerId" :grades="grades" :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+                    <CompFilmViewer
+                        :films="films"
+                        :headline="headline"
+                        :viewerId="viewerId"
+                        :grades="grades"
+                        :genres="genres"
+                        :languages="languages"
+                        :_token="_token"
+                        :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS"
+                    />
                 </div>
             </div>
         </div>
@@ -21,7 +30,7 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
 </template>
 <script>
 export default {
-  props: ['films', 'grades', 'viewerId', 'PERMISSION_ADD_FILMS'],
+  props: ['films', 'grades', 'viewerId', 'PERMISSION_ADD_FILMS', 'genres', '_token', 'languages'],
   computed: {
     headline: function () {return "Deine Bewertungen";},
   }

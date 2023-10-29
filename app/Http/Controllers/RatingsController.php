@@ -7,7 +7,9 @@ use App\Models\Ratings;
 use App\Models\Languages;
 use App\Models\Viewers;
 use App\Models\Grades;
+use App\Models\Genres;
 use App\Services\SaveFilmsLanguagesServices;
+use App\Services\SaveFilmsGenresServices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,6 +22,7 @@ class RatingsController extends Controller {
         foreach ($films as $film) {
             $film->ratings; // Loading pivots
             $film->languages; // Loading pivots
+            $film->genres; // Loading pivots
         }
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
@@ -27,6 +30,9 @@ class RatingsController extends Controller {
             'films' => $films,
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
+            'languages' => Languages::all()->groupBy('type'),
+            'genres' => Genres::all(),
+            '_token' => csrf_token(),
             'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
         ]);
     }
@@ -56,7 +62,8 @@ class RatingsController extends Controller {
         $rating->comment = $request->all()['comment'] ?? '';
         $rating->save();
 
-        $saveFilmsLanguagesServices = (new SaveFilmsLanguagesServices())->save($film, $request->all());
+        (new SaveFilmsLanguagesServices())->save($film, $request->all());
+        (new SaveFilmsGenresServices())->save($film, $request->all());
 
         return redirect(route("rating.index"));
 
@@ -68,21 +75,27 @@ class RatingsController extends Controller {
             return redirect(route("rating.index"));
         }
         $film = $films->first();
-        $film->filmsource->name; // loading pivot
+        $film->filmsource; // loading pivot
         $film->languages; // loading pivot
+        $film->genres; // Loading pivots
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
+        $viewerRating = null;
 
         foreach ($film->ratings as $key => $rating) { // loading pivot
             if ($rating->viewers_id != $viewersId) {
                 unset($film->ratings[$key]);
+            } else {
+                $viewerRating = $rating;
             }
         }
 
         return Inertia::render('RatingEdit', [
-            "film" => $film,
+            'film' => $film,
+            'rating' => $viewerRating,
             'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'grades' => Grades::all(),
+            'genres' => Genres::all(),
         ]);
 
     }

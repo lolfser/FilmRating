@@ -19,7 +19,13 @@ import FilmRow from "@/Components/FilmRow.vue";
                     <th>dein Kommentar</th>
                     <th>Actions</th>
                 </tr>
-               <FilmRow v-for="film in films" :film="film" :ratings="film.ratings" :grades="grades" :viewerId="viewerId" />
+               <FilmRow v-for="film in films" :film="film"
+                    :ratings="film.ratings"
+                    :grades="grades"
+                    :genres="genres"
+                    :languages="languages"
+                    :viewerId="viewerId"
+                    :_token="_token" />
             </table>
 
         </div>
@@ -34,9 +40,12 @@ export default {
     props: [
         'films',
         'grades',
+        'genres',
+        'languages',
         'viewerId',
         'headline',
-        'PERMISSION_ADD_FILMS'
+        'PERMISSION_ADD_FILMS',
+        '_token'
     ]
 
 }
