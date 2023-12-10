@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Model Viewers
  *
+ * @property int id
  * @property int users_id
  * @property string initials
  * @property string comment
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 class Viewers extends Model {
     protected $table    = 'viewers';
     protected $fillable = ['users_id','initials','comment'];
-    protected $casts    = ['users_id' => 'int'];
+    protected $casts    = ['id' => 'int', 'users_id' => 'int'];
 
     public function user() {
         return $this->belongsTo('App\Models\Users', 'users_id');

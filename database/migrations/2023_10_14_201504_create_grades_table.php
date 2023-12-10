@@ -17,7 +17,7 @@ class CreateGradesTable extends Migration {
             $table->integer('value');
             $table->string('trend', 1)->default('');
 
-            $table->unique(["id","value","trend"]); // isUnique => grades_id_value_trend_unique
+            $table->unique(["value","trend"]); // isUnique => grades_id_value_trend_unique
         });
     }
 }

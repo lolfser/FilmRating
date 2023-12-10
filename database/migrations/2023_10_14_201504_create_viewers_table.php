@@ -18,6 +18,7 @@ class CreateViewersTable extends Migration {
             $table->string('initials', 5)->default('');
             $table->string('comment', 50)->default('');
 
+            $table->unique(["initials"]); // isUnique => initials
         });
     }
 }
