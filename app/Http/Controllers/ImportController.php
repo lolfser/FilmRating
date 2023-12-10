@@ -7,6 +7,7 @@ use App\Models\Filmsources;
 use App\Models\Ratings;
 use App\Models\Languages;
 use App\Models\Viewers;
+use App\Models\Genres;
 use App\Models\Grades;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
@@ -38,9 +39,14 @@ class ImportController extends Controller {
         $titleIndex = array_search($data['title'], $header, true);
         $durationIndex = array_search($data['duration'], $header, true);
         $filmIdIndex = array_search($data['film-id'], $header, true);
+        $genresIndex = array_search($data['info-col'], $header, true);
 
-        if ($titleIndex === false || $durationIndex === false || $filmIdIndex === false) {
-            exit("Film-ID, titel oder dauer spalte nicht gefunden");
+        if ($titleIndex === false
+            || $durationIndex === false
+            || $filmIdIndex === false
+            || $genresIndex === false
+        ) {
+            exit('Film-ID, Titel, Genre-Index oder Dauer-Spalte nicht gefunden.');
         }
 
         $viewerMap = [];
@@ -53,6 +59,7 @@ class ImportController extends Controller {
             }
             $viewerMap[$viewer->initials] = $viewer;
         }
+
         $initIndexMap = [];
 
         foreach ($header as $index => $head) {
@@ -78,19 +85,17 @@ class ImportController extends Controller {
                 break;
             }
 
-            $durationParts = explode(':', $data[$durationIndex]);
-
-            if (count($durationParts) === 1)
-                $films->duration = $durationParts[0];
-            elseif (count($durationParts) === 2)
-                $films->duration = $durationParts[0] * 60 + $durationParts[1];
-            else
-                $films->duration = 0;
+            $films->duration = $this->receiveDuration($data[$durationIndex]);
 
             $films->film_identifier = $data[$filmIdIndex];
             $films->filmsources_id = $filmsource;
             $films->year = $year;
             $films->save();
+
+            $this->handlingGenres(
+                $films,
+                explode(',', $data[$genresIndex])
+            );
 
             $this->handlingRatings(
                 $viewerMap,
@@ -114,6 +119,43 @@ class ImportController extends Controller {
         return $map;
     }
 
+    private function receiveDuration(string $durationString): int {
+        $durationParts = explode(':', $durationString);
+
+        if (count($durationParts) === 1)
+            return $durationParts[0];
+
+        if (count($durationParts) === 2)
+            return $durationParts[0] * 60 + $durationParts[1];
+
+        return 0;
+    }
+
+    private function handlingGenres(
+        Films $film,
+        array $genresInput
+    ): void {
+        $allGenres = Genres::all();
+        foreach ($genresInput as $key => $input)
+            $genresInput[$key] = \trim($input);
+
+        $film->genres()->sync([]);
+        $ids = [];
+
+        if ($film->film_identifier === "13") {
+
+        }
+
+        foreach ($allGenres as $genre) {
+            if (\in_array($genre->name, $genresInput, true)) {
+                $ids[$genre->id] = $genre->id;
+            }
+        }
+
+        $film->genres()->attach($ids);
+        $film->save();
+    }
+
     private function handlingRatings(
         array $viewerMap,
         Films $film,
@@ -133,13 +175,15 @@ class ImportController extends Controller {
             if ($viewerObject === null) {
                 continue;
             }
-            unset($viewerRatingNotFound[$viewer->initials]);
+
+            unset($viewerRatingNotFound[array_search($viewer->initials, $viewerRatingNotFound, true)]);
 
             $viewerGrade = $data[$initIndexMap[$viewer->initials]] ?? '';
 
             if ($viewerGrade === '') {
                 continue;
             }
+
             $viewerGrade = str_replace(' ', '+', $viewerGrade);
             $gradeId = array_search($viewerGrade, $gradeMap, true);
             if ($gradeId === false) {
@@ -152,10 +196,13 @@ class ImportController extends Controller {
         }
 
         foreach ($viewerRatingNotFound as $init) {
+
             $viewer = Viewers::where('initials', $init)->first() ?? null;
+
             if ($viewer === null) {
                 continue;
             }
+
             $rating = new Ratings();
             $rating->viewers_id = $viewer->id;
             $rating->films_id = $film->id;
@@ -166,8 +213,10 @@ class ImportController extends Controller {
             if ($viewerGrade === '') {
                 continue;
             }
+
             $viewerGrade = str_replace(' ', '+', $viewerGrade);
             $gradeId = array_search($viewerGrade, $gradeMap, true);
+
             if ($gradeId === false) {
                 continue;
             }
@@ -176,6 +225,7 @@ class ImportController extends Controller {
             $rating->save();
 
         }
+
     }
 
 }

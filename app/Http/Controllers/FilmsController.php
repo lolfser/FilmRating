@@ -32,6 +32,7 @@ class FilmsController extends Controller {
         $films = Films::all();
         foreach ($films as $film) {
             $film->languages; // Loading pivots
+            $film->genres; // Loading pivots
         }
 
         return Inertia::render('FilmsList', [

@@ -19,7 +19,7 @@ import Footer from './Footer.vue';
                         <td>{{film.film_identifier}}</td>
                         <td>{{film.name}}</td>
                         <td>{{calculateLanguage(film)}}</td>
-                        <td>{{film.genre}}</td>
+                        <td>{{calculateGenres(film)}}</td>
                         <td>
                             <a v-bind:href="'/films/'+film.id+'/cu'" v-if="PERMISSION_ADD_FILMS"> edit </a>
                         </td>
@@ -40,6 +40,17 @@ export default {
     'PERMISSION_ADD_FILMS'
   ],
   methods: {
+      calculateGenres: function (film) {
+        let returnValue = "";
+        film.genres.every(function (genre) {
+            if (returnValue !== '') {
+                returnValue += ', ';
+            }
+            returnValue += genre.name;
+            return true; // continue;
+        });
+        return returnValue;
+    },
     calculateLanguage: function(film) {
         let result = '';
         film.languages.every(function(language) {

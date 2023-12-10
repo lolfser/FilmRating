@@ -19,6 +19,7 @@ class RatingsController extends Controller {
 
         foreach ($films as $film) {
             $film->ratings; // Loading pivots
+            $film->genres; // Loading pivots
             $film->languages; // Loading pivots
         }
 
@@ -69,6 +70,7 @@ class RatingsController extends Controller {
         }
         $film = $films->first();
         $film->filmsource->name; // loading pivot
+        $film->genres; // loading pivot
         $film->languages; // loading pivot
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
@@ -79,7 +81,7 @@ class RatingsController extends Controller {
         }
 
         return Inertia::render('RatingEdit', [
-            "film" => $film,
+            'film' => $film,
             'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'grades' => Grades::all(),
