@@ -73,6 +73,7 @@ class FilmsController extends Controller {
 
     public function show(Films $film) {
         $film->languages; // Loading pivots
+        $film->genres; // Loading pivots
         return Inertia::render('FilmsShow', [
             'film' => $film
         ]);
@@ -85,9 +86,8 @@ class FilmsController extends Controller {
         $film = $films ?? Films::find($filmId) ?? new Films();
         Languages::all()->groupBy('type');
 
-        foreach ($film->languages as $language) {
-            // Loading pivots
-        }
+        $film->languages; // Loading pivots
+        $film->genres; // Loading pivots
 
         return Inertia::render('FilmsCU', [
             'film' => $film,
