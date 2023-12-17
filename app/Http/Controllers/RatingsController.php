@@ -21,6 +21,7 @@ class RatingsController extends Controller {
 
         foreach ($films as $film) {
             $film->ratings; // Loading pivots
+            $film->genres; // Loading pivots
             $film->languages; // Loading pivots
             $film->genres; // Loading pivots
         }
@@ -33,7 +34,7 @@ class RatingsController extends Controller {
             'languages' => Languages::all()->groupBy('type'),
             'genres' => Genres::all(),
             '_token' => csrf_token(),
-            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
+            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
 
@@ -76,6 +77,7 @@ class RatingsController extends Controller {
         }
         $film = $films->first();
         $film->filmsource; // loading pivot
+        $film->genres; // loading pivot
         $film->languages; // loading pivot
         $film->genres; // Loading pivots
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();

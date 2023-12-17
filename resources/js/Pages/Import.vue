@@ -1,20 +1,19 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
+import CompImport from '@/Components/Import.vue';
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Filme">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Filmimport
             </h2>
         </template>
-
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome :footerLinks="footerLinks" />
+                    <CompImport :headline="headline" :_token="_token" :filmsources="filmsources" />
                 </div>
             </div>
         </div>
@@ -22,6 +21,9 @@ import Welcome from '@/Components/Welcome.vue';
 </template>
 <script>
 export default {
-  props: ['footerLinks'],
+  props: ['films', 'footerLinks', 'PERMISSION_IMPORT', '_token', 'filmsources'],
+  computed: {
+    headline: function () {return "Filmeimport";},
+  }
 }
 </script>

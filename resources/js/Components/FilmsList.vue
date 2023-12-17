@@ -19,17 +19,17 @@ import Footer from './Footer.vue';
                         <td>{{film.film_identifier}}</td>
                         <td>{{film.name}}</td>
                         <td>{{calculateLanguage(film)}}</td>
-                        <td>{{film.genre}}</td>
+                        <td>{{calculateGenres(film)}}</td>
                         <td>
-                            <a v-bind:href="'/films/'+film.id+'/cu'" v-if="PERMISSION_ADD_FILMS"> edit </a>
+                            <span v-for="userAction in film.userActions">
+                                <a :href="userAction.href">{{ userAction.label }}</a>
+                            </span>
                         </td>
                     </tr>
                 </table>
             </p>
         </div>
-
-        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
-
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
@@ -37,9 +37,20 @@ export default {
   props: [
     'films',
     'headline',
-    'PERMISSION_ADD_FILMS'
+    'footerLinks'
   ],
   methods: {
+      calculateGenres: function (film) {
+        let returnValue = "";
+        film.genres.every(function (genre) {
+            if (returnValue !== '') {
+                returnValue += ', ';
+            }
+            returnValue += genre.name;
+            return true; // continue;
+        });
+        return returnValue;
+    },
     calculateLanguage: function(film) {
         let result = '';
         film.languages.every(function(language) {

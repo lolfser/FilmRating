@@ -10,16 +10,16 @@ import FilmRow from "@/Components/FilmRow.vue";
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <table class="table">
                 <tr>
-                    <th>Nr.</th>
-                    <th>Name</th>
-                    <th>Sprache</th>
-                    <th>Genre</th>
-                    <th>Wertungen von anderen</th>
-                    <th>deine Wertung</th>
-                    <th>dein Kommentar</th>
-                    <th>Actions</th>
+                  <th>Nr.</th>
+                  <th>Name</th>
+                  <th>Sprache</th>
+                  <th>Genre</th>
+                  <th>Wertungen von anderen</th>
+                  <th>deine Wertung</th>
+                  <th>dein Kommentar</th>
+                  <th>Actions</th>
                 </tr>
-               <FilmRow v-for="film in films" :film="film"
+                <FilmRow v-for="film in films" :film="film"
                     :ratings="film.ratings"
                     :grades="grades"
                     :genres="genres"
@@ -29,14 +29,12 @@ import FilmRow from "@/Components/FilmRow.vue";
             </table>
 
         </div>
-
-        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
 
 export default {
-
     props: [
         'films',
         'grades',
@@ -44,9 +42,8 @@ export default {
         'languages',
         'viewerId',
         'headline',
-        'PERMISSION_ADD_FILMS',
+        'footerLinks',
         '_token'
     ]
-
 }
 </script>

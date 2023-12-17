@@ -30,7 +30,7 @@ defineProps({
                 </div>
             </div>
         </div>
-        <Footer />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 
