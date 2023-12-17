@@ -11,11 +11,11 @@ import Footer from './Footer.vue';
                 Vielen Dank, dass du uns bei der Sichtung von Filmen bewerten möchtest. Für die Sichtung hast du verschiedene Möglichkeiten.
             </p>
         </div>
-        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
 export default {
-  props: ['PERMISSION_ADD_FILMS'],
+  props: ['footerLinks'],
 }
 </script>

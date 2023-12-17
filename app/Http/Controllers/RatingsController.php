@@ -28,7 +28,7 @@ class RatingsController extends Controller {
             'films' => $films,
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
-            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
+            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
 

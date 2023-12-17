@@ -14,7 +14,7 @@ import Welcome from '@/Components/Welcome.vue';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+                    <Welcome :footerLinks="footerLinks" />
                 </div>
             </div>
         </div>
@@ -22,6 +22,6 @@ import Welcome from '@/Components/Welcome.vue';
 </template>
 <script>
 export default {
-  props: ['PERMISSION_ADD_FILMS'],
+  props: ['footerLinks'],
 }
 </script>

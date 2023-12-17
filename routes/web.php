@@ -33,7 +33,7 @@ Route::middleware([
         return Inertia::render(
             'Dashboard',
             [
-                'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
+                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             ]
         );
     })->name('dashboard');

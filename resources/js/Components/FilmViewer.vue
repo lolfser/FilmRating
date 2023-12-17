@@ -31,7 +31,7 @@ import Footer from './Footer.vue';
                 </tr>
             </table>
         </div>
-        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
@@ -41,7 +41,7 @@ export default {
     'grades',
     'viewerId',
     'headline',
-    'PERMISSION_ADD_FILMS'
+    'footerLinks'
   ],
   methods: {
     calculateLanguage: function(film) {

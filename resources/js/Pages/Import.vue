@@ -21,7 +21,7 @@ import CompImport from '@/Components/Import.vue';
 </template>
 <script>
 export default {
-  props: ['films', 'PERMISSION_ADD_FILMS', '_token', 'filmsources'],
+  props: ['films', 'footerLinks', 'PERMISSION_IMPORT', '_token', 'filmsources'],
   computed: {
     headline: function () {return "Filmeimport";},
   }

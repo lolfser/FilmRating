@@ -32,7 +32,7 @@ import { translate } from './../trans';
         </form>
     </div>
 </div>
-<Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+<Footer :footerLinks="footerLinks" />
 </template>
 <script>
 export default {
