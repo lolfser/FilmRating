@@ -23,7 +23,7 @@ class CreateFilmsTable extends Migration {
             $table->unsignedInteger('filmstatus_id')->nullable();
             $table->timestamps();
 
-            $table->unique(["film_identifier"]); // isUnique => film_identifier
+            $table->unique(["film_identifier","year","filmsources_id"]); // isUnique => film_identifier
         });
     }
 }

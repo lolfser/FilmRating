@@ -21,7 +21,7 @@ import Footer from './Footer.vue';
                     <td>{{film.film_identifier}}</td>
                     <td>{{film.name}}</td>
                     <td>{{calculateLanguage(film)}}</td>
-                    <td>{{film.genre}}</td>
+                    <td>{{ calculateGenres(film) }}</td>
                     <td>{{ otherGrade(film) }}</td>
                     <td>{{ viewerGrade(film) }}</td>
                     <td>{{ viewerComment(film) }}</td>
@@ -31,7 +31,7 @@ import Footer from './Footer.vue';
                 </tr>
             </table>
         </div>
-        <Footer :PERMISSION_ADD_FILMS="PERMISSION_ADD_FILMS" />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
@@ -41,7 +41,7 @@ export default {
     'grades',
     'viewerId',
     'headline',
-    'PERMISSION_ADD_FILMS'
+    'footerLinks'
   ],
   methods: {
     calculateLanguage: function(film) {
@@ -100,6 +100,17 @@ export default {
             if (returnValue != "") {
                 return false; // break;
             }
+            return true; // continue;
+        });
+        return returnValue;
+    },
+    calculateGenres: function (film) {
+        let returnValue = "";
+        film.genres.every(function (genre) {
+            if (returnValue !== '') {
+                returnValue += ', ';
+            }
+            returnValue += genre.name;
             return true; // continue;
         });
         return returnValue;

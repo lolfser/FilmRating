@@ -30,13 +30,25 @@ class FilmsController extends Controller {
     public function index() {
 
         $films = Films::all();
+
+        $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
+
         foreach ($films as $film) {
             $film->languages; // Loading pivots
+            $film->genres; // Loading pivots
+            if ($editFilmsIsAllowed) {
+                $film->userActions = [
+                    [
+                        'label' => 'edit',
+                        'href' => '/films/' . $film->id . '/cu',
+                    ]
+                ];
+            }
         }
 
         return Inertia::render('FilmsList', [
             'films' => $films,
-            'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
+            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
 

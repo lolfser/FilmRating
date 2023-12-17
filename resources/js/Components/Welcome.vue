@@ -11,6 +11,11 @@ import Footer from './Footer.vue';
                 Vielen Dank, dass du uns bei der Sichtung von Filmen bewerten möchtest. Für die Sichtung hast du verschiedene Möglichkeiten.
             </p>
         </div>
-        <Footer />
+        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
+<script>
+export default {
+  props: ['footerLinks'],
+}
+</script>
