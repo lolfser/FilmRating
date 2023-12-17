@@ -30,7 +30,12 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render(
+            'Dashboard',
+            [
+                'PERMISSION_ADD_FILMS' => (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS),
+            ]
+        );
     })->name('dashboard');
 
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
