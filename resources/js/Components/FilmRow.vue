@@ -2,7 +2,12 @@
     import AutoComplete from './PrimeVueAutoComplete.vue';
     import MultiSelect from "@/Components/MultiSelect.vue";
 </script>
-
+<style>
+    th, td {
+        border: 1px solid black;
+        padding: 12px;
+    }
+</style>
 <template>
     <tr>
         <td>{{ film.film_identifier }}</td>
@@ -12,20 +17,29 @@
                 <tr v-for="(language, type) in languages">
                   <td>{{ type }}</td>
                   <td>
-                    <span v-for="lang in language" style="white-space:nowrap">
-                        <label><input :checked="isSelected(film.languages, lang.id)" type="radio" :name="film.id + '_language_' + type" :value="lang.id" />&nbsp;{{lang.language}}</label>
+                    <span v-for="lang in language">
+                        <label style="white-space:nowrap">
+                            <input :checked="isSelected(film.languages, lang.id)"
+                               type="radio"
+                               :name="film.id + '_language_' + type"
+                               :value="lang.id"
+                            />&nbsp;{{lang.language}}
+                        </label>
                         &nbsp;&nbsp;&nbsp;
                     </span>
                   </td>
                 </tr>
+                <tr>
+                    <td name="td_genres" colspan="2">
+                        <b>Genre:</b>
+                        <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
+                             placeholder="Genre wählen"
+                             name="genres"
+                             autoFilterFocus v-model="selectedGenres"
+                        />
+                    </td>
+                </tr>
             </table>
-        </td>
-        <td name="td_genres">
-              <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
-                 placeholder="Genre wählen"
-                 name="genres"
-                 autoFilterFocus v-model="selectedGenres"
-                />
         </td>
         <td>{{ otherGrade(film) }}</td>
         <td name="td_grades">
@@ -36,7 +50,7 @@
         </td>
         <td>
             <form method="post" action="/rating/update/">
-                <span v-html="generateCULink(film)" />&nbsp;
+
                 <input type="hidden" name="_token" :value="_token" />
                 <input type="hidden" name="id" v-bind:value="film.film_identifier" />
                 <input type="hidden" name="genres" />
@@ -47,7 +61,14 @@
                      style="height: 20px; cursor: pointer; display: inline"
                      v-on:click="loadQuickSaveUrl($event, film, grades);"
                      title="Schnellspeichern"
-                     />
+                />
+                <br><br>
+                <span v-html="generateCULink(film)" />&nbsp;
+                <img src="/svgs/rotate.svg"
+                     style="height: 15px; cursor: pointer; display: inline"
+                     v-on:click="loadQuickSaveUrl($event, film, grades);"
+                     title="Daten neu laden"
+                 />
             </form>
         </td>
     </tr>
@@ -154,8 +175,8 @@ export default {
             const reviewId = this.getReviewId(film);
             return "<a href='/rating/" + film.film_identifier + "/cu'>"
             + (reviewId != 0
-                ? "<img src='/svgs/pen.svg' style='height: 20px; cursor: pointer; display: inline' title='bearbeiten'>"
-                : "<img src='/svgs/plus.svg' style='height: 20px; cursor: pointer; display: inline' title='neu'>"
+                ? "<img src='/svgs/pen.svg' style='height: 15px; cursor: pointer; display: inline' title='bearbeiten'>"
+                : "<img src='/svgs/plus.svg' style='height: 15px; cursor: pointer; display: inline' title='neu'>"
               )
             + "</a>";
         },

@@ -12,8 +12,7 @@ import FilmRow from "@/Components/FilmRow.vue";
                 <tr>
                   <th>Nr.</th>
                   <th>Name</th>
-                  <th>Sprache</th>
-                  <th>Genre</th>
+                  <th>Globale Einstellungen</th>
                   <th>Wertungen von anderen</th>
                   <th>deine Wertung</th>
                   <th>dein Kommentar</th>
