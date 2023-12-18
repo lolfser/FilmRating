@@ -66,6 +66,10 @@ class RatingsController extends Controller {
         (new SaveFilmsLanguagesServices())->save($film, $request->all());
         (new SaveFilmsGenresServices())->save($film, $request->all());
 
+        if ($request->all()['isAjax'] ?? false) {
+            return true;
+        }
+
         return redirect(route("rating.index"));
 
     }

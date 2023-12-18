@@ -49,8 +49,7 @@
             <textarea>{{ viewerComment(film) }}</textarea>
         </td>
         <td>
-            <form method="post" action="/rating/update/">
-
+            <form method="post" action="/rating/update/" submit="false">
                 <input type="hidden" name="_token" :value="_token" />
                 <input type="hidden" name="id" v-bind:value="film.film_identifier" />
                 <input type="hidden" name="genres" />
@@ -150,7 +149,35 @@ export default {
                 element2.value = element.value;
             });
 
-            tr.querySelector('form').submit();
+            let form = event.target.parentNode;
+            let data = new FormData();
+            data.append('isAjax', true);
+
+            (form.querySelectorAll('input')).forEach(function(input) {
+                data.append(input.getAttribute('name'), input.value);
+            });
+
+            function update(url, xFunction, tr, eventTarget) {
+                const xhttp=new XMLHttpRequest();
+                xhttp.onload = function() {
+                    xFunction(this, eventTarget);
+                }
+                xhttp.open("POST", url);
+                xhttp.send(data);
+            }
+
+            function myFunction(xhttp, eventTarget) {
+                if (xhttp.response != "1") {
+                    event.target.style.backgroundColor = "red";
+                } else {
+                    event.target.style.backgroundColor = "";
+                }
+            }
+
+            let url = tr.querySelector('form').getAttribute('action');
+            event.target.style.backgroundColor = "yellow";
+            update(url, myFunction, tr, event.target);
+
             return event;
         },
         dropdownGradeValue: function (grade) {
