@@ -35,15 +35,19 @@
             <textarea>{{ viewerComment(film) }}</textarea>
         </td>
         <td>
-            <div v-html="generateCULink(film)" />&nbsp;
             <form method="post" action="/rating/update/">
+                <span v-html="generateCULink(film)" />&nbsp;
                 <input type="hidden" name="_token" :value="_token" />
                 <input type="hidden" name="id" v-bind:value="film.film_identifier" />
                 <input type="hidden" name="genres" />
                 <input type="hidden" name="comment" />
                 <input type="hidden" name="grades_id" />
                 <input  v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
-                <input type="button" v-on:click="loadQuickSaveUrl($event, film, grades);" value="Schnellspeichern" />
+                <img src="/svgs/floppy-disk.svg"
+                     style="height: 20px; cursor: pointer; display: inline"
+                     v-on:click="loadQuickSaveUrl($event, film, grades);"
+                     title="Schnellspeichern"
+                     />
             </form>
         </td>
     </tr>
@@ -148,7 +152,12 @@ export default {
         },
         generateCULink: function (film) {
             const reviewId = this.getReviewId(film);
-            return "<a href='/rating/" + film.film_identifier + "/cu'>" + (reviewId != 0 ? "bearbeite in der Detailansicht" : "erstelle neu in der Detailansicht") + "</a>";
+            return "<a href='/rating/" + film.film_identifier + "/cu'>"
+            + (reviewId != 0
+                ? "<img src='/svgs/pen.svg' style='height: 20px; cursor: pointer; display: inline' title='bearbeiten'>"
+                : "<img src='/svgs/plus.svg' style='height: 20px; cursor: pointer; display: inline' title='neu'>"
+              )
+            + "</a>";
         },
         getReviewId: function (film) {
             const viewerId = this.viewerId;
