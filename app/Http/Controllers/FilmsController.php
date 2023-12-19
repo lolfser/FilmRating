@@ -7,10 +7,7 @@ use App\Models\Filmsources;
 use App\Models\Languages;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Validator;
 
 class FilmsController extends Controller {

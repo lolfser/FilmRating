@@ -6,6 +6,7 @@ import Footer from './Footer.vue';
 import InputError from './InputError.vue';
 import { translate } from './../trans';
 
+import MultiSelect from "@/Components/MultiSelect.vue";
 </script>
 <template>
 <Headline :headline="headline" />
@@ -51,16 +52,26 @@ import { translate } from './../trans';
                   </td>
                 </tr>
                 <tr>
+                  <td>Generes</td>
+                  <td>
+                      <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
+                         placeholder="Genre wählen"
+                         name="genres"
+                         autoFilterFocus v-model="selectedGenres"
+                        />
+                  </td>
+                </tr>
+                <tr>
                   <td>Dein persönlicher Kommentar</td>
                   <td>
-                    <textarea name="comment">{{film.ratings[0]?.comment}}</textarea>
+                    <textarea name="comment">{{rating?.comment}}</textarea>
                   </td>
                 </tr>
                 <tr>
                   <td>Deine Bewertung</td>
                   <td>
                     <span v-for="grade in grades">
-                        <label><input :checked="isSelected([{id: grade.id}], film.ratings[0]?.grades_id)" type="radio" name="grades_id" :value="grade.id" />&nbsp;&nbsp;{{grade.value}}{{grade.trend}}</label>
+                        <label><input :checked="isSelected([{id: grade.id}], rating.grades_id)" type="radio" name="grades_id" :value="grade.id" />&nbsp;&nbsp;{{grade.value}}{{grade.trend}}</label>
                             &nbsp;&nbsp;&nbsp;
                     </span>
                   </td>
@@ -77,13 +88,32 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades'],
+  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades', 'genres'],
   computed: {
     token: function () {
       return this._token
     },
   },
+      mounted() {
+        let genres = [];
+        this.film.genres.every(function(genre) {
+            genres.push(genre.id);
+            return true;
+        });
+        this.selectedGenres = genres;
+    },
+        data() {
+        return {
+            'selectedGenres': []
+        }
+    },
   methods: {
+      genreValues: function (genre) {
+        return genre.id;
+    },
+      genreLabels: function (genre) {
+        return genre.name;
+    },
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;
         filmLanguages.every(function (l) {

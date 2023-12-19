@@ -1,5 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/lara-light-teal/theme.css'
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
@@ -15,6 +17,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(PrimeVue)
             .mount(el);
     },
     progress: {

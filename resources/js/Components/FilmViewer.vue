@@ -1,6 +1,8 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
+import FilmRow from "@/Components/FilmRow.vue";
+
 </script>
 <template>
     <Headline :headline="headline" />
@@ -10,135 +12,37 @@ import Footer from './Footer.vue';
                 <tr>
                   <th>Nr.</th>
                   <th>Name</th>
-                  <th>Sprache</th>
-                  <th>Genre</th>
+                  <th>Globale Einstellungen</th>
                   <th>Wertungen von anderen</th>
                   <th>deine Wertung</th>
                   <th>dein Kommentar</th>
                   <th>Actions</th>
                 </tr>
-                <tr v-for="film in films">
-                    <td>{{film.film_identifier}}</td>
-                    <td>{{film.name}}</td>
-                    <td>{{calculateLanguage(film)}}</td>
-                    <td>{{ calculateGenres(film) }}</td>
-                    <td>{{ otherGrade(film) }}</td>
-                    <td>{{ viewerGrade(film) }}</td>
-                    <td>{{ viewerComment(film) }}</td>
-                    <td>
-                        <div v-html="generateCULink(film)" />
-                    </td>
-                </tr>
+                <FilmRow v-for="film in films" :film="film"
+                    :ratings="film.ratings"
+                    :grades="grades"
+                    :genres="genres"
+                    :languages="languages"
+                    :viewerId="viewerId"
+                    :_token="_token" />
             </table>
+
         </div>
         <Footer :footerLinks="footerLinks" />
     </div>
 </template>
 <script>
+
 export default {
-  props: [
-    'films',
-    'grades',
-    'viewerId',
-    'headline',
-    'footerLinks'
-  ],
-  methods: {
-    calculateLanguage: function(film) {
-        let result = '';
-        film.languages.every(function(language) {
-            if (result !== '') result = result + ' / ';
-            result += language.type + ' ' + language.language;
-            return true;
-        });
-        return result;
-    },
-    viewerComment: function (film) {
-      const viewerId = this.viewerId
-      let returnValue = "";
-      film.ratings.every(function (rating) {
-        if (rating.viewers_id == viewerId) {
-            returnValue = rating.comment;
-            return false; // break
-        }
-        return true; // continue;
-      });
-      return returnValue;
-    },
-    generateCULink: function (film) {
-        const reviewId = this.getReviewId(film);
-        return "<a href='/rating/" + film.film_identifier + "/cu'>" + (reviewId != 0 ? "edit" : "neu") + "</a>";
-    },
-    getReviewId: function (film) {
-        const viewerId = this.viewerId;
-        let returnValue = "";
-        film.ratings.every(function (rating) {
-            if (rating.viewers_id == viewerId) {
-                returnValue = rating.id;
-                return false; // break;
-            }
-            return true; // continue;
-        });
-        return returnValue;
-    },
-    viewerGrade: function (film) {
-        const viewerId = this.viewerId;
-        const grades = this.grades;
-        let returnValue = "";
-        film.ratings.every(function (rating) {
-            if (rating.viewers_id != viewerId) {
-                return true; // continue;
-            }
-            const gradeId = rating.grades_id;
-            grades.every(function (gradeFromList) {
-                if (gradeId == gradeFromList.id) {
-                    returnValue = gradeFromList.value + "" +  gradeFromList.trend;
-                    return false; // break;
-                }
-                return true; // continue;
-            });
-            if (returnValue != "") {
-                return false; // break;
-            }
-            return true; // continue;
-        });
-        return returnValue;
-    },
-    calculateGenres: function (film) {
-        let returnValue = "";
-        film.genres.every(function (genre) {
-            if (returnValue !== '') {
-                returnValue += ', ';
-            }
-            returnValue += genre.name;
-            return true; // continue;
-        });
-        return returnValue;
-    },
-    otherGrade: function (film) {
-        const viewerId = this.viewerId;
-        const grades = this.grades;
-        let returnValue = "";
-
-        film.ratings.every(function (rating) {
-            if (rating.viewers_id == viewerId) {
-                return true; // continue;
-            }
-
-            const gradeId = rating.grades_id;
-            grades.every(function (gradeFromList) {
-
-                if (gradeId == gradeFromList.id) {
-                    if (returnValue !== "") returnValue = returnValue + " / ";
-                    returnValue += gradeFromList.value + "" +  gradeFromList.trend;
-                    return false; // break;
-                }
-                return true; // break;
-            });
-            return true; // continue;
-        });
-        return returnValue;
-    },
-  }
+    props: [
+        'films',
+        'grades',
+        'genres',
+        'languages',
+        'viewerId',
+        'headline',
+        'footerLinks',
+        '_token'
+    ]
 }
 </script>

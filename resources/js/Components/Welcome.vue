@@ -1,5 +1,5 @@
 <script setup>
-import Footer from './Footer.vue';
+  import Footer from './Footer.vue';
 </script>
 <template>
     <div>
@@ -16,6 +16,6 @@ import Footer from './Footer.vue';
 </template>
 <script>
 export default {
-  props: ['footerLinks'],
+  props: ['footerLinks']
 }
 </script>
