@@ -63,11 +63,11 @@
                 />
                 <br><br>
                 <span v-html="generateCULink(film)" />&nbsp;
-                <!--img src="/svgs/rotate.svg"
+                <img src="/svgs/rotate.svg"
                      style="height: 15px; cursor: pointer; display: inline"
                      v-on:click="loadFilm($event, film, grades);"
-                     title="Daten neu laden"
-                 /-->
+                     title="Globale Daten neu laden"
+                 >
             </form>
         </td>
     </tr>
@@ -84,8 +84,6 @@ export default {
         'genres',
         '_token'
     ],
-    mounted() {
-    },
     data() {
         return {
             suggestions: this.grades,
@@ -110,6 +108,14 @@ export default {
         }
     },
     methods: {
+        callbackUpdateGenres: function(genres) {
+            let genresResult = [];
+            this.film.genres.every(function(genre) {
+                genresResult.push(genre.id);
+                return true;
+            });
+            this.selectedGenres = genresResult;
+        },
         isSelected: function (filmLanguages, currentLanguage) {
             let result = false;
             filmLanguages.every(function (l) {
@@ -129,34 +135,52 @@ export default {
             return genre.name;
         },
         loadFilm: function (event, film, grades) {
-            return;
             let data = new FormData();
             data.append('filmId', film.id);
 
             let form = event.target.parentNode;
             data.append('_token', form.querySelector('input[name="_token"]').value);
 
-            function load(url, callBack, eventTarget) {
+            function load(url, callBack, eventTarget, film, callbackUpdateGenres, otherGrade) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
-                    callBack(this, eventTarget);
+                    callBack(this, eventTarget, film, callbackUpdateGenres, otherGrade);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
             }
 
-            function loadCallback(xhttp, eventTarget) {
+            function loadCallback(xhttp, eventTarget, film, callbackUpdateGenres, otherGrade) {
 
-                console.log(xhttp);
-                if (xhttp.response != "1") {
+                let data = "";
+
+                try {
+                    data = JSON.parse(xhttp.response);
+                } catch (e) {
                     event.target.style.backgroundColor = "red";
-                } else {
-                    event.target.style.backgroundColor = "";
+                    return;
                 }
+
+                film.name = data.name;
+                film.genres = data.genres;
+                film.languages = data.languages;
+                film.ratings = data.ratings;
+
+                callbackUpdateGenres(data.genres);
+                otherGrade(film);
+
+                event.target.style.backgroundColor = "";
             }
 
             event.target.style.backgroundColor = "yellow";
-            load('/rating/load', loadCallback, event.target);
+            load(
+                '/rating/load',
+                 loadCallback,
+                 event.target,
+                 film,
+                 this.callbackUpdateGenres,
+                 this.otherGrade
+            );
 
             return event;
         },

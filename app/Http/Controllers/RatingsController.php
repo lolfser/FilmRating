@@ -116,8 +116,8 @@ class RatingsController extends Controller {
         $film = $films->first();
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
-        var_dump($film);
-        return $film->toArray();
+        $film->ratings; // Loading pivots
+        return $film;
 
     }
 }
