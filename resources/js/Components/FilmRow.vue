@@ -63,11 +63,11 @@
                 />
                 <br><br>
                 <span v-html="generateCULink(film)" />&nbsp;
-                <img src="/svgs/rotate.svg"
+                <!--img src="/svgs/rotate.svg"
                      style="height: 15px; cursor: pointer; display: inline"
-                     v-on:click="loadQuickSaveUrl($event, film, grades);"
+                     v-on:click="loadFilm($event, film, grades);"
                      title="Daten neu laden"
-                 />
+                 /-->
             </form>
         </td>
     </tr>
@@ -128,6 +128,38 @@ export default {
         genreLabels: function (genre) {
             return genre.name;
         },
+        loadFilm: function (event, film, grades) {
+            return;
+            let data = new FormData();
+            data.append('filmId', film.id);
+
+            let form = event.target.parentNode;
+            data.append('_token', form.querySelector('input[name="_token"]').value);
+
+            function load(url, callBack, eventTarget) {
+                const xhttp=new XMLHttpRequest();
+                xhttp.onload = function() {
+                    callBack(this, eventTarget);
+                }
+                xhttp.open("POST", url);
+                xhttp.send(data);
+            }
+
+            function loadCallback(xhttp, eventTarget) {
+
+                console.log(xhttp);
+                if (xhttp.response != "1") {
+                    event.target.style.backgroundColor = "red";
+                } else {
+                    event.target.style.backgroundColor = "";
+                }
+            }
+
+            event.target.style.backgroundColor = "yellow";
+            load('/rating/load', loadCallback, event.target);
+
+            return event;
+        },
         loadQuickSaveUrl: function (event, film, grades) {
             let tr = event.target.parentNode.parentNode.parentNode;
             let comment = tr.querySelector('[name="td_comment"] textarea').value;
@@ -157,7 +189,7 @@ export default {
                 data.append(input.getAttribute('name'), input.value);
             });
 
-            function update(url, xFunction, tr, eventTarget) {
+            function update(url, xFunction, eventTarget) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
                     xFunction(this, eventTarget);
@@ -176,7 +208,7 @@ export default {
 
             let url = tr.querySelector('form').getAttribute('action');
             event.target.style.backgroundColor = "yellow";
-            update(url, myFunction, tr, event.target);
+            update(url, myFunction, event.target);
 
             return event;
         },

@@ -105,4 +105,19 @@ class RatingsController extends Controller {
         ]);
 
     }
+
+    public function load(Request $request) {
+
+        $films = Films::where('id', $request->all()['filmId']);
+
+        if ($films->count() === 0) {
+            return redirect(route("rating.index"));
+        }
+        $film = $films->first();
+        $film->languages; // Loading pivots
+        $film->genres; // Loading pivots
+        var_dump($film);
+        return $film->toArray();
+
+    }
 }
