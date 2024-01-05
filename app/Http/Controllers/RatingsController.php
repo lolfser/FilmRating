@@ -11,6 +11,7 @@ use App\Models\Genres;
 use App\Services\SaveFilmsLanguagesServices;
 use App\Services\SaveFilmsGenresServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class RatingsController extends Controller {
@@ -33,6 +34,48 @@ class RatingsController extends Controller {
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
             'genres' => Genres::all(),
+            'active_filter' => 'all',
+            '_token' => csrf_token(),
+            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
+        ]);
+    }
+
+    public function filter(Request $request) {
+
+        $filter = $request->all()['filter'];
+
+        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
+
+        if ($filter === 'rated') {
+            $films = Films::query()
+                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
+                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
+                ->where('viewers.id', $viewerId)
+                ->get();
+        } elseif ($filter === 'open') {
+            $films = Films::query()
+                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
+                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
+                ->where('viewers.id', null)
+                ->get();
+        } else {
+            $films = Films::all();
+        }
+
+        foreach ($films as $film) {
+            $film->ratings; // Loading pivots
+            $film->genres; // Loading pivots
+            $film->languages; // Loading pivots
+            $film->genres; // Loading pivots
+        }
+
+        return Inertia::render('Ratings', [
+            'films' => $films,
+            'grades' => Grades::all(),
+            'viewerId' => $viewerId,
+            'languages' => Languages::all()->groupBy('type'),
+            'genres' => Genres::all(),
+            'active_filter' => $filter,
             '_token' => csrf_token(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);

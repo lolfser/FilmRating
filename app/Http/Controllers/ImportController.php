@@ -129,7 +129,7 @@ class ImportController extends Controller {
         $durationParts = explode(':', $durationString);
 
         if (count($durationParts) === 1)
-            return $durationParts[0];
+            return $durationParts[0] ?: 0;
 
         if (count($durationParts) === 2)
             return $durationParts[0] * 60 + $durationParts[1];

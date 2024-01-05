@@ -20,8 +20,12 @@ import MultiSelect from 'primevue/multiselect';
     />
   </div>
 </template>
+<style>
+.p-highlight {
+    background-color: #3fa69e;
+}
+</style>
 <script>
-
 export default {
   props: ['options', 'optionLabel', 'optionValue', 'placeholder', 'name', 'autoFilterFocus', 'modelValue', 'maxSelectedLabels', 'selectionLimit'],
     emits: ['update:modelValue'],

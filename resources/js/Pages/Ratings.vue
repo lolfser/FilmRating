@@ -20,6 +20,7 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
                         :grades="grades"
                         :genres="genres"
                         :languages="languages"
+                        :active_filter="active_filter"
                         :_token="_token"
                         :footerLinks="footerLinks" />
                 </div>
@@ -29,7 +30,7 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
 </template>
 <script>
 export default {
-  props: ['films', 'grades', 'viewerId', 'footerLinks', 'genres', '_token', 'languages'],
+  props: ['films', 'grades', 'viewerId', 'footerLinks', 'genres', '_token', 'languages', 'active_filter'],
   computed: {
     headline: function () {return "Deine Bewertungen";},
   }
