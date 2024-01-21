@@ -48,16 +48,16 @@ class RatingsController extends Controller {
 
         if ($filter === 'rated') {
             $films = Films::query()
-                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
-                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
+                ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
+                ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
                 ->where('viewers.id', $viewerId)
-                ->get();
+                ->get('films.*');
         } elseif ($filter === 'open') {
             $films = Films::query()
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
                 ->where('viewers.id', null)
-                ->get();
+                ->get('films.*');
         } else {
             $films = Films::all();
         }
