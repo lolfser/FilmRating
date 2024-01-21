@@ -26,7 +26,7 @@ class FilmsController extends Controller {
 
     public function index() {
 
-        $films = Films::all();
+        $films = Films::orderBy('film_identifier')->whereNot('film_identifier', '')->get();
 
         $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
 

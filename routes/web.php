@@ -50,4 +50,5 @@ Route::middleware([
     Route::post('/rating/load', [\App\Http\Controllers\RatingsController::class, 'load']);
     Route::get('/import/', [\App\Http\Controllers\ImportController::class, 'index']);
     Route::post('/import/', [\App\Http\Controllers\ImportController::class, 'import']);
+    Route::get('/stats/', [\App\Http\Controllers\StatsController::class, 'index']);
 });
