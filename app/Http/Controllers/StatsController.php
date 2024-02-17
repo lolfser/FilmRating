@@ -35,7 +35,7 @@ class StatsController extends Controller {
             ORDER BY viewers.initials, grades.value
         ");
 
-        $films = json_decode(json_encode($films), true);;
+        $films = json_decode(json_encode($films), true);
 
         $arr = ['Sichter' => []];
 
@@ -65,7 +65,39 @@ class StatsController extends Controller {
 
         return Inertia::render('Stats', [
             'stats' => $arr,
+            'statsGlobalRatingCount' => $this->receiveStatsGlobalRatingCount(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
+    }
+
+    private function receiveStatsGlobalRatingCount(): array {
+
+        $stats = DB::select("
+            SELECT '0' AS r, COUNT(1) AS c, (sum(films.duration) / 60 / 60) AS d
+            FROM films
+            LEFT JOIN ratings ON ratings.films_id = films.id
+            WHERE ratings.films_id IS NULL
+            UNION
+            (
+                SELECT
+                c_inner AS r,
+                COUNT(1) AS c,
+                (SUM(Y) / 60 / 60) AS d
+                FROM (
+                    SELECT COUNT(1) AS c_inner, any_value(films.duration) AS Y
+                    FROM films
+                    JOIN ratings ON ratings.films_id = films.id
+                    GROUP BY ratings.films_id
+                ) AS s
+                GROUP BY r
+            )
+            ORDER BY 'Anzahl Bewertung', r
+        ");
+
+        $stats = json_decode(json_encode($stats), true);
+        $header = ['r' => 'Anzahl Bewertung', 'c' => 'Anzahl Film', 'd' => 'Laufzeit in Stunden' ];
+        array_unshift($stats, $header);
+        return $stats;
+
     }
 }

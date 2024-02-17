@@ -22,7 +22,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 </style>
 <template>
 <Headline :headline="headline" />
-<div class="p-6 lg:p-8 bg-white border-b border-gray-200">
+<div class="p-6 lg:p-8 bg-white border-b border-gray-200 stats">
     Angaben in Laufzeit in Stunden (Anzahl der Filme)<br><br>
     <table class="table">
         <tr v-for="(stat, key) in stats">
@@ -34,12 +34,22 @@ import MultiSelect from "@/Components/MultiSelect.vue";
             </td>
         </tr>
     </table>
+    <br><br>
+    Anzahl der bewerteten Filme<br><br>
+    <table class="table">
+        <tr v-for="(stat, key) in statsGlobalRatingCount">
+            <td>{{ stat.r }}</td>
+            <td>{{ stat.c }}</td>
+            <td>{{ stat.d }}</td>
+        </tr>
+    </table>
+
 </div>
 <Footer :footerLinks="footerLinks" />
 </template>
 <script>
 export default {
-  props: ['stats'],
+  props: ['stats', 'statsGlobalRatingCount'],
   computed: {
   },
   mounted() {
