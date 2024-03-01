@@ -11,7 +11,7 @@ import { translate } from './../trans';
 <Headline :headline="headline" />
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <br>TODO: Ist ziemlich customized, gernealisieren<br><br><br>
+        <br>TODO: Ist ziemlich customized, generalisieren<br><br><br>
         <form method="post">
             <input type="hidden" name="_token" v-model="token" />
             <table>
@@ -26,6 +26,7 @@ import { translate } from './../trans';
                 <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Film-Nr." /></td></tr>
                 <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Dauer" /></td></tr>
                 <tr><td>Genre-Header:</td><td><input type="text" name="info-col" value="Infos" /></td></tr>
+                <tr><td>Sprache-Header:</td><td><input type="text" name="language-col" value="Sprache Untertitel" /></td></tr>
                 <tr><td>Daten:</td><td><textarea name="importdata" /></td></tr>
             </table>
             <br><br><PrimaryButton>Speichern</PrimaryButton>

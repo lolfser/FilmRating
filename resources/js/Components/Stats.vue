@@ -22,6 +22,9 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 </style>
 <template>
 <Headline :headline="headline" />
+<div class="p-6 lg:p-8 bg-white border-b border-gray-200">
+    <pre>$('.stats').innerHTML </pre>
+</div>
 <div class="p-6 lg:p-8 bg-white border-b border-gray-200 stats">
     Angaben in Laufzeit in Stunden (Anzahl der Filme)<br><br>
     <table class="table">
