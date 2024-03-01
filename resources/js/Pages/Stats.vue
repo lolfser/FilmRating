@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompFilmViewer from '@/Components/FilmViewer.vue';
+import CompStats from '@/Components/Stats.vue';
 </script>
 
 <template>
@@ -13,15 +13,9 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CompFilmViewer
-                        :films="films"
-                        :headline="headline"
-                        :viewerId="viewerId"
-                        :grades="grades"
-                        :genres="genres"
-                        :languages="languages"
-                        :active_filter="active_filter"
-                        :_token="_token"
+                    <CompStats
+                        :stats="stats"
+                        :statsGlobalRatingCount="statsGlobalRatingCount"
                         :footerLinks="footerLinks" />
                 </div>
             </div>
@@ -30,9 +24,9 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
 </template>
 <script>
 export default {
-  props: ['films', 'grades', 'viewerId', 'footerLinks', 'genres', '_token', 'languages', 'active_filter'],
+  props: ['stats', 'statsGlobalRatingCount', 'footerLinks'],
   computed: {
-    headline: function () {return "Deine Bewertungen";},
+    headline: function () {return "Statistiken";},
   }
 }
 </script>

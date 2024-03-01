@@ -46,6 +46,7 @@ class ImportController extends Controller {
         $durationIndex = array_search($data['duration'], $header, true);
         $filmIdIndex = array_search($data['film-id'], $header, true);
         $genresIndex = array_search($data['info-col'], $header, true);
+        $languageIndex = array_search($data['language-col'], $header, true);
 
         if ($titleIndex === false
             || $durationIndex === false
@@ -77,6 +78,7 @@ class ImportController extends Controller {
         }
 
         $viewerInitIndexMap = array_keys($initIndexMap);
+        $saveFilmsLanguagesServices = new SaveFilmsLanguagesServices();
 
         while (($data = fgetcsv($stream)) !== false) {
 
@@ -101,6 +103,12 @@ class ImportController extends Controller {
             $this->handlingGenres(
                 $films,
                 explode(',', $data[$genresIndex])
+            );
+
+            $this->handlingLanguages(
+                $saveFilmsLanguagesServices,
+                $films,
+                explode('_', $data[$languageIndex])
             );
 
             $this->handlingRatings(
@@ -129,7 +137,7 @@ class ImportController extends Controller {
         $durationParts = explode(':', $durationString);
 
         if (count($durationParts) === 1)
-            return $durationParts[0];
+            return $durationParts[0] ?: 0;
 
         if (count($durationParts) === 2)
             return $durationParts[0] * 60 + $durationParts[1];
@@ -148,10 +156,6 @@ class ImportController extends Controller {
         $film->genres()->sync([]);
         $ids = [];
 
-        if ($film->film_identifier === "13") {
-
-        }
-
         foreach ($allGenres as $genre) {
             if (\in_array($genre->name, $genresInput, true)) {
                 $ids[$genre->id] = $genre->id;
@@ -160,6 +164,49 @@ class ImportController extends Controller {
 
         $film->genres()->attach($ids);
         $film->save();
+    }
+
+    private function handlingLanguages(
+        SaveFilmsLanguagesServices $saveFilmsLanguagesServices,
+        Films $film,
+        array $languagesInput
+    ): void {
+
+        if ($languagesInput === [])
+            return;
+
+        $allGenres = Languages::all();
+        $map = [];
+        foreach (Languages::all() as $lang) {
+            $map[$lang->type][$lang->language] = $lang->id;
+        }
+
+        $idAudio    = $map['audio'][strtolower($languagesInput[0])] ?? false;
+        $idSubtitle = $map['subtitle'][strtolower($languagesInput[1] ?? false)] ?? false;
+
+        if ($idAudio === false && $idSubtitle === false) {
+            return;
+        }
+
+        if ($idAudio !== false && $idSubtitle !== false) {
+            $saveFilmsLanguagesServices->save($film, [
+                'language_audio' => $idAudio,
+                'language_subtitle' => $idSubtitle
+            ]);
+            return;
+        }
+
+        if ($idAudio !== false) {
+            $saveFilmsLanguagesServices->save($film, [
+                'language_audio' => $idAudio,
+            ]);
+            return;
+        }
+
+        $saveFilmsLanguagesServices->save($film, [
+            'language_subtitle' => $idSubtitle
+        ]);
+
     }
 
     private function handlingRatings(

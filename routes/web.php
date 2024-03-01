@@ -44,10 +44,11 @@ Route::middleware([
     );
     Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
     Route::get('rating', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
-    // Route::get('/rating/', \App\Http\Controllers\RatingsController::class, 'index');
+    Route::post('rating', [\App\Http\Controllers\RatingsController::class, 'filter'])->name('rating.filter');
     Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\RatingsController::class, 'rate']);
     Route::post('/rating/update', [\App\Http\Controllers\RatingsController::class, 'update']);
     Route::post('/rating/load', [\App\Http\Controllers\RatingsController::class, 'load']);
     Route::get('/import/', [\App\Http\Controllers\ImportController::class, 'index']);
     Route::post('/import/', [\App\Http\Controllers\ImportController::class, 'import']);
+    Route::get('/stats/', [\App\Http\Controllers\StatsController::class, 'index']);
 });

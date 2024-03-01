@@ -21,6 +21,8 @@ class LanguagesSeeder extends Seeder {
             Languages::create(['language' => 'de', 'type' => "subtitle"]);
             Languages::create(['language' => 'en', 'type' => "audio"]);
             Languages::create(['language' => 'en', 'type' => "subtitle"]);
+
+            Languages::create(['language' => 'ot', 'type' => "audio"]);
             Languages::create(['language' => 'stumm', 'type' => "audio"]);
             Languages::create(['language' => 'ohne', 'type' => "audio"]);
 

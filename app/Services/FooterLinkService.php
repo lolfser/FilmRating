@@ -19,6 +19,7 @@ class FooterLinkService {
         if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_IMPORT)) {
             $links[] = $this->build('/import', ' IMPORT');
         }
+        $links[] = $this->build('/stats', ' Statistiken');
 
         return $links;
 
