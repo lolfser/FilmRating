@@ -20,6 +20,10 @@ class StatsController extends Controller {
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
         $allUsedGrades = [];
+        $globalRating = $this->receiveStatsGlobalRatingCount();
+
+        $filmsCount = (array_sum(array_column($globalRating, "c"))); // todo if empty?
+        $filmsDuration = (array_sum(array_column($globalRating, "d"))); // todo if empty?
 
         $films = DB::select(
            "SELECT
@@ -41,7 +45,7 @@ class StatsController extends Controller {
 
         foreach ($films as $key => $dataRow) {
             $allUsedGrades[$dataRow['Note']] = $dataRow['Note'];
-            $arr[$dataRow['Sichter']][$dataRow['Note']] = [round($dataRow['Anzahl Filme'],2), round($dataRow['Laufzeit in Stunden'], 2)];
+            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round($dataRow['Laufzeit in Stunden'], 2)];
         }
 
         ksort($allUsedGrades);
@@ -53,6 +57,19 @@ class StatsController extends Controller {
                 }
             }
             ksort($dataRow);
+            $c = $filmsCount;
+            $d = $filmsDuration;
+            foreach ($dataRow as $dataColum) {
+                // var_dump($dataColum);
+                if (isset($dataColum[0])) {
+                    $c -= $dataColum[0];
+                    $d -= $dataColum[1];
+                }
+
+            }
+
+            $dataRow[99] = [$c, round($d, 2)];
+
             $arr[$key] = $dataRow;
         }
 
@@ -60,12 +77,12 @@ class StatsController extends Controller {
         foreach($allUsedGrades as $grade) {
             array_push($header, ['', 'Note "' . $grade . '"']);
         }
-
+        array_push($header, ['', "offen"]);
         $arr['Sichter'] = $header;
 
         return Inertia::render('Stats', [
             'stats' => $arr,
-            'statsGlobalRatingCount' => $this->receiveStatsGlobalRatingCount(),
+            'statsGlobalRatingCount' => $globalRating,
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
