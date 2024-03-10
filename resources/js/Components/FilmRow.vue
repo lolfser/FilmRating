@@ -30,12 +30,21 @@
                   </td>
                 </tr>
                 <tr>
+                    <td name="td_filmnotifications" colspan="2">
+                        <b>Modifikaitonen: </b>
+                        <span v-for="mod in filmModifications">
+                            <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
+                            &nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                     <td name="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
-                             placeholder="Genre wählen"
-                             name="genres"
-                             autoFilterFocus v-model="selectedGenres"
+                                     placeholder="Genre wählen"
+                                     name="genres"
+                                     autoFilterFocus v-model="selectedGenres"
                         />
                     </td>
                 </tr>
@@ -82,11 +91,17 @@ export default {
         'ratings',
         'grades',
         'genres',
+        'filmModifications',
         '_token'
     ],
+    // data() {
+    //     return {
+    //         suggestions: this.grades,
+    //     }
+    // },
     data() {
         return {
-            suggestions: this.grades,
+            'selectedGenres': []
         }
     },
     computed: {
@@ -101,11 +116,6 @@ export default {
             return true;
         });
         this.selectedGenres = genres;
-    },
-    data() {
-        return {
-            'selectedGenres': []
-        }
     },
     methods: {
         callbackUpdateGenres: function(genres) {
@@ -191,7 +201,6 @@ export default {
             let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
             grades.every(function(grade) {
                 if (grade.value + grade.trend == gradeInput) {
-                    let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
                     tr.querySelector('[name="grades_id"]').value = grade.id;
                     return false;
                 }
@@ -209,7 +218,13 @@ export default {
             let data = new FormData();
             data.append('isAjax', true);
 
+            let filmNotifications = tr.querySelectorAll('[name="td_filmnotifications"] :checked');
+            filmNotifications.forEach(function(element) {
+                data.append(element.name, true);
+            });
+
             (form.querySelectorAll('input')).forEach(function(input) {
+                console.log(form);
                 data.append(input.getAttribute('name'), input.value);
             });
 

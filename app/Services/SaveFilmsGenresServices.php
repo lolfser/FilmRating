@@ -3,13 +3,12 @@
 namespace App\Services;
 
 use App\Models\Films;
-use App\Models\Genres;
 
 class SaveFilmsGenresServices {
 
-    public function save(Films $film, array $inputLanguages): void {
+    public function save(Films $film, array $userInputs): void {
 
-        $genres = $inputLanguages['genres'] ?? [];
+        $genres = $userInputs['genres'] ?? [];
         $genres !== []
             ? $film->genres()->sync(explode(',', $genres))
             : $film->genres()->sync($genres);

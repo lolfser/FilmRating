@@ -34,6 +34,7 @@ import PrimaryButton from './PrimaryButton.vue';
                     :genres="genres"
                     :languages="languages"
                     :viewerId="viewerId"
+                    :film-modifications="filmModifications"
                     :_token="_token" />
             </table>
 
@@ -53,6 +54,7 @@ export default {
         'active_filter',
         'headline',
         'footerLinks',
+        'filmModifications',
         '_token'
     ],
     data() {

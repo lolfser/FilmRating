@@ -62,6 +62,17 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                   </td>
                 </tr>
                 <tr>
+                    <td>
+                        Film-Modifikationen
+                    </td>
+                    <td>
+                        <span v-for="mod in filmModifications">
+                            <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
+                            &nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                   <td>Dein persönlicher Kommentar</td>
                   <td>
                     <textarea name="comment">{{rating?.comment}}</textarea>
@@ -88,7 +99,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 </template>
 <script>
 export default {
-  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades', 'genres'],
+  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades', 'genres', 'filmModifications'],
   computed: {
     token: function () {
       return this._token

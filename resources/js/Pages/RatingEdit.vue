@@ -15,7 +15,7 @@ import CompRatingEdit from '@/Components/RatingEdit.vue';
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <CompRatingEdit :film="film"
                         :rating="rating" headline="Dein Rating" :errors="errors" :languages="languages" :_token="_token" :grades="grades"
-                        :genres="genres"
+                        :genres="genres" :filmModifications="filmModifications"
                      />
                 </div>
             </div>
@@ -24,6 +24,6 @@ import CompRatingEdit from '@/Components/RatingEdit.vue';
 </template>
 <script>
 export default {
-    props: ['film', 'rating', 'errors', 'languages', '_token', 'grades', 'genres'],
+    props: ['film', 'rating', 'errors', 'languages', '_token', 'grades', 'genres', 'filmModifications'],
 }
 </script>
