@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Filmmodifications;
 use App\Models\Films;
 use App\Models\Filmsources;
 use App\Models\Ratings;
@@ -10,6 +11,8 @@ use App\Models\Viewers;
 use App\Models\Genres;
 use App\Models\Grades;
 use App\Services\SaveFilmsLanguagesServices;
+use App\Services\SaveFilmsKeywordsServices;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -47,6 +50,10 @@ class ImportController extends Controller {
         $filmIdIndex = array_search($data['film-id'], $header, true);
         $genresIndex = array_search($data['info-col'], $header, true);
         $languageIndex = array_search($data['language-col'], $header, true);
+        $queerIndex = array_search($data['queer-col'], $header, true);
+        $child9Index = array_search($data['child9-col'], $header, true);
+        $child13Index = array_search($data['child13-col'], $header, true);
+        $child17Index = array_search($data['child17-col'], $header, true);
 
         if ($titleIndex === false
             || $durationIndex === false
@@ -77,8 +84,10 @@ class ImportController extends Controller {
             }
         }
 
-        $viewerInitIndexMap = array_keys($initIndexMap);
         $saveFilmsLanguagesServices = new SaveFilmsLanguagesServices();
+        $saveFilmsKeywordsServices = new SaveFilmsKeywordsServices();
+        $allMods = $this->receiveAllModifications();
+        $allGenres = Genres::all();
 
         while (($data = fgetcsv($stream)) !== false) {
 
@@ -100,8 +109,19 @@ class ImportController extends Controller {
             $films->year = $year;
             $films->save();
 
-            $this->handlingGenres(
+            $this->handlingFilmModifications(
                 $films,
+                $allMods,
+                $data[$queerIndex] === 'TRUE',
+                $data[$child9Index] === 'TRUE',
+                $data[$child13Index] === 'TRUE',
+                $data[$child17Index] === 'TRUE'
+            );
+
+            $this->handlingInfoSpalte(
+                $films,
+                $saveFilmsKeywordsServices,
+                $allGenres,
                 explode(',', $data[$genresIndex])
             );
 
@@ -140,27 +160,43 @@ class ImportController extends Controller {
             return $durationParts[0] ?: 0;
 
         if (count($durationParts) === 2)
-            return $durationParts[0] * 60 + $durationParts[1];
+            return ((int) $durationParts[0]) * 60 + ((int) $durationParts[1]);
 
         return 0;
     }
 
-    private function handlingGenres(
+    private function handlingInfoSpalte(
         Films $film,
+        SaveFilmsKeywordsServices $saveFilmsKeywordsServices,
+        Collection $allGenres,
         array $genresInput
     ): void {
-        $allGenres = Genres::all();
         foreach ($genresInput as $key => $input)
             $genresInput[$key] = \trim($input);
 
         $film->genres()->sync([]);
         $ids = [];
-
         foreach ($allGenres as $genre) {
-            if (\in_array($genre->name, $genresInput, true)) {
+            if (($idx = array_search($genre->name, $genresInput, true)) !== false) {
                 $ids[$genre->id] = $genre->id;
+                unset($genresInput[$idx]);
             }
         }
+
+        $keywords = [];
+        $descriptions = [];
+
+
+        foreach ($genresInput as $keyword) {
+            if (count(explode(' ', $keyword)) > 2) {
+                $descriptions[] = $keyword;
+            } else {
+                $keywords[] = $keyword;
+            }
+        }
+
+        $film->description = implode(', ', $descriptions);
+        $saveFilmsKeywordsServices->save($film, $keywords);
 
         $film->genres()->attach($ids);
         $film->save();
@@ -175,7 +211,6 @@ class ImportController extends Controller {
         if ($languagesInput === [])
             return;
 
-        $allGenres = Languages::all();
         $map = [];
         foreach (Languages::all() as $lang) {
             $map[$lang->type][$lang->language] = $lang->id;
@@ -222,7 +257,6 @@ class ImportController extends Controller {
         foreach ($film->ratings as $rating) {
 
             $viewer = $rating->viewer()->first();
-            $grade = $rating->grade()->first();
             $viewerObject = $viewerMap[$viewer->initials] ?? null;
 
             if ($viewerObject === null) {
@@ -279,6 +313,57 @@ class ImportController extends Controller {
 
         }
 
+    }
+
+    private function handlingFilmModifications(
+        Films $films,
+        array $allMods,
+        bool  $isQueer,
+        bool  $isChild9,
+        bool  $isChild13,
+        bool  $isChild17
+    ) {
+        $films->filmmodifications()->sync([]);
+        $mods = [];
+
+        if ($isQueer)
+            $mods[] = $allMods['queer'];
+        if ($isChild9)
+            $mods[] = $allMods['child9'];
+        if ($isChild13)
+            $mods[] = $allMods['child13'];
+        if ($isChild17)
+            $mods[] = $allMods['child17'];
+
+        $films->filmmodifications()->attach($mods);
+        $films->save();
+    }
+
+    /**
+     * @return array
+     */
+    public function receiveAllModifications(): array
+    {
+        $allMods = [];
+        foreach (Filmmodifications::all() as $mod) {
+            if ($mod->name === 'child9') {
+                $allMods['child9'] = $mod->id;
+                continue;
+            }
+            if ($mod->name === 'child13') {
+                $allMods['child13'] = $mod->id;
+                continue;
+            }
+            if ($mod->name === 'child17') {
+                $allMods['child17'] = $mod->id;
+                continue;
+            }
+            if ($mod->name === 'queer') {
+                $allMods['queer'] = $mod->id;
+                continue;
+            }
+        }
+        return $allMods;
     }
 
 }

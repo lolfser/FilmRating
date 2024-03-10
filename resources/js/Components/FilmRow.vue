@@ -11,7 +11,19 @@
 <template>
     <tr>
         <td>{{ film.film_identifier }}</td>
-        <td>{{ film.name }}</td>
+        <td style="max-width: 380px">
+            {{ film.name }}
+            <span v-if="film.description">
+                <br><br>
+                Beschreibung:
+                <textarea cols="30" rows="4" name="description">{{ film.description }}</textarea>
+            </span>
+            <span v-if="film.description">
+                <br><br>
+                Stichworte:
+                <textarea cols="30" rows="4" name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+            </span>
+        </td>
         <td>
             <table>
                 <tr v-for="(language, type) in languages">
@@ -30,12 +42,21 @@
                   </td>
                 </tr>
                 <tr>
+                    <td name="td_filmnotifications" colspan="2">
+                        <b>Modifikaitonen: </b>
+                        <span v-for="mod in filmModifications">
+                            <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
+                            &nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                     <td name="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
-                             placeholder="Genre wählen"
-                             name="genres"
-                             autoFilterFocus v-model="selectedGenres"
+                                     placeholder="Genre wählen"
+                                     name="genres"
+                                     autoFilterFocus v-model="selectedGenres"
                         />
                     </td>
                 </tr>
@@ -46,7 +67,7 @@
             <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
         </td>
         <td name="td_comment">
-            <textarea>{{ viewerComment(film) }}</textarea>
+            <textarea name="viewerComment">{{ viewerComment(film) }}</textarea>
         </td>
         <td>
             <form method="post" action="/rating/update/" submit="false">
@@ -82,11 +103,12 @@ export default {
         'ratings',
         'grades',
         'genres',
+        'filmModifications',
         '_token'
     ],
     data() {
         return {
-            suggestions: this.grades,
+            'selectedGenres': []
         }
     },
     computed: {
@@ -102,11 +124,6 @@ export default {
         });
         this.selectedGenres = genres;
     },
-    data() {
-        return {
-            'selectedGenres': []
-        }
-    },
     methods: {
         callbackUpdateGenres: function(genres) {
             let genresResult = [];
@@ -115,6 +132,14 @@ export default {
                 return true;
             });
             this.selectedGenres = genresResult;
+        },
+        keywordsConcat: function(keywords) {
+            let result = '';
+            keywords.every(function(keyw) {
+                result += ', ' + keyw.name;
+                return true;
+            });
+            return result.substring(2);
         },
         isSelected: function (filmLanguages, currentLanguage) {
             let result = false;
@@ -164,6 +189,9 @@ export default {
                 film.name = data.name;
                 film.genres = data.genres;
                 film.languages = data.languages;
+                film.description = data.description;
+                film.keywords = data.keywords;
+                film.filmmodifications = data.filmmodifications;
                 film.ratings = data.ratings;
 
                 callbackUpdateGenres(data.genres);
@@ -186,12 +214,11 @@ export default {
         },
         loadQuickSaveUrl: function (event, film, grades) {
             let tr = event.target.parentNode.parentNode.parentNode;
-            let comment = tr.querySelector('[name="td_comment"] textarea').value;
-            tr.querySelector('[name="comment"]').value = comment;
+            let viewerComment = tr.querySelector('[name="td_comment"] textarea').value;
+            tr.querySelector('[name="comment"]').value = viewerComment;
             let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
             grades.every(function(grade) {
                 if (grade.value + grade.trend == gradeInput) {
-                    let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
                     tr.querySelector('[name="grades_id"]').value = grade.id;
                     return false;
                 }
@@ -208,6 +235,16 @@ export default {
             let form = event.target.parentNode;
             let data = new FormData();
             data.append('isAjax', true);
+
+            let filmNotifications = tr.querySelectorAll('[name="td_filmnotifications"] :checked');
+            filmNotifications.forEach(function(element) {
+                data.append(element.name, true);
+            });
+
+            let textArea = tr.querySelectorAll('[name="description"], [name="keywords"]');
+            textArea.forEach(function(element) {
+                data.append(element.name, element.value);
+            });
 
             (form.querySelectorAll('input')).forEach(function(input) {
                 data.append(input.getAttribute('name'), input.value);
@@ -235,12 +272,6 @@ export default {
             update(url, myFunction, event.target);
 
             return event;
-        },
-        dropdownGradeValue: function (grade) {
-            return grade.id;
-        },
-        dropdownGrade: function (grade) {
-            return grade.value + "" + grade.trend;
         },
         viewerComment: function (film) {
             const viewerId = this.viewerId
@@ -276,7 +307,6 @@ export default {
             return returnValue;
         },
         viewerGrade: function () {
-            let film = this.film;
             const viewerId = this.viewerId;
             const grades = this.grades;
             let returnValue = "";

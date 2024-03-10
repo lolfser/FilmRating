@@ -17,8 +17,8 @@ class FilmmodificationsSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Filmmodifications::create(['name' => "child7", 'name' => "child7"]);
-            Filmmodifications::create(['name' => "child14", 'name' => "child14"]);
+            Filmmodifications::create(['name' => "child9", 'name' => "child9"]);
+            Filmmodifications::create(['name' => "child13", 'name' => "child13"]);
             Filmmodifications::create(['name' => "child17", 'name' => "child17"]);
             Filmmodifications::create(['name' => "queer", 'name' => "queer"]);
 

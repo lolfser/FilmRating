@@ -1,9 +1,7 @@
 <script setup>
-import TextInput from './TextInput.vue';
 import PrimaryButton from './PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
-import InputError from './InputError.vue';
 import { translate } from './../trans';
 
 import MultiSelect from "@/Components/MultiSelect.vue";
@@ -42,6 +40,12 @@ import MultiSelect from "@/Components/MultiSelect.vue";
             <h1>Änderbare Einstellungen</h1>
             <br>
             <table>
+                <tr>
+                    <td>Beschreibung</td>
+                    <td>
+                        <textarea name="description">{{film.description}}</textarea>
+                    </td>
+                </tr>
                 <tr v-for="(language, type) in languages">
                   <td>Sprache: {{ type }}</td>
                   <td>
@@ -62,10 +66,25 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                   </td>
                 </tr>
                 <tr>
-                  <td>Dein persönlicher Kommentar</td>
-                  <td>
-                    <textarea name="comment">{{rating?.comment}}</textarea>
-                  </td>
+                    <td>Film-Modifikationen</td>
+                    <td>
+                        <span v-for="mod in filmModifications">
+                            <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
+                            &nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Stichworte</td>
+                    <td>
+                        <textarea name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Dein persönlicher Kommentar</td>
+                    <td>
+                        <textarea name="comment">{{rating?.comment}}</textarea>
+                    </td>
                 </tr>
                 <tr>
                   <td>Deine Bewertung</td>
@@ -88,31 +107,39 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 </template>
 <script>
 export default {
-  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades', 'genres'],
+  props: ['film', 'rating', '_token', 'headline', 'errors', 'languages', 'grades', 'genres', 'filmModifications'],
   computed: {
     token: function () {
       return this._token
     },
   },
-      mounted() {
-        let genres = [];
-        this.film.genres.every(function(genre) {
-            genres.push(genre.id);
-            return true;
-        });
-        this.selectedGenres = genres;
-    },
-        data() {
-        return {
-            'selectedGenres': []
-        }
-    },
+  mounted() {
+    let genres = [];
+    this.film.genres.every(function(genre) {
+        genres.push(genre.id);
+        return true;
+    });
+    this.selectedGenres = genres;
+  },
+  data() {
+    return {
+        'selectedGenres': []
+    }
+  },
   methods: {
       genreValues: function (genre) {
         return genre.id;
     },
       genreLabels: function (genre) {
         return genre.name;
+    },
+    keywordsConcat: function(keywords) {
+        let result = '';
+        keywords.every(function(keyw) {
+            result += ', ' + keyw.name;
+            return true;
+        });
+        return result.substring(2);
     },
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;

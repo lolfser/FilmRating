@@ -13,10 +13,10 @@ class CreateFilmsKeywordsTable extends Migration {
      */
     public function up() {
         Schema::create('films_keywords', function (Blueprint $table) {
-            $table->unsignedInteger('film_id');
-            $table->unsignedInteger('keyword_id');
+            $table->unsignedInteger('films_id');
+            $table->unsignedInteger('keywords_id');
 
-            $table->unique(["film_id","keyword_id"]); // isUnique => films_keywords_film_id_keyword_id_unique
+            $table->unique(["films_id","keywords_id"]); // isUnique => films_keywords_films_id_keywords_id_unique
         });
     }
 }

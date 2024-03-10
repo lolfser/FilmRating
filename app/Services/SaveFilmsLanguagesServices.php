@@ -17,7 +17,7 @@ class SaveFilmsLanguagesServices {
             if ($id !== null) {
                 $film->languages()->attach($id);
             }
-        };
+        }
 
     }
 

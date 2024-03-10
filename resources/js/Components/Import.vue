@@ -27,6 +27,10 @@ import { translate } from './../trans';
                 <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Dauer" /></td></tr>
                 <tr><td>Genre-Header:</td><td><input type="text" name="info-col" value="Infos" /></td></tr>
                 <tr><td>Sprache-Header:</td><td><input type="text" name="language-col" value="Sprache Untertitel" /></td></tr>
+                <tr><td>Modifikation-Queer-Header:</td><td><input type="text" name="queer-col" value="⚥" /></td></tr>
+                <tr><td>Modifikation-Jugend (9)-Header:</td><td><input type="text" name="child9-col" value="K (9)" /></td></tr>
+                <tr><td>Modifikation-Jugend (13)-Header:</td><td><input type="text" name="child13-col" value="P (13)" /></td></tr>
+                <tr><td>Modifikation-Jugend (17)-Header:</td><td><input type="text" name="child17-col" value="J (17)" /></td></tr>
                 <tr><td>Daten:</td><td><textarea name="importdata" /></td></tr>
             </table>
             <br><br><PrimaryButton>Speichern</PrimaryButton>

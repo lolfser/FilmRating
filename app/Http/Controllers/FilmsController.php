@@ -116,7 +116,7 @@ class FilmsController extends Controller {
         $film->fill($newData); // @todo unique check of film identifier
         $film->save();
 
-        $saveFilmsLanguagesServices = (new SaveFilmsLanguagesServices())->save($film, $request->all());
+         (new SaveFilmsLanguagesServices())->save($film, $request->all());
 
         return redirect(route("films.show", [$film->id]));
     }
