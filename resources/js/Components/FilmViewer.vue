@@ -35,6 +35,7 @@ import PrimaryButton from './PrimaryButton.vue';
                     :languages="languages"
                     :viewerId="viewerId"
                     :film-modifications="filmModifications"
+                    :keywords="keywords"
                     :_token="_token" />
             </table>
 
@@ -55,6 +56,7 @@ export default {
         'headline',
         'footerLinks',
         'filmModifications',
+        'keywords',
         '_token'
     ],
     data() {

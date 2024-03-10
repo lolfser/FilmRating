@@ -172,12 +172,15 @@ class ImportController extends Controller {
 
         $film->genres()->sync([]);
         $ids = [];
-
         foreach ($allGenres as $genre) {
-            if (\in_array($genre->name, $genresInput, true)) {
+            if (($idx = array_search($genre->name, $genresInput, true)) !== false) {
                 $ids[$genre->id] = $genre->id;
+                unset($genresInput[$idx]);
             }
         }
+
+        $keywords = $genresInput;
+        $film->description = implode(', ', $keywords);
 
         $film->genres()->attach($ids);
         $film->save();

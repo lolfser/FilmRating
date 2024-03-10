@@ -11,7 +11,14 @@
 <template>
     <tr>
         <td>{{ film.film_identifier }}</td>
-        <td>{{ film.name }}</td>
+        <td style="max-width: 380px">
+            {{ film.name }}
+            <span v-if="film.description">
+                <br><br>
+                Beschreibung:
+                <textarea cols="30" rows="4" name="description">{{ film.description}}</textarea>
+            </span>
+        </td>
         <td>
             <table>
                 <tr v-for="(language, type) in languages">
@@ -55,7 +62,7 @@
             <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
         </td>
         <td name="td_comment">
-            <textarea>{{ viewerComment(film) }}</textarea>
+            <textarea name="viewerComment">{{ viewerComment(film) }}</textarea>
         </td>
         <td>
             <form method="post" action="/rating/update/" submit="false">
@@ -94,11 +101,6 @@ export default {
         'filmModifications',
         '_token'
     ],
-    // data() {
-    //     return {
-    //         suggestions: this.grades,
-    //     }
-    // },
     data() {
         return {
             'selectedGenres': []
@@ -196,8 +198,8 @@ export default {
         },
         loadQuickSaveUrl: function (event, film, grades) {
             let tr = event.target.parentNode.parentNode.parentNode;
-            let comment = tr.querySelector('[name="td_comment"] textarea').value;
-            tr.querySelector('[name="comment"]').value = comment;
+            let viewerComment = tr.querySelector('[name="td_comment"] textarea').value;
+            tr.querySelector('[name="comment"]').value = viewerComment;
             let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
             grades.every(function(grade) {
                 if (grade.value + grade.trend == gradeInput) {
@@ -223,8 +225,12 @@ export default {
                 data.append(element.name, true);
             });
 
+            let textArea = tr.querySelectorAll('[name="description"]');
+            textArea.forEach(function(element) {
+                data.append(element.name, element.value);
+            });
+
             (form.querySelectorAll('input')).forEach(function(input) {
-                console.log(form);
                 data.append(input.getAttribute('name'), input.value);
             });
 
@@ -250,12 +256,6 @@ export default {
             update(url, myFunction, event.target);
 
             return event;
-        },
-        dropdownGradeValue: function (grade) {
-            return grade.id;
-        },
-        dropdownGrade: function (grade) {
-            return grade.value + "" + grade.trend;
         },
         viewerComment: function (film) {
             const viewerId = this.viewerId
@@ -291,7 +291,6 @@ export default {
             return returnValue;
         },
         viewerGrade: function () {
-            let film = this.film;
             const viewerId = this.viewerId;
             const grades = this.grades;
             let returnValue = "";
