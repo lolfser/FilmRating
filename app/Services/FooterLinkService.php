@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Permissions;
-
 class FooterLinkService {
 
     public function receive(): array {

@@ -16,7 +16,12 @@
             <span v-if="film.description">
                 <br><br>
                 Beschreibung:
-                <textarea cols="30" rows="4" name="description">{{ film.description}}</textarea>
+                <textarea cols="30" rows="4" name="description">{{ film.description }}</textarea>
+            </span>
+            <span v-if="film.description">
+                <br><br>
+                Stichworte:
+                <textarea cols="30" rows="4" name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
             </span>
         </td>
         <td>
@@ -128,6 +133,14 @@ export default {
             });
             this.selectedGenres = genresResult;
         },
+        keywordsConcat: function(keywords) {
+            let result = '';
+            keywords.every(function(keyw) {
+                result += ', ' + keyw.name;
+                return true;
+            });
+            return result.substring(2);
+        },
         isSelected: function (filmLanguages, currentLanguage) {
             let result = false;
             filmLanguages.every(function (l) {
@@ -225,7 +238,7 @@ export default {
                 data.append(element.name, true);
             });
 
-            let textArea = tr.querySelectorAll('[name="description"]');
+            let textArea = tr.querySelectorAll('[name="description"], [name="keywords"]');
             textArea.forEach(function(element) {
                 data.append(element.name, element.value);
             });

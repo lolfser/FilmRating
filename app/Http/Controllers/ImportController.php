@@ -11,6 +11,7 @@ use App\Models\Viewers;
 use App\Models\Genres;
 use App\Models\Grades;
 use App\Services\SaveFilmsLanguagesServices;
+use App\Services\SaveFilmsKeywordsServices;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -84,6 +85,7 @@ class ImportController extends Controller {
         }
 
         $saveFilmsLanguagesServices = new SaveFilmsLanguagesServices();
+        $saveFilmsKeywordsServices = new SaveFilmsKeywordsServices();
         $allMods = $this->receiveAllModifications();
         $allGenres = Genres::all();
 
@@ -116,8 +118,9 @@ class ImportController extends Controller {
                 $data[$child17Index] === 'TRUE'
             );
 
-            $this->handlingGenres(
+            $this->handlingInfoSpalte(
                 $films,
+                $saveFilmsKeywordsServices,
                 $allGenres,
                 explode(',', $data[$genresIndex])
             );
@@ -162,8 +165,9 @@ class ImportController extends Controller {
         return 0;
     }
 
-    private function handlingGenres(
+    private function handlingInfoSpalte(
         Films $film,
+        SaveFilmsKeywordsServices $saveFilmsKeywordsServices,
         Collection $allGenres,
         array $genresInput
     ): void {
@@ -179,8 +183,20 @@ class ImportController extends Controller {
             }
         }
 
-        $keywords = $genresInput;
-        $film->description = implode(', ', $keywords);
+        $keywords = [];
+        $descriptions = [];
+
+
+        foreach ($genresInput as $keyword) {
+            if (count(explode(' ', $keyword)) > 2) {
+                $descriptions[] = $keyword;
+            } else {
+                $keywords[] = $keyword;
+            }
+        }
+
+        $film->description = implode(', ', $descriptions);
+        $saveFilmsKeywordsServices->save($film, $keywords);
 
         $film->genres()->attach($ids);
         $film->save();

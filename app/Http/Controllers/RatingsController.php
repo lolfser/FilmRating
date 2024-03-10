@@ -10,6 +10,7 @@ use App\Models\Languages;
 use App\Models\Grades;
 use App\Models\Genres;
 use App\Services\SaveFilmModificationService;
+use App\Services\SaveFilmsKeywordsServices;
 use App\Services\SaveFilmsLanguagesServices;
 use App\Services\SaveFilmsGenresServices;
 use Illuminate\Http\Request;
@@ -120,6 +121,7 @@ class RatingsController extends Controller {
         (new SaveFilmsLanguagesServices())->save($film, $request->all());
         (new SaveFilmsGenresServices())->save($film, $request->all());
         (new SaveFilmModificationService())->save($film, $request->all());
+        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords']));
 
         if ($request->all()['isAjax'] ?? false) {
             return true;

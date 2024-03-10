@@ -13,7 +13,6 @@ class SaveFilmsGenresServices {
             ? $film->genres()->sync(explode(',', $genres))
             : $film->genres()->sync($genres);
 
-
     }
 
 }

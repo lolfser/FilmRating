@@ -75,6 +75,12 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                     </td>
                 </tr>
                 <tr>
+                    <td>Stichworte</td>
+                    <td>
+                        <textarea name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+                    </td>
+                </tr>
+                <tr>
                     <td>Dein persönlicher Kommentar</td>
                     <td>
                         <textarea name="comment">{{rating?.comment}}</textarea>
@@ -126,6 +132,14 @@ export default {
     },
       genreLabels: function (genre) {
         return genre.name;
+    },
+    keywordsConcat: function(keywords) {
+        let result = '';
+        keywords.every(function(keyw) {
+            result += ', ' + keyw.name;
+            return true;
+        });
+        return result.substring(2);
     },
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;
