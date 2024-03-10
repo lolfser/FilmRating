@@ -3,20 +3,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilmsFilmmodificationsTable extends Migration {
+class CreateFilmmodificationsFilmsTable extends Migration {
 
     /**
      * Run the migrations.
      * @return void
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function up() {
-        Schema::create('films_filmmodifications', function (Blueprint $table) {
-            $table->unsignedInteger('films_id');
+        Schema::create('filmmodifications_films', function (Blueprint $table) {
             $table->unsignedInteger('filmmodifications_id');
+            $table->unsignedInteger('films_id');
 
-            $table->unique(["films_id","filmmodifications_id"]); // isUnique => films_filmmodifications_films_id_filmmodifications_id_unique
+            $table->unique(["filmmodifications_id", "films_id"]); // isUnique => filmmodifications_films_filmmodifications_id_films_id_unique
         });
     }
 }
