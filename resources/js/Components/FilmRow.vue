@@ -189,6 +189,9 @@ export default {
                 film.name = data.name;
                 film.genres = data.genres;
                 film.languages = data.languages;
+                film.description = data.description;
+                film.keywords = data.keywords;
+                film.filmmodifications = data.filmmodifications;
                 film.ratings = data.ratings;
 
                 callbackUpdateGenres(data.genres);
