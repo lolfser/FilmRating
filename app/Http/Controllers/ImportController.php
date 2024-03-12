@@ -22,6 +22,7 @@ class ImportController extends Controller {
         return Inertia::render('Import', [
             '_token' => csrf_token(),
             'filmsources' => Filmsources::all(),
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }

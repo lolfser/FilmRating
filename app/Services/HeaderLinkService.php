@@ -2,25 +2,28 @@
 
 namespace App\Services;
 
-class FooterLinkService {
+class HeaderLinkService {
 
     public function receive(): array {
 
-       $currentPath = \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri();
+        $currentPath = \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri();
 
         $links = [];
         $links[] = $this->build('/films', 'Liste aller Filme', $currentPath === 'films');
-        $links[] = $this->build('/rating', ' Filmbewertungen', $currentPath === 'rating');
+        $links[] = $this->build('/rating', 'Filmbewertungen', $currentPath === 'rating');
 
         if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
-            $links[] = $this->build('/films/0/cu', ' Film erstellen', $currentPath === 'films/0/cu');
+            $wording = (\Illuminate\Support\Facades\Route::getFacadeRoot()->current()->id > 0)
+                ? 'Film bearbeiten'
+                : 'Film erstellen';
+            $links[] = $this->build('/films/0/cu', $wording, $currentPath === 'films/{id}/cu');
         }
 
         if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_IMPORT)) {
-            $links[] = $this->build('/import', ' IMPORT', $currentPath === 'import');
+            $links[] = $this->build('/import', 'IMPORT', $currentPath === 'import');
         }
 
-        $links[] = $this->build('/stats', ' Statistiken', $currentPath === 'stats');
+        $links[] = $this->build('/stats', 'Statistiken', $currentPath === 'stats');
 
         return $links;
 
