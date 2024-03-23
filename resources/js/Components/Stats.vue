@@ -40,13 +40,43 @@ import Footer from './Footer.vue';
             <td>{{ stat.d }}</td>
         </tr>
     </table>
+    <br><br>
+    Genres<br><br>
+    <table class="table">
+        <tr>
+            <td>Genre</td>
+            <td>Anzahl</td>
+        </tr>
+        <tr v-for="(stat, key) in genreStats">
+            <td>{{ stat.name }}</td>
+            <td>{{ stat.counter }}</td>
+        </tr>
+    </table>
+    <br><br>
+    Keywords<br><br>
+    <table class="table">
+        <tr>
+            <td>Stichwort</td>
+            <td>Anzahl</td>
+        </tr>
+        <tr v-for="(stat, key) in keywordStats">
+            <td>{{ stat.name }}</td>
+            <td>{{ stat.counter }}</td>
+        </tr>
+    </table>
 
 </div>
 <Footer :footerLinks="footerLinks" />
 </template>
 <script>
 export default {
-  props: ['stats', 'statsGlobalRatingCount', 'footerLinks'],
+  props: [
+    'stats',
+    'statsGlobalRatingCount',
+    'genreStats',
+    'keywordStats',
+    'footerLinks'
+  ],
   computed: {
   },
   mounted() {

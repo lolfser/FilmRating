@@ -172,8 +172,11 @@ class ImportController extends Controller {
         Collection $allGenres,
         array $genresInput
     ): void {
-        foreach ($genresInput as $key => $input)
+        foreach ($genresInput as $key => $input) {
+            $input = \trim($input);
+            $input = $input === 'Doku' ? 'Dokumentation' : $input;
             $genresInput[$key] = \trim($input);
+        }
 
         $film->genres()->sync([]);
         $ids = [];
@@ -187,13 +190,17 @@ class ImportController extends Controller {
         $keywords = [];
         $descriptions = [];
 
-
         foreach ($genresInput as $keyword) {
             if (count(explode(' ', $keyword)) > 2) {
                 $descriptions[] = $keyword;
-            } else {
-                $keywords[] = $keyword;
+                continue;
             }
+
+            if ($keyword === 'Doku') {
+                continue;
+            }
+
+            $keywords[] = $keyword;
         }
 
         $film->description = implode(', ', $descriptions);

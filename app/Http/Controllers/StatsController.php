@@ -73,6 +73,8 @@ class StatsController extends Controller {
         return Inertia::render('Stats', [
             'stats' => $arr,
             'statsGlobalRatingCount' => $globalRating,
+            'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
+            'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);

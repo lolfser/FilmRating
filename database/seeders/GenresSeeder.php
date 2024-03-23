@@ -17,6 +17,7 @@ class GenresSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
+            Genres::create(['name' => "Dokumentation", 'name' => "Dokumentation"]);
             Genres::create(['name' => "Horror", 'name' => "Horror"]);
             Genres::create(['name' => "Thriller", 'name' => "Thriller"]);
             Genres::create(['name' => "Kömodie", 'name' => "Kömodie"]);
