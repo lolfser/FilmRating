@@ -172,41 +172,41 @@ class ImportController extends Controller {
         Collection $allGenres,
         array $genresInput
     ): void {
+
+        $usedGenres = [];
+        $usedKeywords = [];
+        $usedDescriptions = [];
+        $allGenresArray = [];
+
+        foreach ($allGenres as $genre) {
+            $allGenresArray[$genre->name] = $genre;
+        }
+
         foreach ($genresInput as $key => $input) {
+
             $input = \trim($input);
             $input = $input === 'Doku' ? 'Dokumentation' : $input;
-            $genresInput[$key] = \trim($input);
+
+            if (isset($allGenresArray[$input])) {
+                $usedGenres = $allGenresArray[$input];
+                continue;
+            }
+
+            if (count(explode(' ', $input)) > 2) {
+                $usedDescriptions[] = $input;
+                continue;
+            }
+
+            $usedKeywords[] = $input;
+
         }
+
+        $film->description = implode(', ', $usedDescriptions);
+        $saveFilmsKeywordsServices->save($film, $usedKeywords);
 
         $film->genres()->sync([]);
-        $ids = [];
-        foreach ($allGenres as $genre) {
-            if (($idx = array_search($genre->name, $genresInput, true)) !== false) {
-                $ids[$genre->id] = $genre->id;
-                unset($genresInput[$idx]);
-            }
-        }
+        $film->genres()->attach($usedGenres);
 
-        $keywords = [];
-        $descriptions = [];
-
-        foreach ($genresInput as $keyword) {
-            if (count(explode(' ', $keyword)) > 2) {
-                $descriptions[] = $keyword;
-                continue;
-            }
-
-            if ($keyword === 'Doku') {
-                continue;
-            }
-
-            $keywords[] = $keyword;
-        }
-
-        $film->description = implode(', ', $descriptions);
-        $saveFilmsKeywordsServices->save($film, $keywords);
-
-        $film->genres()->attach($ids);
         $film->save();
     }
 
