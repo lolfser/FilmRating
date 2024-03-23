@@ -46,6 +46,10 @@ class ImportController extends Controller {
         $stream = fopen('data://text/plain,' . $importdata, 'r');
         $header = fgetcsv($stream);
 
+        if ($header === false) {
+            return;
+        }
+
         $titleIndex = array_search($data['title'], $header, true);
         $durationIndex = array_search($data['duration'], $header, true);
         $filmIdIndex = array_search($data['film-id'], $header, true);

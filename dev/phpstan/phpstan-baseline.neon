@@ -1,0 +1,1311 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method App\\\\Actions\\\\Fortify\\\\CreateNewUser\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Actions/Fortify/CreateNewUser.php
+
+		-
+			message: "#^Method App\\\\Actions\\\\Fortify\\\\ResetUserPassword\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Actions/Fortify/ResetUserPassword.php
+
+		-
+			message: "#^Method App\\\\Actions\\\\Fortify\\\\UpdateUserPassword\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Actions/Fortify/UpdateUserPassword.php
+
+		-
+			message: "#^Parameter \\#1 \\$photo of method App\\\\Models\\\\User\\:\\:updateProfilePhoto\\(\\) expects Illuminate\\\\Http\\\\UploadedFile, string given\\.$#"
+			count: 1
+			path: ../../app/Actions/Fortify/UpdateUserProfileInformation.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:create\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:edit\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$filmmodification$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Undefined variable\\: \\$filmmodification$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$genres\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$languages\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$userActions\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:\\$id\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:fill\\(\\)\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has parameter \\$errors with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has parameter \\$films with no type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:index\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:show\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:store\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:update\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\> given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$filmId of method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) expects int, array given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$ratings\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:getGradesMap\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingFilmModifications\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingFilmModifications\\(\\) has parameter \\$allMods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingInfoSpalte\\(\\) has parameter \\$allGenres with generic class Illuminate\\\\Database\\\\Eloquent\\\\Collection but does not specify its types\\: TKey, TModel$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingInfoSpalte\\(\\) has parameter \\$genresInput with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingLanguages\\(\\) has parameter \\$languagesInput with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingRatings\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingRatings\\(\\) has parameter \\$gradeMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingRatings\\(\\) has parameter \\$initIndexMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingRatings\\(\\) has parameter \\$viewerMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:import\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:index\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveAllModifications\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveDuration\\(\\) should return int but returns int\\|string\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Parameter \\#1 \\$stream of function fgetcsv expects resource, resource\\|false given\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Property App\\\\Models\\\\Ratings\\:\\:\\$grades_id \\(int\\) does not accept int\\|string\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$filmmodifications\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$genres\\.$#"
+			count: 4
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$keywords\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$languages\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$ratings\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$comment on App\\\\Models\\\\Ratings\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$description on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$filmmodifications on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$filmsource on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$genres on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$grades on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$grades_id on App\\\\Models\\\\Ratings\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$id on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$keywords on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$languages on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot access property \\$ratings on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot call method save\\(\\) on App\\\\Models\\\\Films\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Cannot call method save\\(\\) on App\\\\Models\\\\Ratings\\|null\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
+			count: 4
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>filmsource\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 7
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>grades\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>keywords\" on a separate line does not do anything\\.$#"
+			count: 4
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			count: 4
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>ratings\" on a separate line does not do anything\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:filter\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:index\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:load\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:rate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:update\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmModificationService\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsKeywordsServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Cannot access offset 'Anzahl Filme' on mixed\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Cannot access offset 'Laufzeit in Stunden' on mixed\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Cannot access offset 'Note' on mixed\\.$#"
+			count: 3
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Cannot access offset 'Sichter' on mixed\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:index\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveFilmsWithoutDuration\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveFilmsWithoutDuration\\(\\) is unused\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveStatsGlobalRatingCount\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveStatsGlobalRatingCount\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$array of function array_unshift expects array, mixed given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$num of function round expects float\\|int, mixed given\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/StatsController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Middleware\\\\HandleInertiaRequests\\:\\:share\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Filmmodifications\\:\\:films\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Filmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 51$#"
+			count: 1
+			path: ../../app/Models/Filmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 74$#"
+			count: 1
+			path: ../../app/Models/Filmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films films // from belongsToMany\\)\\: Unexpected token \"films\", expected variable at offset 115$#"
+			count: 1
+			path: ../../app/Models/Filmmodifications.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:filmmodifications\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:films\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:filmsource\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:filmstatus\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:genres\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:keywords\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:languages\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Films\\:\\:ratings\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(Carbon\\|null created_at\\)\\: Unexpected token \"created_at\", expected variable at offset 286$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(Carbon\\|null updated_at\\)\\: Unexpected token \"updated_at\", expected variable at offset 322$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int filmsources_id\\)\\: Unexpected token \"filmsources_id\", expected variable at offset 157$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 39$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int year\\)\\: Unexpected token \"year\", expected variable at offset 189$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int\\|null duration\\)\\: Unexpected token \"duration\", expected variable at offset 216$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int\\|null filmstatus_id\\)\\: Unexpected token \"filmstatus_id\", expected variable at offset 247$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string film_identifier\\)\\: Unexpected token \"film_identifier\", expected variable at offset 62$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 98$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string\\|null description\\)\\: Unexpected token \"description\", expected variable at offset 128$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Filmmodifications filmmodifications // from belongsToMany\\)\\: Unexpected token \"filmmodifications\", expected variable at offset 522$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films films // from belongsToMany\\)\\: Unexpected token \"films\", expected variable at offset 598$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films films // from belongsToMany\\)\\: Unexpected token \"films\", expected variable at offset 662$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Filmsources filmsource // from belongsTo\\)\\: Unexpected token \"filmsource\", expected variable at offset 375$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Filmstatus filmstatus // from belongsTo\\)\\: Unexpected token \"filmstatus\", expected variable at offset 445$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Genres genres // from belongsToMany\\)\\: Unexpected token \"genres\", expected variable at offset 727$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Keywords keywords // from belongsToMany\\)\\: Unexpected token \"keywords\", expected variable at offset 795$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Languages languages // from belongsToMany\\)\\: Unexpected token \"languages\", expected variable at offset 866$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Ratings viewers // from belongsToMany\\)\\: Unexpected token \"viewers\", expected variable at offset 936$#"
+			count: 1
+			path: ../../app/Models/Films.php
+
+		-
+			message: "#^Method App\\\\Models\\\\FilmsFilmmodifications\\:\\:film\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^Method App\\\\Models\\\\FilmsFilmmodifications\\:\\:filmmodification\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int filmmodifications_id\\)\\: Unexpected token \"filmmodifications_id\", expected variable at offset 82$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int films_id\\)\\: Unexpected token \"films_id\", expected variable at offset 56$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Filmmodifications filmmodification // from belongsTo\\)\\: Unexpected token \"filmmodification\", expected variable at offset 210$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films film // from belongsTo\\)\\: Unexpected token \"film\", expected variable at offset 139$#"
+			count: 1
+			path: ../../app/Models/FilmsFilmmodifications.php
+
+		-
+			message: "#^Method App\\\\Models\\\\FilmsFilms\\:\\:relationkind\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/FilmsFilms.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int films1_id\\)\\: Unexpected token \"films1_id\", expected variable at offset 44$#"
+			count: 1
+			path: ../../app/Models/FilmsFilms.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int films2_id\\)\\: Unexpected token \"films2_id\", expected variable at offset 71$#"
+			count: 1
+			path: ../../app/Models/FilmsFilms.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int relationkinds_id\\)\\: Unexpected token \"relationkinds_id\", expected variable at offset 98$#"
+			count: 1
+			path: ../../app/Models/FilmsFilms.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Relationkinds relationkind // from belongsTo\\)\\: Unexpected token \"relationkind\", expected variable at offset 159$#"
+			count: 1
+			path: ../../app/Models/FilmsFilms.php
+
+		-
+			message: "#^Method App\\\\Models\\\\FilmsLanguages\\:\\:film\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^Method App\\\\Models\\\\FilmsLanguages\\:\\:language\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int films_id\\)\\: Unexpected token \"films_id\", expected variable at offset 48$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int languages_id\\)\\: Unexpected token \"languages_id\", expected variable at offset 74$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films film // from belongsTo\\)\\: Unexpected token \"film\", expected variable at offset 123$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Languages language // from belongsTo\\)\\: Unexpected token \"language\", expected variable at offset 186$#"
+			count: 1
+			path: ../../app/Models/FilmsLanguages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 45$#"
+			count: 1
+			path: ../../app/Models/Filmsources.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 68$#"
+			count: 1
+			path: ../../app/Models/Filmsources.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 44$#"
+			count: 1
+			path: ../../app/Models/Filmstatus.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 67$#"
+			count: 1
+			path: ../../app/Models/Filmstatus.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 40$#"
+			count: 1
+			path: ../../app/Models/Genres.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 63$#"
+			count: 1
+			path: ../../app/Models/Genres.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 40$#"
+			count: 1
+			path: ../../app/Models/Grades.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int value\\)\\: Unexpected token \"value\", expected variable at offset 60$#"
+			count: 1
+			path: ../../app/Models/Grades.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string trend\\)\\: Unexpected token \"trend\", expected variable at offset 86$#"
+			count: 1
+			path: ../../app/Models/Grades.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int\\|null id\\)\\: Unexpected token \"id\", expected variable at offset 47$#"
+			count: 1
+			path: ../../app/Models/Keywords.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 70$#"
+			count: 1
+			path: ../../app/Models/Keywords.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Languages\\:\\:films\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Languages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 43$#"
+			count: 1
+			path: ../../app/Models/Languages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string language\\)\\: Unexpected token \"language\", expected variable at offset 66$#"
+			count: 1
+			path: ../../app/Models/Languages.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string type\\)\\: Unexpected token \"type\", expected variable at offset 95$#"
+			count: 1
+			path: ../../app/Models/Languages.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films films // from belongsToMany\\)\\: Unexpected token \"films\", expected variable at offset 136$#"
+			count: 1
+			path: ../../app/Models/Languages.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Permissions\\:\\:viewer\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Permissions.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 45$#"
+			count: 1
+			path: ../../app/Models/Permissions.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int permission\\)\\: Unexpected token \"permission\", expected variable at offset 93$#"
+			count: 1
+			path: ../../app/Models/Permissions.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int viewers_id\\)\\: Unexpected token \"viewers_id\", expected variable at offset 65$#"
+			count: 1
+			path: ../../app/Models/Permissions.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Viewers viewer // from belongsTo\\)\\: Unexpected token \"viewer\", expected variable at offset 142$#"
+			count: 1
+			path: ../../app/Models/Permissions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Ratings\\:\\:film\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Ratings\\:\\:grade\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Ratings\\:\\:viewer\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(Carbon created_at\\)\\: Unexpected token \"created_at\", expected variable at offset 173$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(Carbon updated_at\\)\\: Unexpected token \"updated_at\", expected variable at offset 204$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int films_id\\)\\: Unexpected token \"films_id\", expected variable at offset 61$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int grades_id\\)\\: Unexpected token \"grades_id\", expected variable at offset 143$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 41$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int viewers_id\\)\\: Unexpected token \"viewers_id\", expected variable at offset 87$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string comment\\)\\: Unexpected token \"comment\", expected variable at offset 118$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films film // from belongsTo\\)\\: Unexpected token \"film\", expected variable at offset 251$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Grades grade // from belongsTo\\)\\: Unexpected token \"grade\", expected variable at offset 374$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Viewers viewer // from belongsTo\\)\\: Unexpected token \"viewer\", expected variable at offset 312$#"
+			count: 1
+			path: ../../app/Models/Ratings.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 47$#"
+			count: 1
+			path: ../../app/Models/Relationkinds.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 70$#"
+			count: 1
+			path: ../../app/Models/Relationkinds.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 46$#"
+			count: 1
+			path: ../../app/Models/Triggerkinds.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 69$#"
+			count: 1
+			path: ../../app/Models/Triggerkinds.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Viewers\\:\\:films\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Viewers\\:\\:user\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 41$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int users_id\\)\\: Unexpected token \"users_id\", expected variable at offset 61$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string comment\\)\\: Unexpected token \"comment\", expected variable at offset 119$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string initials\\)\\: Unexpected token \"initials\", expected variable at offset 90$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Films films // from belongsToMany\\)\\: Unexpected token \"films\", expected variable at offset 222$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^PHPDoc tag @property\\-read has invalid value \\(\\\\App\\\\Models\\\\Users user // from belongsTo\\)\\: Unexpected token \"user\", expected variable at offset 163$#"
+			count: 1
+			path: ../../app/Models/Viewers.php
+
+		-
+			message: "#^Parameter \\#1 \\$ability of static method Illuminate\\\\Support\\\\Facades\\\\Gate\\:\\:define\\(\\) expects string, int given\\.$#"
+			count: 1
+			path: ../../app/Providers/AuthServiceProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Support\\\\Str\\:\\:lower\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: ../../app/Providers/FortifyServiceProvider.php
+
+		-
+			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:jsonTranslations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:jsonTranslations\\(\\) has parameter \\$locale with no type specified\\.$#"
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:phpTranslations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:phpTranslations\\(\\) has parameter \\$locale with no type specified\\.$#"
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: "#^Cannot call method current\\(\\) on mixed\\.$#"
+			count: 1
+			path: ../../app/Services/FooterLinkService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\FooterLinkService\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/FooterLinkService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\FooterLinkService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/FooterLinkService.php
+
+		-
+			message: "#^Called 'where' on Laravel collection, but could have been retrieved as a query\\.$#"
+			count: 1
+			path: ../../app/Services/HasPermissionService.php
+
+		-
+			message: "#^Cannot call method current\\(\\) on mixed\\.$#"
+			count: 2
+			path: ../../app/Services/HeaderLinkService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\HeaderLinkService\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/HeaderLinkService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\HeaderLinkService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/HeaderLinkService.php
+
+		-
+			message: "#^Called 'where' on Laravel collection, but could have been retrieved as a query\\.$#"
+			count: 1
+			path: ../../app/Services/ReceiveCurrentViewerIdService.php
+
+		-
+			message: "#^Cannot access property \\$id on App\\\\Models\\\\Viewers\\|null\\.$#"
+			count: 1
+			path: ../../app/Services/ReceiveCurrentViewerIdService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SaveFilmModificationService\\:\\:save\\(\\) has parameter \\$userInputs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/SaveFilmModificationService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) has parameter \\$userInputs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/SaveFilmsGenresServices.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SaveFilmsKeywordsServices\\:\\:save\\(\\) has parameter \\$keyordsInput with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/SaveFilmsKeywordsServices.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) has parameter \\$inputLanguages with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/SaveFilmsLanguagesServices.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Stats\\\\GenresService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/GenresService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Stats\\\\GenresService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/GenresService.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/GenresService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Stats\\\\KeywordsService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/KeywordsService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Stats\\\\KeywordsService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/KeywordsService.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../../app/Services/Stats/KeywordsService.php
+
+		-
+			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: ../../config/cache.php
+
+		-
+			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: ../../config/database.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			count: 1
+			path: ../../config/sanctum.php
+
+		-
+			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: ../../config/session.php
+
+		-
+			message: "#^Call to static method factory\\(\\) on an unknown class App\\\\Models\\\\Team\\.$#"
+			count: 1
+			path: ../../database/factories/UserFactory.php
+
+		-
+			message: "#^Method CreateFilmmodificationsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201431_create_filmmodifications_table.php
+
+		-
+			message: "#^Method CreateFilmmodificationsFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_filmmodifications_films_table.php
+
+		-
+			message: "#^Method CreateFilmsFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_films_films_table.php
+
+		-
+			message: "#^Method CreateFilmsourcesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_filmsources_table.php
+
+		-
+			message: "#^Method CreateFilmstatusTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_filmstatus_table.php
+
+		-
+			message: "#^Method CreateGenresTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_genres_table.php
+
+		-
+			message: "#^Method CreateGradesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_grades_table.php
+
+		-
+			message: "#^Method CreateKeywordsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_keywords_table.php
+
+		-
+			message: "#^Method CreateRelationkindsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_relationkinds_table.php
+
+		-
+			message: "#^Method CreateTriggerkindsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_triggerkinds_table.php
+
+		-
+			message: "#^Method CreateViewersTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_14_201504_create_viewers_table.php
+
+		-
+			message: "#^Method CreateFilmsGenresTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_19_160739_create_films_genres_table.php
+
+		-
+			message: "#^Method CreateFilmsKeywordsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_19_160739_create_films_keywords_table.php
+
+		-
+			message: "#^Method CreateLanguagesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_20_112520_create_languages_table.php
+
+		-
+			message: "#^Method CreateFilmsLanguagesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_20_134119_create_films_languages_table.php
+
+		-
+			message: "#^Method CreateFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_20_143618_create_films_table.php
+
+		-
+			message: "#^Method CreateRatingsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_22_093154_create_ratings_table.php
+
+		-
+			message: "#^Method CreatePermissionsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2023_10_22_122646_create_permissions_table.php
+
+		-
+			message: "#^Method CreateSessionsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/migrations/2024_03_23_091351_create_sessions_table.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
+			count: 4
+			path: ../../database/seeders/FilmmodificationsSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmmodificationsSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\FilmmodificationsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmmodificationsSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmsourcesSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\FilmsourcesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmsourcesSeeder.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
+			count: 5
+			path: ../../database/seeders/FilmstatusSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmstatusSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\FilmstatusSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/FilmstatusSeeder.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
+			count: 5
+			path: ../../database/seeders/GenresSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/GenresSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\GenresSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/GenresSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/GradesSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\GradesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/GradesSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/LanguagesSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\LanguagesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/LanguagesSeeder.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
+			count: 2
+			path: ../../database/seeders/RelationkindsSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/RelationkindsSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\RelationkindsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/RelationkindsSeeder.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
+			count: 3
+			path: ../../database/seeders/TriggerkindsSeeder.php
+
+		-
+			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
+			count: 1
+			path: ../../database/seeders/TriggerkindsSeeder.php
+
+		-
+			message: "#^Method Database\\\\Seeders\\\\TriggerkindsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: ../../database/seeders/TriggerkindsSeeder.php
+
+		-
+			message: "#^Undefined variable\\: \\$this$#"
+			count: 1
+			path: ../../routes/console.php
