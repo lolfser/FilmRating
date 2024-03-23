@@ -77,7 +77,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                 <tr>
                     <td>Stichworte</td>
                     <td>
-                        <textarea name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+                        <textarea name="keywords" rows="2">{{ keywordsConcat(film.keywords) }}</textarea>
                     </td>
                 </tr>
                 <tr>

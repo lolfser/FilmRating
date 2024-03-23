@@ -45,6 +45,7 @@ class FilmsController extends Controller {
 
         return Inertia::render('FilmsList', [
             'films' => $films,
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
@@ -72,7 +73,8 @@ class FilmsController extends Controller {
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
         return Inertia::render('FilmsShow', [
-            'film' => $film
+            'film' => $film,
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
         ]);
     }
 
@@ -92,6 +94,7 @@ class FilmsController extends Controller {
             'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'errors' => $errors,
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
         ]);
     }
 

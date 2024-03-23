@@ -16,12 +16,12 @@
             <span v-if="film.description">
                 <br><br>
                 Beschreibung:
-                <textarea cols="30" rows="4" name="description">{{ film.description }}</textarea>
+                <textarea cols="30" rows="3" name="description">{{ film.description }}</textarea>
             </span>
             <span v-if="film.description">
                 <br><br>
                 Stichworte:
-                <textarea cols="30" rows="4" name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+                <textarea cols="30" rows="2" name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
             </span>
         </td>
         <td>
@@ -67,7 +67,7 @@
             <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
         </td>
         <td name="td_comment">
-            <textarea name="viewerComment">{{ viewerComment(film) }}</textarea>
+            <textarea name="viewerComment" rows="4">{{ viewerComment(film) }}</textarea>
         </td>
         <td>
             <form method="post" action="/rating/update/" submit="false">

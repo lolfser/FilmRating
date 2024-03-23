@@ -2,15 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Films;
-use App\Models\Ratings;
-use App\Models\Languages;
-use App\Models\Viewers;
-use App\Models\Grades;
-use App\Models\Genres;
-use App\Services\SaveFilmsLanguagesServices;
-use App\Services\SaveFilmsGenresServices;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -18,7 +9,6 @@ class StatsController extends Controller {
 
     public function index() {
 
-        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
         $allUsedGrades = [];
         $globalRating = $this->receiveStatsGlobalRatingCount();
 
@@ -83,6 +73,9 @@ class StatsController extends Controller {
         return Inertia::render('Stats', [
             'stats' => $arr,
             'statsGlobalRatingCount' => $globalRating,
+            'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
+            'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
@@ -117,4 +110,9 @@ class StatsController extends Controller {
         return $stats;
 
     }
+
+    private function receiveFilmsWithoutDuration() {
+
+    }
+
 }

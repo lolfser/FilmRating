@@ -16,6 +16,8 @@ import CompStats from '@/Components/Stats.vue';
                     <CompStats
                         :stats="stats"
                         :statsGlobalRatingCount="statsGlobalRatingCount"
+                        :keywordStats="keywordStats"
+                        :genreStats="genreStats"
                         :footerLinks="footerLinks" />
                 </div>
             </div>
@@ -24,7 +26,13 @@ import CompStats from '@/Components/Stats.vue';
 </template>
 <script>
 export default {
-  props: ['stats', 'statsGlobalRatingCount', 'footerLinks'],
+  props: [
+    'stats',
+    'statsGlobalRatingCount',
+    'genreStats',
+    'keywordStats',
+    'footerLinks'
+  ],
   computed: {
     headline: function () {return "Statistiken";},
   }

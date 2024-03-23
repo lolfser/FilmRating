@@ -43,6 +43,7 @@ class RatingsController extends Controller {
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
             '_token' => csrf_token(),
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
@@ -87,6 +88,7 @@ class RatingsController extends Controller {
             'genres' => Genres::all(),
             'active_filter' => $filter,
             '_token' => csrf_token(),
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }

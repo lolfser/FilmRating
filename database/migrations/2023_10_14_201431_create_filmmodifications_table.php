@@ -16,6 +16,7 @@ class CreateFilmmodificationsTable extends Migration {
             $table->increments('id');
             $table->string('name', 50)->default('');
 
+            $table->unique(["name"]); // isUnique => name
         });
     }
 }
