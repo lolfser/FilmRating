@@ -73,7 +73,8 @@ class FilmsController extends Controller {
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
         return Inertia::render('FilmsShow', [
-            'film' => $film
+            'film' => $film,
+            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
         ]);
     }
 
