@@ -4,9 +4,17 @@ namespace App\Services;
 
 class FooterLinkService {
 
+    /**
+     * @return array<mixed>
+     */
     public function receive(): array {
 
-       $currentPath = \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri();
+        $currentPath = $this->receiveCurrentPath();
+
+        if ($currentPath === null) {
+            // Todo: Add error handling
+            return [];
+        }
 
         $links = [];
         $links[] = $this->build('/films', 'Liste aller Filme', $currentPath === 'films');
@@ -26,6 +34,22 @@ class FooterLinkService {
 
     }
 
+    private function receiveCurrentPath(): ?string {
+
+        $root = \Illuminate\Support\Facades\Route::getFacadeRoot();
+
+        if (!$root instanceof \Illuminate\Routing\Router) {
+            // Todo: Add error handling
+            return null;
+        }
+
+        return $root->current()?->uri();
+
+    }
+
+    /**
+     * @return array<mixed>
+     */
     private function build(string $href, string $label, bool $active): array {
         return [
             'href' => $href,

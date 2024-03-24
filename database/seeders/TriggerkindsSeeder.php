@@ -9,22 +9,18 @@ use Illuminate\Support\Facades\DB;
 */
 class TriggerkindsSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
-            Triggerkinds::create(['name' => "Epellepsie", 'name' => "Epellepsie"]);
-            Triggerkinds::create(['name' => "Gewalt", 'name' => "Gewalt"]);
-            Triggerkinds::create(['name' => "Pornografie", 'name' => "Pornografie"]);
+            Triggerkinds::create(['name' => "Epellepsie"]);
+            Triggerkinds::create(['name' => "Gewalt"]);
+            Triggerkinds::create(['name' => "Pornografie"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

@@ -9,21 +9,17 @@ use Illuminate\Support\Facades\DB;
 */
 class RelationkindsSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
-            Relationkinds::create(['name' => "duplicate", 'name' => "duplicate"]);
-            Relationkinds::create(['name' => "similar", 'name' => "similar"]);
+            Relationkinds::create(['name' => "duplicate"]);
+            Relationkinds::create(['name' => "similar"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\DB;
 */
 class GradesSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
@@ -34,9 +30,9 @@ class GradesSeeder extends Seeder {
             Grades::create(['value' => 5, 'trend' => "-"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

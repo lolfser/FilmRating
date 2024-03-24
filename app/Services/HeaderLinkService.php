@@ -4,6 +4,9 @@ namespace App\Services;
 
 class HeaderLinkService {
 
+    /**
+     * @return array<mixed>
+     */
     public function receive(): array {
 
         $currentPath = \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri();
@@ -29,7 +32,10 @@ class HeaderLinkService {
 
     }
 
-    private function build(string $href, string $label, bool $active): array {
+    /**
+     * @return array<mixed>
+     */
+     private function build(string $href, string $label, bool $active): array {
         return [
             'href' => $href,
             'label' => $label,

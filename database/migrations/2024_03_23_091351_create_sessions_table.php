@@ -5,13 +5,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSessionsTable extends Migration {
 
-    /**
-     * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function up() {
+    public function up(): void {
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id');
             $table->bigInteger('user_id')->nullable()->unsigned();

@@ -121,16 +121,6 @@ parameters:
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:index\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/FilmsController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:show\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/FilmsController.php
-
-		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:store\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
@@ -157,16 +147,6 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:getGradesMap\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:handlingFilmModifications\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php
 
@@ -221,18 +201,8 @@ parameters:
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveAllModifications\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveDuration\\(\\) should return int but returns int\\|string\\.$#"
 			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
-			message: "#^Parameter \\#1 \\$stream of function fgetcsv expects resource, resource\\|false given\\.$#"
-			count: 2
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
@@ -271,11 +241,6 @@ parameters:
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Cannot access property \\$description on App\\\\Models\\\\Films\\|null\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
 			message: "#^Cannot access property \\$filmmodifications on App\\\\Models\\\\Films\\|null\\.$#"
 			count: 2
 			path: ../../app/Http/Controllers/RatingsController.php
@@ -301,11 +266,6 @@ parameters:
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Cannot access property \\$id on App\\\\Models\\\\Films\\|null\\.$#"
-			count: 2
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
 			message: "#^Cannot access property \\$keywords on App\\\\Models\\\\Films\\|null\\.$#"
 			count: 2
 			path: ../../app/Http/Controllers/RatingsController.php
@@ -318,11 +278,6 @@ parameters:
 		-
 			message: "#^Cannot access property \\$ratings on App\\\\Models\\\\Films\\|null\\.$#"
 			count: 3
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Cannot call method save\\(\\) on App\\\\Models\\\\Films\\|null\\.$#"
-			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
@@ -366,16 +321,6 @@ parameters:
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:filter\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:index\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\RatingsController\\:\\:load\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
@@ -391,52 +336,7 @@ parameters:
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmModificationService\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsKeywordsServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|null given\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
 			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Cannot access offset 'Anzahl Filme' on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Cannot access offset 'Laufzeit in Stunden' on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Cannot access offset 'Note' on mixed\\.$#"
-			count: 3
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Cannot access offset 'Sichter' on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:index\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/StatsController.php
 
@@ -447,11 +347,6 @@ parameters:
 
 		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveFilmsWithoutDuration\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\StatsController\\:\\:receiveStatsGlobalRatingCount\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/StatsController.php
 
@@ -468,11 +363,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 2
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
-			message: "#^Parameter \\#1 \\$num of function round expects float\\|int, mixed given\\.$#"
-			count: 1
 			path: ../../app/Http/Controllers/StatsController.php
 
 		-
@@ -986,21 +876,6 @@ parameters:
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Cannot call method current\\(\\) on mixed\\.$#"
-			count: 1
-			path: ../../app/Services/FooterLinkService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\FooterLinkService\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Services/FooterLinkService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\FooterLinkService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Services/FooterLinkService.php
-
-		-
 			message: "#^Called 'where' on Laravel collection, but could have been retrieved as a query\\.$#"
 			count: 1
 			path: ../../app/Services/HasPermissionService.php
@@ -1008,16 +883,6 @@ parameters:
 		-
 			message: "#^Cannot call method current\\(\\) on mixed\\.$#"
 			count: 2
-			path: ../../app/Services/HeaderLinkService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\HeaderLinkService\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Services/HeaderLinkService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\HeaderLinkService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
 			path: ../../app/Services/HeaderLinkService.php
 
 		-
@@ -1051,11 +916,6 @@ parameters:
 			path: ../../app/Services/SaveFilmsLanguagesServices.php
 
 		-
-			message: "#^Method App\\\\Services\\\\Stats\\\\GenresService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/GenresService.php
-
-		-
 			message: "#^Method App\\\\Services\\\\Stats\\\\GenresService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
 			count: 1
 			path: ../../app/Services/Stats/GenresService.php
@@ -1064,11 +924,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 1
 			path: ../../app/Services/Stats/GenresService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\Stats\\\\KeywordsService\\:\\:receive\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/KeywordsService.php
 
 		-
 			message: "#^Method App\\\\Services\\\\Stats\\\\KeywordsService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
@@ -1104,206 +959,6 @@ parameters:
 			message: "#^Call to static method factory\\(\\) on an unknown class App\\\\Models\\\\Team\\.$#"
 			count: 1
 			path: ../../database/factories/UserFactory.php
-
-		-
-			message: "#^Method CreateFilmmodificationsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201431_create_filmmodifications_table.php
-
-		-
-			message: "#^Method CreateFilmmodificationsFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_filmmodifications_films_table.php
-
-		-
-			message: "#^Method CreateFilmsFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_films_films_table.php
-
-		-
-			message: "#^Method CreateFilmsourcesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_filmsources_table.php
-
-		-
-			message: "#^Method CreateFilmstatusTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_filmstatus_table.php
-
-		-
-			message: "#^Method CreateGenresTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_genres_table.php
-
-		-
-			message: "#^Method CreateGradesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_grades_table.php
-
-		-
-			message: "#^Method CreateKeywordsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_keywords_table.php
-
-		-
-			message: "#^Method CreateRelationkindsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_relationkinds_table.php
-
-		-
-			message: "#^Method CreateTriggerkindsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_triggerkinds_table.php
-
-		-
-			message: "#^Method CreateViewersTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_14_201504_create_viewers_table.php
-
-		-
-			message: "#^Method CreateFilmsGenresTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_19_160739_create_films_genres_table.php
-
-		-
-			message: "#^Method CreateFilmsKeywordsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_19_160739_create_films_keywords_table.php
-
-		-
-			message: "#^Method CreateLanguagesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_20_112520_create_languages_table.php
-
-		-
-			message: "#^Method CreateFilmsLanguagesTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_20_134119_create_films_languages_table.php
-
-		-
-			message: "#^Method CreateFilmsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_20_143618_create_films_table.php
-
-		-
-			message: "#^Method CreateRatingsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_22_093154_create_ratings_table.php
-
-		-
-			message: "#^Method CreatePermissionsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2023_10_22_122646_create_permissions_table.php
-
-		-
-			message: "#^Method CreateSessionsTable\\:\\:up\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/migrations/2024_03_23_091351_create_sessions_table.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
-			count: 4
-			path: ../../database/seeders/FilmmodificationsSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmmodificationsSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\FilmmodificationsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmmodificationsSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmsourcesSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\FilmsourcesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmsourcesSeeder.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
-			count: 5
-			path: ../../database/seeders/FilmstatusSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmstatusSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\FilmstatusSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/FilmstatusSeeder.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
-			count: 5
-			path: ../../database/seeders/GenresSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/GenresSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\GenresSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/GenresSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/GradesSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\GradesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/GradesSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/LanguagesSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\LanguagesSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/LanguagesSeeder.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
-			count: 2
-			path: ../../database/seeders/RelationkindsSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/RelationkindsSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\RelationkindsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/RelationkindsSeeder.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'name' \\('name', 'name'\\)\\.$#"
-			count: 3
-			path: ../../database/seeders/TriggerkindsSeeder.php
-
-		-
-			message: "#^Caught class Database\\\\Seeders\\\\Exception not found\\.$#"
-			count: 1
-			path: ../../database/seeders/TriggerkindsSeeder.php
-
-		-
-			message: "#^Method Database\\\\Seeders\\\\TriggerkindsSeeder\\:\\:run\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: ../../database/seeders/TriggerkindsSeeder.php
 
 		-
 			message: "#^Undefined variable\\: \\$this$#"

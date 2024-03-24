@@ -9,23 +9,19 @@ use Illuminate\Support\Facades\DB;
 */
 class FilmmodificationsSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
-            Filmmodifications::create(['name' => "child9", 'name' => "child9"]);
-            Filmmodifications::create(['name' => "child13", 'name' => "child13"]);
-            Filmmodifications::create(['name' => "child17", 'name' => "child17"]);
-            Filmmodifications::create(['name' => "queer", 'name' => "queer"]);
+            Filmmodifications::create(['name' => "child9"]);
+            Filmmodifications::create(['name' => "child13"]);
+            Filmmodifications::create(['name' => "child17"]);
+            Filmmodifications::create(['name' => "queer"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

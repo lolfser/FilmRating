@@ -18,7 +18,7 @@ use Inertia\Inertia;
 
 class RatingsController extends Controller {
 
-    public function index() {
+    public function index(): \Inertia\Response {
 
         $films = Films::all();
 
@@ -48,7 +48,7 @@ class RatingsController extends Controller {
         ]);
     }
 
-    public function filter(Request $request) {
+    public function filter(Request $request): \Inertia\Response {
 
         $filter = $request->all()['filter'];
 
@@ -103,6 +103,12 @@ class RatingsController extends Controller {
         }
 
         $film = $films->first();
+
+        if ($film === null) {
+            // Todo: Error handling
+            return redirect(route("rating.index"));
+        }
+
         $film->description = $request->all()['description'] ?? '';
         $film->save();
 

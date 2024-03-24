@@ -44,6 +44,11 @@ class ImportController extends Controller {
         $gradeMap = $this->getGradesMap();
 
         $stream = fopen('data://text/plain,' . $importdata, 'r');
+
+        if ($stream === false) {
+            return;
+        }
+
         $header = fgetcsv($stream);
 
         if ($header === false) {
@@ -150,6 +155,9 @@ class ImportController extends Controller {
 
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function getGradesMap(): array {
         $map = [];
         foreach (Grades::all() as $grade) {
@@ -334,7 +342,7 @@ class ImportController extends Controller {
         bool  $isChild9,
         bool  $isChild13,
         bool  $isChild17
-    ) {
+    ): void {
         $films->filmmodifications()->sync([]);
         $mods = [];
 
@@ -352,7 +360,7 @@ class ImportController extends Controller {
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function receiveAllModifications(): array
     {

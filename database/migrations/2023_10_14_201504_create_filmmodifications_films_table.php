@@ -5,13 +5,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFilmmodificationsFilmsTable extends Migration {
 
-    /**
-     * Run the migrations.
-     * @return void
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function up() {
+    public function up(): void {
         Schema::create('filmmodifications_films', function (Blueprint $table) {
             $table->unsignedInteger('filmmodifications_id');
             $table->unsignedInteger('films_id');
