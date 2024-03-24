@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRelationkindsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('relationkinds', function (Blueprint $table) {
             $table->increments('id');

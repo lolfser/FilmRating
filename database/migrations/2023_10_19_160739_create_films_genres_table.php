@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFilmsGenresTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('films_genres', function (Blueprint $table) {
             $table->unsignedInteger('films_id');

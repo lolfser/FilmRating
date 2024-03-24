@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFilmmodificationsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('filmmodifications', function (Blueprint $table) {
             $table->increments('id');

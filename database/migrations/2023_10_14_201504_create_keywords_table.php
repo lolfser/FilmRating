@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateKeywordsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('keywords', function (Blueprint $table) {
             $table->increments('id');

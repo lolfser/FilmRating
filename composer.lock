@@ -3492,16 +3492,16 @@
         },
         {
             "name": "pkeidel/dbtolaravel",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PKeidel/dbtolaravel.git",
-                "reference": "0db94ebad3093bf27e2e9f67bb90cc242276da30"
+                "reference": "898eebb1327240fd32fa736b2a31742606a66fc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PKeidel/dbtolaravel/zipball/0db94ebad3093bf27e2e9f67bb90cc242276da30",
-                "reference": "0db94ebad3093bf27e2e9f67bb90cc242276da30",
+                "url": "https://api.github.com/repos/PKeidel/dbtolaravel/zipball/898eebb1327240fd32fa736b2a31742606a66fc4",
+                "reference": "898eebb1327240fd32fa736b2a31742606a66fc4",
                 "shasum": ""
             },
             "require": {
@@ -3541,9 +3541,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PKeidel/dbtolaravel/issues",
-                "source": "https://github.com/PKeidel/dbtolaravel/tree/v2.0.1"
+                "source": "https://github.com/PKeidel/dbtolaravel/tree/v2.0.2"
             },
-            "time": "2023-10-16T17:06:10+00:00"
+            "time": "2024-03-24T10:50:55+00:00"
         },
         {
             "name": "pragmarx/google2fa",

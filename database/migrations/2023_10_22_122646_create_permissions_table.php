@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePermissionsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');

@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRatingsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id');

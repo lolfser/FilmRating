@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLanguagesTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('languages', function (Blueprint $table) {
             $table->increments('id');

@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateViewersTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('viewers', function (Blueprint $table) {
             $table->increments('id');

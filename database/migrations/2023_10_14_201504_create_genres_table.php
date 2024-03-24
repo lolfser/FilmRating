@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateGenresTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('genres', function (Blueprint $table) {
             $table->increments('id');

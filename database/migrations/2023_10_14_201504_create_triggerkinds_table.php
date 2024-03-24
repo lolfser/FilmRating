@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTriggerkindsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('triggerkinds', function (Blueprint $table) {
             $table->increments('id');

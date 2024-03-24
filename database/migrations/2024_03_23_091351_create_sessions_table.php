@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSessionsTable extends Migration {
 
+    /**
+     * Run the migrations.
+     */
     public function up(): void {
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id');
