@@ -7,11 +7,8 @@ class CreateFilmsFilmsTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('films_films', function (Blueprint $table) {
             $table->integer('films1_id');
             $table->integer('films2_id');

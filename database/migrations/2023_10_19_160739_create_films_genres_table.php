@@ -7,11 +7,8 @@ class CreateFilmsGenresTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('films_genres', function (Blueprint $table) {
             $table->unsignedInteger('films_id');
             $table->unsignedInteger('genres_id');

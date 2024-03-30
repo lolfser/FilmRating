@@ -7,11 +7,8 @@ class CreateFilmsTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('films', function (Blueprint $table) {
             $table->increments('id');
             $table->string('film_identifier', 50)->comment('import identifier');

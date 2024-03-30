@@ -7,7 +7,7 @@ use Inertia\Inertia;
 
 class StatsController extends Controller {
 
-    public function index() {
+    public function index(): \Inertia\Response {
 
         $allUsedGrades = [];
         $globalRating = $this->receiveStatsGlobalRatingCount();
@@ -34,6 +34,10 @@ class StatsController extends Controller {
         $arr = ['Sichter' => []];
 
         foreach ($films as $key => $dataRow) {
+            if (!is_array($dataRow)) {
+                // Todo: Error handling
+                continue;
+            }
             $allUsedGrades[$dataRow['Note']] = $dataRow['Note'];
             $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round($dataRow['Laufzeit in Stunden'], 2)];
         }
@@ -80,6 +84,9 @@ class StatsController extends Controller {
         ]);
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function receiveStatsGlobalRatingCount(): array {
 
         $stats = DB::select("

@@ -24,7 +24,7 @@ class FilmsController extends Controller {
         'updated' => '',
     ];
 
-    public function index() {
+    public function index(): \Inertia\Response {
 
         $films = Films::orderBy('film_identifier')->whereNot('film_identifier', '')->get();
 
@@ -69,7 +69,7 @@ class FilmsController extends Controller {
         return redirect(route("films.index"));
     }
 
-    public function show(Films $film) {
+    public function show(Films $film): \Inertia\Response {
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
         return Inertia::render('FilmsShow', [

@@ -7,11 +7,8 @@ class CreateRatingsTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('films_id');

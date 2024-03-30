@@ -32,6 +32,7 @@ class FilmmodificationsController extends Controller {
      * Store a newly created resource in storage.
      * 
      * @param  \Illuminate\Http\Request $request
+     * 
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
@@ -50,6 +51,7 @@ class FilmmodificationsController extends Controller {
      * Display the specified resource.
      * 
      * @param  Filmmodifications $filmmodification
+     * 
      * @return \Illuminate\Http\Response
      */
     public function show(Filmmodifications $filmmodification) {
@@ -61,6 +63,7 @@ class FilmmodificationsController extends Controller {
      * Show the form for editing the specified resource.
      * 
      * @param  Filmmodifications $filmmodification
+     * 
      * @return \Illuminate\Http\Response
      */
     public function edit(Filmmodifications $filmmodification) {
@@ -73,6 +76,7 @@ class FilmmodificationsController extends Controller {
      * 
      * @param  \Illuminate\Http\Request $request
      * @param  Filmmodifications $filmmodification
+     * 
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Filmmodifications $filmmodification) {
@@ -87,8 +91,10 @@ class FilmmodificationsController extends Controller {
      * Remove the specified resource from storage.
      * 
      * @param  Filmmodifications $filmmodification
-     * @throws \Exception
+     * 
      * @return \Illuminate\Http\Response
+     * 
+     * @throws \Exception
      */
     public function destroy() {
         $filmmodification->delete();

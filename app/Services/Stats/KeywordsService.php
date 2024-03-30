@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 
 class KeywordsService {
 
+    /**
+     * @return array<mixed>
+     */
     public function receive(): array {
 
         $stats = DB::select("

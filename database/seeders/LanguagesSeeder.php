@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\DB;
 */
 class LanguagesSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
@@ -27,9 +23,9 @@ class LanguagesSeeder extends Seeder {
             Languages::create(['language' => 'ohne', 'type' => "audio"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

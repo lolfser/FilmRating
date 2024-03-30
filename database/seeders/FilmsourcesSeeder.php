@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\DB;
 */
 class FilmsourcesSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
@@ -22,9 +18,9 @@ class FilmsourcesSeeder extends Seeder {
             Filmsources::create(['name' => "film free way"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

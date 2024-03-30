@@ -7,11 +7,8 @@ class CreateFilmstatusTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('filmstatus', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);

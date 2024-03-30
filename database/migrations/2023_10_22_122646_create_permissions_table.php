@@ -7,11 +7,8 @@ class CreatePermissionsTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('viewers_id')->default(0);

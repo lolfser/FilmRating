@@ -7,11 +7,8 @@ class CreateGradesTable extends Migration {
 
     /**
      * Run the migrations.
-     * @return void
-     * 
-     * @return \Illuminate\Http\Response
      */
-    public function up() {
+    public function up(): void {
         Schema::create('grades', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('value');

@@ -9,24 +9,20 @@ use Illuminate\Support\Facades\DB;
 */
 class FilmstatusSeeder extends Seeder {
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function run() {
+    public function run(): void {
         try {
             DB::beginTransaction();
 
-            Filmstatus::create(['name' => "open", 'name' => "open"]);
-            Filmstatus::create(['name' => "dabei", 'name' => "dabei"]);
-            Filmstatus::create(['name' => "raus", 'name' => "raus"]);
-            Filmstatus::create(['name' => "nur kpj", 'name' => "nur kpj"]);
-            Filmstatus::create(['name' => "vielleicht", 'name' => "vielleicht"]);
+            Filmstatus::create(['name' => "open"]);
+            Filmstatus::create(['name' => "dabei"]);
+            Filmstatus::create(['name' => "raus"]);
+            Filmstatus::create(['name' => "nur kpj"]);
+            Filmstatus::create(['name' => "vielleicht"]);
 
             DB::commit();
-        } catch(Exception $e) {
+        } catch(\Throwable $t) {
             DB::rollback();
-            echo $e;
+            echo $t;
             exit;
         }
     }

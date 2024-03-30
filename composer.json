@@ -12,7 +12,7 @@
         "laravel/jetstream": "^4.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "pkeidel/dbtolaravel": "^2.0",
+        "pkeidel/dbtolaravel": "^2.0.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
@@ -21,6 +21,8 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
+        "nunomaduro/larastan": "^2.9",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.1",
         "spatie/laravel-ignition": "^2.0"
     },
@@ -49,6 +51,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "phpstan": [
+            "./vendor/bin/phpstan analyse --configuration dev/phpstan/phpstan.neon"
+        ],
+        "phpstan:baseline": [
+            "./vendor/bin/phpstan analyse --configuration dev/phpstan/phpstan.neon --generate-baseline dev/phpstan/phpstan-baseline.neon"
         ]
     },
     "extra": {
