@@ -22,7 +22,9 @@ import Footer from './Footer.vue';
                         <td>{{calculateGenres(film)}}</td>
                         <td>
                             <span v-for="userAction in film.userActions">
-                                <a :href="userAction.href">{{ userAction.label }}</a>
+                                <a :href="userAction.href">
+                                    <img :src="userAction.icon" style='height: 15px; cursor: pointer; display: inline' :title='userAction.title'>
+                                </a>
                             </span>
                         </td>
                     </tr>

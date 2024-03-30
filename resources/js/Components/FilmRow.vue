@@ -26,6 +26,15 @@
         </td>
         <td>
             <table>
+                <tr>
+                    <td class="td_filmstatus" colspan="2" v-if="user.statuschange">
+                        <MultiSelect :options="filmstatus" :optionLabel="filmstatusLabels" :optionValue="filmstatusValues"
+                             placeholder="Filmstatus wählen"
+                             name="filmstatus"
+                             :selectionLimit="1"
+                             :autoFilterFocus="true" v-model="selectedFilmstatus" />
+                    </td>
+                </tr>
                 <tr v-for="(language, type) in languages">
                   <td>{{ type }}</td>
                   <td>
@@ -42,7 +51,7 @@
                   </td>
                 </tr>
                 <tr>
-                    <td name="td_filmnotifications" colspan="2">
+                    <td class="td_filmnotifications" colspan="2">
                         <b>Modifikaitonen: </b>
                         <span v-for="mod in filmModifications">
                             <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
@@ -51,22 +60,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <td name="td_genres" colspan="2">
+                    <td class="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
                                      placeholder="Genre wählen"
                                      name="genres"
-                                     autoFilterFocus v-model="selectedGenres"
+                                     :autoFilterFocus="true" v-model="selectedGenres"
                         />
                     </td>
                 </tr>
             </table>
         </td>
         <td>{{ otherGrade(film) }}</td>
-        <td name="td_grades">
+        <td class="td_grades">
             <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
         </td>
-        <td name="td_comment">
+        <td class="td_comment">
             <textarea name="viewerComment" rows="4">{{ viewerComment(film) }}</textarea>
         </td>
         <td>
@@ -74,6 +83,7 @@
                 <input type="hidden" name="_token" :value="_token" />
                 <input type="hidden" name="id" v-bind:value="film.film_identifier" />
                 <input type="hidden" name="genres" />
+                <input type="hidden" name="filmstatus" />
                 <input type="hidden" name="comment" />
                 <input type="hidden" name="grades_id" />
                 <input  v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
@@ -99,16 +109,19 @@ export default {
         'film',
         'grades',
         'languages',
+        'filmstatus',
         'viewerId',
         'ratings',
         'grades',
         'genres',
         'filmModifications',
+        'user',
         '_token'
     ],
     data() {
         return {
-            'selectedGenres': []
+            'selectedGenres': [],
+            'selectedFilmstatus': []
         }
     },
     computed: {
@@ -123,6 +136,8 @@ export default {
             return true;
         });
         this.selectedGenres = genres;
+        if (this.film.filmstatus_id !== null)
+            this.selectedFilmstatus = [this.film.filmstatus_id];
     },
     methods: {
         callbackUpdateGenres: function(genres) {
@@ -132,6 +147,9 @@ export default {
                 return true;
             });
             this.selectedGenres = genresResult;
+        },
+        callbackUpdateFilmstatus: function() {
+            this.selectedFilmstatus = [this.film.filmstatus_id];
         },
         keywordsConcat: function(keywords) {
             let result = '';
@@ -144,7 +162,7 @@ export default {
         isSelected: function (filmLanguages, currentLanguage) {
             let result = false;
             filmLanguages.every(function (l) {
-                if (l.id == currentLanguage) {
+                if (l.id === currentLanguage) {
                     result = true;
                     return false; // break
                 }
@@ -159,6 +177,12 @@ export default {
         genreLabels: function (genre) {
             return genre.name;
         },
+        filmstatusLabels: function (filmstatus) {
+            return filmstatus.name;
+        },
+        filmstatusValues: function (filmstatus) {
+            return filmstatus.id;
+        },
         loadFilm: function (event, film, grades) {
             let data = new FormData();
             data.append('filmId', film.id);
@@ -166,16 +190,16 @@ export default {
             let form = event.target.parentNode;
             data.append('_token', form.querySelector('input[name="_token"]').value);
 
-            function load(url, callBack, eventTarget, film, callbackUpdateGenres, otherGrade) {
+            function load(url, callBack, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
-                    callBack(this, eventTarget, film, callbackUpdateGenres, otherGrade);
+                    callBack(this, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
             }
 
-            function loadCallback(xhttp, eventTarget, film, callbackUpdateGenres, otherGrade) {
+            function loadCallback(xhttp, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus) {
 
                 let data = "";
 
@@ -194,6 +218,10 @@ export default {
                 film.filmmodifications = data.filmmodifications;
                 film.ratings = data.ratings;
 
+                if (data.filmstatus_id !== null) {
+                    callbackUpdateFilmstatus(film)
+                }
+
                 callbackUpdateGenres(data.genres);
                 otherGrade(film);
 
@@ -207,16 +235,17 @@ export default {
                  event.target,
                  film,
                  this.callbackUpdateGenres,
-                 this.otherGrade
+                 this.otherGrade,
+                 this.callbackUpdateFilmstatus
             );
 
             return event;
         },
         loadQuickSaveUrl: function (event, film, grades) {
             let tr = event.target.parentNode.parentNode.parentNode;
-            let viewerComment = tr.querySelector('[name="td_comment"] textarea').value;
+            let viewerComment = tr.querySelector('.td_comment textarea').value;
             tr.querySelector('[name="comment"]').value = viewerComment;
-            let gradeInput = tr.querySelector('[name="td_grades"] input.p-autocomplete-input').value;
+            let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
             grades.every(function(grade) {
                 if (grade.value + grade.trend == gradeInput) {
                     tr.querySelector('[name="grades_id"]').value = grade.id;
@@ -224,8 +253,13 @@ export default {
                 }
                 return true;
             });
-            let genresInput = tr.querySelector('[name="td_genres"] [name="genres"]').value;
+
+            let genresInput = tr.querySelector('.td_genres [name="genres"]').value;
             tr.querySelector('form [name="genres"]').value = genresInput;
+
+            let filmstatusInput = tr.querySelector('.td_filmstatus [name="filmstatus"]')?.value;
+            tr.querySelector('form [name="filmstatus"]').value = filmstatusInput;
+
             let languages = tr.querySelectorAll('[name^="' + film.id + '_language"]:checked');
             languages.forEach(function(element) {
                 let element2 = tr.querySelector('[name="' + element.name.split(film.id + '_')[1] + '"]');
@@ -236,7 +270,7 @@ export default {
             let data = new FormData();
             data.append('isAjax', true);
 
-            let filmNotifications = tr.querySelectorAll('[name="td_filmnotifications"] :checked');
+            let filmNotifications = tr.querySelectorAll('.td_filmnotifications :checked');
             filmNotifications.forEach(function(element) {
                 data.append(element.name, true);
             });

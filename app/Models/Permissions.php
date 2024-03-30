@@ -27,6 +27,7 @@ class Permissions extends Model {
     public const PERMISSION_LIST_FILMS = 7;
 
     public const PERMISSION_IMPORT = 8;
+    public const PERMISSION_CHANGE_FILMSTATUS = 9;
 
     protected $table    = 'permissions';
     protected $fillable = ['viewers_id','permission'];

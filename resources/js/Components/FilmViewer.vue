@@ -33,9 +33,11 @@ import PrimaryButton from './PrimaryButton.vue';
                     :grades="grades"
                     :genres="genres"
                     :languages="languages"
+                    :filmstatus="filmstatus"
                     :viewerId="viewerId"
                     :film-modifications="filmModifications"
                     :keywords="keywords"
+                    :user="user"
                     :_token="_token" />
             </table>
 
@@ -51,12 +53,14 @@ export default {
         'grades',
         'genres',
         'languages',
+        'filmstatus',
         'viewerId',
         'active_filter',
         'headline',
         'footerLinks',
         'filmModifications',
         'keywords',
+        'user',
         '_token'
     ],
     data() {

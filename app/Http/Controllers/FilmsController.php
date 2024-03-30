@@ -31,12 +31,14 @@ class FilmsController extends Controller {
         $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
 
         foreach ($films as $film) {
-            $film->languages; // Loading pivots
-            $film->genres; // Loading pivots
+            // Loading pivots
+            $film->languages;
+            $film->genres;
             if ($editFilmsIsAllowed) {
                 $film->userActions = [
                     [
-                        'label' => 'edit',
+                        'icon' => '/svgs/pen.svg',
+                        'title' => 'bearbeiten',
                         'href' => '/films/' . $film->id . '/cu',
                     ]
                 ];
