@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd8acf568f815c7c43c801655db6959c",
+    "content-hash": "baa0e267c4ac674cb778b072621dfdf3",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3492,16 +3492,16 @@
         },
         {
             "name": "pkeidel/dbtolaravel",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PKeidel/dbtolaravel.git",
-                "reference": "898eebb1327240fd32fa736b2a31742606a66fc4"
+                "reference": "c8289675ddeb0c8e2ed92e691b2ce6b30608c272"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PKeidel/dbtolaravel/zipball/898eebb1327240fd32fa736b2a31742606a66fc4",
-                "reference": "898eebb1327240fd32fa736b2a31742606a66fc4",
+                "url": "https://api.github.com/repos/PKeidel/dbtolaravel/zipball/c8289675ddeb0c8e2ed92e691b2ce6b30608c272",
+                "reference": "c8289675ddeb0c8e2ed92e691b2ce6b30608c272",
                 "shasum": ""
             },
             "require": {
@@ -3541,9 +3541,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PKeidel/dbtolaravel/issues",
-                "source": "https://github.com/PKeidel/dbtolaravel/tree/v2.0.2"
+                "source": "https://github.com/PKeidel/dbtolaravel/tree/v2.0.3"
             },
-            "time": "2024-03-24T10:50:55+00:00"
+            "time": "2024-03-25T21:57:53+00:00"
         },
         {
             "name": "pragmarx/google2fa",
