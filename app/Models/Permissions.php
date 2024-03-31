@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Model Permissions
  *
- * @property int id
- * @property int viewers_id
- * @property int permission
- * @property-read \App\Models\Viewers viewer // from belongsTo
+ * @property int $id
+ * @property int $viewers_id
+ * @property int $permission
+ * @property-read \App\Models\Viewers $viewer // from belongsTo
  * @package App\Models
 */
 class Permissions extends Model {

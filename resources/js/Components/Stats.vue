@@ -64,6 +64,14 @@ import Footer from './Footer.vue';
             <td>{{ stat.counter }}</td>
         </tr>
     </table>
+    <br><br>
+    Keine Laufzeit<br><br>
+    <table class="table">
+        <tr v-for="(stat, key) in noDurationStats">
+            <td>{{ stat.film_identifier }}</td>
+            <td>{{ stat.name }}</td>
+        </tr>
+    </table>
 
 </div>
 <Footer :footerLinks="footerLinks" />
@@ -72,6 +80,7 @@ import Footer from './Footer.vue';
 export default {
   props: [
     'stats',
+    'noDurationStats',
     'statsGlobalRatingCount',
     'genreStats',
     'keywordStats',

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Model Filmmodifications
  *
- * @property int id
- * @property string name
- * @property-read \App\Models\Films films // from belongsToMany
+ * @property int $id
+ * @property string $name
+ * @property-read \App\Models\Films $films // from belongsToMany
  * @package App\Models
 */
 class Filmmodifications extends Model {

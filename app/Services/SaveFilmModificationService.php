@@ -7,6 +7,9 @@ use App\Models\Films;
 
 class SaveFilmModificationService {
 
+    /**
+     * @param string[]|int[] $userInputs
+     */
     public function save(Films $film, array $userInputs): void {
 
         $sync = [];

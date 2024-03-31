@@ -16,6 +16,7 @@ import CompStats from '@/Components/Stats.vue';
                     <CompStats
                         :stats="stats"
                         :statsGlobalRatingCount="statsGlobalRatingCount"
+                        :noDurationStats="noDurationStats"
                         :keywordStats="keywordStats"
                         :genreStats="genreStats"
                         :footerLinks="footerLinks" />
@@ -29,6 +30,7 @@ export default {
   props: [
     'stats',
     'statsGlobalRatingCount',
+    'noDurationStats',
     'genreStats',
     'keywordStats',
     'footerLinks'

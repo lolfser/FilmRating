@@ -3,22 +3,21 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Model Ratings
  *
- * @property int id
- * @property int films_id
- * @property int viewers_id
- * @property string comment
- * @property int grades_id
- * @property Carbon created_at
- * @property Carbon updated_at
- * @property-read \App\Models\Films film // from belongsTo
- * @property-read \App\Models\Viewers viewer // from belongsTo
- * @property-read \App\Models\Grades grade // from belongsTo
+ * @property int $id
+ * @property int $films_id
+ * @property int $viewers_id
+ * @property string $comment
+ * @property int $grades_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read \App\Models\Films $film // from belongsTo
+ * @property-read \App\Models\Viewers $viewer // from belongsTo
+ * @property-read \App\Models\Grades $grade // from belongsTo
  * @package App\Models
 */
 class Ratings extends Model {
