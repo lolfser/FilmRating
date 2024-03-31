@@ -1,11 +1,21 @@
 <script setup>
     import AutoComplete from './PrimeVueAutoComplete.vue';
     import MultiSelect from "@/Components/MultiSelect.vue";
+    import Checkbox from 'primevue/checkbox';
 </script>
 <style>
     th, td {
         border: 1px solid black;
         padding: 12px;
+    }
+    .p-checkbox-box {
+        background-color: #DDD;
+    }
+    .p-highlight {
+        background-color: unset;
+    }
+    .p-highlight .p-checkbox-box {
+        background-color: #797;
     }
 </style>
 <template>
@@ -13,15 +23,15 @@
         <td>{{ film.film_identifier }}</td>
         <td style="max-width: 380px">
             {{ film.name }}
-            <span v-if="film.description">
+            <span>
                 <br><br>
                 Beschreibung:
-                <textarea cols="30" rows="3" name="description">{{ film.description }}</textarea>
+                <textarea cols="30" rows="3" name="description" v-model="film.description"></textarea>
             </span>
-            <span v-if="film.description">
+            <span>
                 <br><br>
                 Stichworte:
-                <textarea cols="30" rows="2" name="keywords">{{ keywordsConcat(film.keywords) }}</textarea>
+                <textarea cols="30" rows="2" name="keywords" :value="keywordsConcat(film.keywords)"></textarea>
             </span>
         </td>
         <td>
@@ -53,10 +63,13 @@
                 <tr>
                     <td class="td_filmnotifications" colspan="2">
                         <b>Modifikaitonen: </b>
-                        <span v-for="mod in filmModifications">
-                            <label><input :checked="isSelected(film.filmmodifications, mod.id)" type="checkbox" :name="'filmModification_' + mod.id" :value="mod.id" /> {{mod.name}}</label>
-                            &nbsp;&nbsp;&nbsp;
-                        </span>
+                        <label v-for="fmod of filmModifications" style="padding-right: 10px">
+                            <Checkbox v-model="selectedModifications"
+                                  :name="'filmModification_' + fmod.id"
+                                  :value="fmod.id"
+                            />
+                            {{ fmod.name }}
+                        </label>
                     </td>
                 </tr>
                 <tr>
@@ -121,6 +134,7 @@ export default {
     data() {
         return {
             'selectedGenres': [],
+            'selectedModifications': [],
             'selectedFilmstatus': []
         }
     },
@@ -136,8 +150,18 @@ export default {
             return true;
         });
         this.selectedGenres = genres;
-        if (this.film.filmstatus_id !== null)
+
+        if (this.film.filmstatus_id !== null) {
             this.selectedFilmstatus = [this.film.filmstatus_id];
+        }
+
+        let modifications = [];
+        this.film.filmmodifications.every(function(modification) {
+            modifications.push(modification.id);
+            return true;
+        });
+        this.selectedModifications = modifications;
+
     },
     methods: {
         callbackUpdateGenres: function(genres) {
@@ -148,8 +172,16 @@ export default {
             });
             this.selectedGenres = genresResult;
         },
-        callbackUpdateFilmstatus: function() {
-            this.selectedFilmstatus = [this.film.filmstatus_id];
+        callbackUpdateFilmData: function(film) {
+            if (film.filmstatus_id !== null) {
+                this.selectedFilmstatus = [film.filmstatus_id];
+            }
+            let data = [];
+            this.film.filmmodifications.every(function(element) {
+                data.push(element.id);
+                return true;
+            });
+            this.selectedModifications = data;
         },
         keywordsConcat: function(keywords) {
             let result = '';
@@ -190,16 +222,16 @@ export default {
             let form = event.target.parentNode;
             data.append('_token', form.querySelector('input[name="_token"]').value);
 
-            function load(url, callBack, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus) {
+            function load(url, callBack, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmData) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
-                    callBack(this, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus);
+                    callBack(this, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmData);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
             }
 
-            function loadCallback(xhttp, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmstatus) {
+            function loadCallback(xhttp, eventTarget, film, callbackUpdateGenres, otherGrade, callbackUpdateFilmData) {
 
                 let data = "";
 
@@ -217,11 +249,9 @@ export default {
                 film.keywords = data.keywords;
                 film.filmmodifications = data.filmmodifications;
                 film.ratings = data.ratings;
+                film.filmstatus_id = data.filmstatus_id;
 
-                if (data.filmstatus_id !== null) {
-                    callbackUpdateFilmstatus(film)
-                }
-
+                callbackUpdateFilmData(film);
                 callbackUpdateGenres(data.genres);
                 otherGrade(film);
 
@@ -236,7 +266,7 @@ export default {
                  film,
                  this.callbackUpdateGenres,
                  this.otherGrade,
-                 this.callbackUpdateFilmstatus
+                 this.callbackUpdateFilmData
             );
 
             return event;
