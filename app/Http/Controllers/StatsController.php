@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
@@ -42,7 +42,7 @@ class StatsController extends Controller {
                 continue;
             }
             $allUsedGrades[$dataRow['Note']] = $dataRow['Note'];
-            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round($dataRow['Laufzeit in Stunden'], 2)];
+            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round((float)$dataRow['Laufzeit in Stunden'], 2)];
         }
 
         ksort($allUsedGrades);

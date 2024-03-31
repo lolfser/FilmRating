@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Filmmodifications;
@@ -137,7 +137,7 @@ class RatingsController extends Controller {
         (new SaveFilmsLanguagesServices())->save($film, $request->all());
         (new SaveFilmsGenresServices())->save($film, $request->all());
         (new SaveFilmModificationService())->save($film, $request->all());
-        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords']));
+        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords'] ?? ''));
 
         if ($request->all()['isAjax'] ?? false) {
             return true;

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Films;
@@ -64,7 +64,7 @@ class FilmsController extends Controller {
         $data = $validator->getData();
 
         if ($errors !== []) {
-            return $this->createAndUpdate($request->all(), $errors);
+            return $this->createAndUpdate((int) $request->all()['id'], $errors);
         }
 
         Films::create($data);
@@ -115,7 +115,7 @@ class FilmsController extends Controller {
 
         if ($errors !== []) {
             $film->fill($newData);
-            return $this->createAndUpdate($request->all()['id'], $errors, $film);
+            return $this->createAndUpdate((int) $request->all()['id'], $errors, $film);
         }
 
         $film->fill($newData); // @todo unique check of film identifier

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Filmmodifications;
@@ -10,7 +10,7 @@ class FilmmodificationsController extends Controller {
     /**
      * GET|HEAD  /filmmodifications
      * Display a listing of the resource.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function index() {
@@ -20,7 +20,7 @@ class FilmmodificationsController extends Controller {
     /**
      * GET|HEAD  /filmmodifications/create
      * Show the form for creating a new resource.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function create() {
@@ -30,9 +30,9 @@ class FilmmodificationsController extends Controller {
     /**
      * POST  /filmmodifications
      * Store a newly created resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
@@ -49,9 +49,9 @@ class FilmmodificationsController extends Controller {
     /**
      * GET|HEAD /filmmodifications/{filmmodification}
      * Display the specified resource.
-     * 
+     *
      * @param  Filmmodifications $filmmodification
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Filmmodifications $filmmodification) {
@@ -61,9 +61,9 @@ class FilmmodificationsController extends Controller {
     /**
      * GET|HEAD /filmmodifications/{filmmodification}/edit
      * Show the form for editing the specified resource.
-     * 
+     *
      * @param  Filmmodifications $filmmodification
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Filmmodifications $filmmodification) {
@@ -73,10 +73,10 @@ class FilmmodificationsController extends Controller {
     /**
      * PUT|PATCH /filmmodifications/{filmmodification}
      * Update the specified resource in storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request $request
      * @param  Filmmodifications $filmmodification
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Filmmodifications $filmmodification) {
@@ -89,11 +89,11 @@ class FilmmodificationsController extends Controller {
     /**
      * DELETE /filmmodifications/{filmmodification}
      * Remove the specified resource from storage.
-     * 
+     *
      * @param  Filmmodifications $filmmodification
-     * 
+     *
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @throws \Exception
      */
     public function destroy() {

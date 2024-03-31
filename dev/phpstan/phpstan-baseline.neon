@@ -126,11 +126,6 @@ parameters:
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Parameter \\#1 \\$filmId of method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) expects int, array given\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/FilmsController.php
-
-		-
 			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php
