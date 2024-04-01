@@ -16,7 +16,7 @@ parameters:
 			path: ../../app/Actions/Fortify/UpdateUserPassword.php
 
 		-
-			message: "#^Parameter \\#1 \\$photo of method App\\\\Models\\\\User\\:\\:updateProfilePhoto\\(\\) expects Illuminate\\\\Http\\\\UploadedFile, string given\\.$#"
+			message: "#^Parameter \\#1 \\$photo of method App\\\\Models\\\\Users\\:\\:updateProfilePhoto\\(\\) expects Illuminate\\\\Http\\\\UploadedFile, string given\\.$#"
 			count: 1
 			path: ../../app/Actions/Fortify/UpdateUserProfileInformation.php
 
@@ -259,91 +259,6 @@ parameters:
 			message: "#^Method App\\\\Http\\\\Middleware\\\\HandleInertiaRequests\\:\\:share\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../../app/Http/Middleware/HandleInertiaRequests.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Filmmodifications\\:\\:films\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Filmmodifications.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:filmmodifications\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:films\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:filmsource\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:filmstatus\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:genres\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:keywords\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:languages\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Films\\:\\:ratings\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Films.php
-
-		-
-			message: "#^Method App\\\\Models\\\\FilmsFilms\\:\\:relationkind\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/FilmsFilms.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Languages\\:\\:films\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Languages.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Permissions\\:\\:viewer\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Permissions.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Ratings\\:\\:film\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Ratings.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Ratings\\:\\:grade\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Ratings.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Ratings\\:\\:viewer\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Ratings.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Viewers\\:\\:films\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Viewers.php
-
-		-
-			message: "#^Method App\\\\Models\\\\Viewers\\:\\:user\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../app/Models/Viewers.php
 
 		-
 			message: "#^Parameter \\#1 \\$ability of static method Illuminate\\\\Support\\\\Facades\\\\Gate\\:\\:define\\(\\) expects string, int given\\.$#"

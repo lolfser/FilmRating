@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // \App\Models\Users::factory(10)->create();
         $this->call([
             FilmmodificationsSeeder::class,
             FilmsourcesSeeder::class,
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             TriggerkindsSeeder::class
         ]);
 
-        // \App\Models\User::factory()->create([
+        // \App\Models\Users::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);

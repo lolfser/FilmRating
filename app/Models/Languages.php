@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Model Languages
@@ -19,7 +20,10 @@ class Languages extends Model {
     protected $casts    = ['id' => 'int'];
     public $timestamps = false;
 
-    public function films() {
+    /**
+     * @return BelongsToMany<Films>
+     */
+    public function films(): BelongsToMany {
         return $this->belongsToMany('App\Models\Films', 'film_language');
     }
 }

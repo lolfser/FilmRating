@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Model Films
@@ -34,35 +37,59 @@ class Films extends Model {
     protected $fillable = ['film_identifier','name','description','filmsources_id','year','duration','filmstatus_id'];
     protected $casts    = ['id' => 'int', 'filmsources_id' => 'int', 'year' => 'int', 'duration' => 'int', 'filmstatus_id' => 'int', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
-    public function filmsource() {
+    /**
+     * @return BelongsTo<Filmsources, Films>
+     */
+    public function filmsource(): BelongsTo {
         return $this->belongsTo('App\Models\Filmsources', 'filmsources_id');
     }
 
-    public function filmstatus() {
+    /**
+     * @return BelongsTo<Filmstatus, Films>
+     */
+    public function filmstatus(): BelongsTo {
         return $this->belongsTo('App\Models\Filmstatus', 'filmstatus_id');
     }
 
-    public function filmmodifications() {
+    /**
+     * @return BelongsToMany<Filmmodifications>
+     */
+    public function filmmodifications(): BelongsToMany {
         return $this->belongsToMany('App\Models\Filmmodifications');
     }
 
-    public function films() {
+    /**
+     * @return BelongsToMany<Films>
+     */
+    public function films(): BelongsToMany {
         return $this->belongsToMany('App\Models\Films');
     }
 
-    public function genres() {
+    /**
+     * @return BelongsToMany<Genres>
+     */
+    public function genres(): BelongsToMany {
         return $this->belongsToMany('App\Models\Genres');
     }
 
-    public function keywords() {
+    /**
+     * @return BelongsToMany<Keywords>
+     */
+    public function keywords(): BelongsToMany {
         return $this->belongsToMany('App\Models\Keywords');
     }
 
-    public function languages() {
+    /**
+     * @return BelongsToMany<Languages>
+     */
+    public function languages(): BelongsToMany {
         return $this->belongsToMany('App\Models\Languages');
     }
 
-    public function ratings() {
+    /**
+     * @return HasMany<Ratings>
+     */
+    public function ratings(): HasMany {
         return $this->hasMany('App\Models\Ratings');
     }
 }

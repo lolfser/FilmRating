@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Models\Users;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             return;
         }
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = Users::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -37,7 +37,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             return;
         }
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = Users::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -60,7 +60,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             return;
         }
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = Users::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 

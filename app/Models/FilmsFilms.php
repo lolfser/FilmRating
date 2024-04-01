@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Model FilmsFilms
@@ -18,7 +19,10 @@ class FilmsFilms extends Model {
     protected $fillable = ['films1_id','films2_id','relationkinds_id'];
     protected $casts    = ['films1_id' => 'int', 'films2_id' => 'int', 'relationkinds_id' => 'int'];
 
-    public function relationkind() {
+    /**
+     * @return BelongsTo<Relationkinds, FilmsFilms>
+     */
+    public function relationkind(): BelongsTo {
         return $this->belongsTo('App\Models\Relationkinds', 'relationkinds_id');
     }
 }

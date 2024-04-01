@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Model Permissions
@@ -31,7 +32,10 @@ class Permissions extends Model {
     protected $fillable = ['viewers_id','permission'];
     protected $casts    = ['id' => 'int', 'viewers_id' => 'int', 'permission' => 'int'];
 
-    public function viewer() {
+    /**
+     * @return BelongsTo<Viewers, Permissions>
+     */
+    public function viewer(): BelongsTo {
         return $this->belongsTo('App\Models\Viewers', 'viewers_id');
     }
 }

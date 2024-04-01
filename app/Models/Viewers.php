@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Model Viewers
@@ -20,11 +22,17 @@ class Viewers extends Model {
     protected $fillable = ['users_id','initials','comment'];
     protected $casts    = ['id' => 'int', 'users_id' => 'int'];
 
-    public function user() {
+    /**
+     * @return BelongsTo<Users, Viewers>
+     */
+    public function user(): BelongsTo {
         return $this->belongsTo('App\Models\Users', 'users_id');
     }
 
-    public function films() {
+    /**
+     * @return HasMany<Ratings>
+     */
+    public function films(): HasMany {
         return $this->hasMany('App\Models\Ratings');
     }
 }

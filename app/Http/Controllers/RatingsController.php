@@ -24,6 +24,8 @@ class RatingsController extends Controller {
     public function index(): \Inertia\Response {
 
         $films = Films::all();
+        $films = Films::query()
+                ->limit(10)->get();
 
         foreach ($films as $film) {
             // Loading pivots
