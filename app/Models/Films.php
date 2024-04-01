@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \App\Models\Filmsources $filmsource // from belongsTo
  * @property-read \App\Models\Filmstatus $filmstatus // from belongsTo
  * @property-read \App\Models\Filmmodifications $filmmodifications // from belongsToMany
- * @property-read \App\Models\Films $films // from belongsToMany
- * @property-read \App\Models\Films $films // from belongsToMany
  * @property-read \App\Models\Genres $genres // from belongsToMany
  * @property-read \App\Models\Keywords $keywords // from belongsToMany
  * @property-read \App\Models\Languages $languages // from belongsToMany
@@ -56,13 +54,6 @@ class Films extends Model {
      */
     public function filmmodifications(): BelongsToMany {
         return $this->belongsToMany('App\Models\Filmmodifications');
-    }
-
-    /**
-     * @return BelongsToMany<Films>
-     */
-    public function films(): BelongsToMany {
-        return $this->belongsToMany('App\Models\Films');
     }
 
     /**

@@ -24,8 +24,8 @@ class RatingsController extends Controller {
     public function index(): \Inertia\Response {
 
         $films = Films::all();
-        $films = Films::query()
-                ->limit(10)->get();
+        // $films = Films::query()
+        //         ->limit(10)->get();
 
         foreach ($films as $film) {
             // Loading pivots
@@ -93,8 +93,14 @@ class RatingsController extends Controller {
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
+            'filmstatus' => Filmstatus::all(),
             'genres' => Genres::all(),
             'active_filter' => $filter,
+            'filmModifications' => Filmmodifications::all(),
+            'keywords' => Keywords::all(),
+            'user' => [
+                'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
+            ],
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
