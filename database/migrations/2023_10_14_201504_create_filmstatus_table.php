@@ -13,6 +13,7 @@ class CreateFilmstatusTable extends Migration {
             $table->increments('id');
             $table->string('name', 50);
 
+            $table->unique(["name"]); // isUnique => name
         });
     }
 }

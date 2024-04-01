@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Models\Users;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class DeleteAccountTest extends TestCase
             return;
         }
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = Users::factory()->create());
 
         $response = $this->delete('/user', [
             'password' => 'password',
@@ -36,7 +36,7 @@ class DeleteAccountTest extends TestCase
             return;
         }
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = Users::factory()->create());
 
         $response = $this->delete('/user', [
             'password' => 'wrong-password',

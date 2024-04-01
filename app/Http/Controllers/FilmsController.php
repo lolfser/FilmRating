@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Films;
@@ -31,12 +31,14 @@ class FilmsController extends Controller {
         $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
 
         foreach ($films as $film) {
-            $film->languages; // Loading pivots
-            $film->genres; // Loading pivots
+            // Loading pivots
+            $film->languages;
+            $film->genres;
             if ($editFilmsIsAllowed) {
                 $film->userActions = [
                     [
-                        'label' => 'edit',
+                        'icon' => '/svgs/pen.svg',
+                        'title' => 'bearbeiten',
                         'href' => '/films/' . $film->id . '/cu',
                     ]
                 ];
@@ -62,7 +64,7 @@ class FilmsController extends Controller {
         $data = $validator->getData();
 
         if ($errors !== []) {
-            return $this->createAndUpdate($request->all(), $errors);
+            return $this->createAndUpdate((int) $request->all()['id'], $errors);
         }
 
         Films::create($data);
@@ -113,7 +115,7 @@ class FilmsController extends Controller {
 
         if ($errors !== []) {
             $film->fill($newData);
-            return $this->createAndUpdate($request->all()['id'], $errors, $film);
+            return $this->createAndUpdate((int) $request->all()['id'], $errors, $film);
         }
 
         $film->fill($newData); // @todo unique check of film identifier

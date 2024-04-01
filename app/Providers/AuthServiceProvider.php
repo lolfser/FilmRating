@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\User;
+use App\Models\Users;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -24,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define(\App\Models\Permissions::PERMISSION_ADD_FILMS, function (User $user) {
+        Gate::define(\App\Models\Permissions::PERMISSION_ADD_FILMS, function (Users $user) {
             return (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)
                 ? Response::allow()
                 : Response::denyAsNotFound();

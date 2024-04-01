@@ -20,9 +20,11 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
                         :grades="grades"
                         :genres="genres"
                         :languages="languages"
+                        :filmstatus="filmstatus"
                         :active_filter="active_filter"
                         :filmModifications="filmModifications"
                         :keywords="keywords"
+                        :user="user"
                         :_token="_token"
                         :footerLinks="footerLinks" />
                 </div>
@@ -33,8 +35,8 @@ import CompFilmViewer from '@/Components/FilmViewer.vue';
 <script>
 export default {
   props: [
-      'films', 'grades', 'viewerId', 'footerLinks',
-      'genres', '_token', 'languages', 'active_filter', 'filmModifications', 'keywords'
+      'films', 'grades', 'viewerId', 'footerLinks', 'user',
+      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filmModifications', 'keywords'
   ],
   computed: {
     headline: function () {return "Deine Bewertungen";},

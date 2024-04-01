@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
@@ -29,7 +29,10 @@ class StatsController extends Controller {
             ORDER BY viewers.initials, grades.value
         ");
 
-        $films = json_decode(json_encode($films), true);
+        $filmsJson = json_encode($films);
+        $filmsJson = $filmsJson !== false ? $filmsJson : '';
+
+        $films = json_decode($filmsJson, true);
 
         $arr = ['Sichter' => []];
 
@@ -39,7 +42,7 @@ class StatsController extends Controller {
                 continue;
             }
             $allUsedGrades[$dataRow['Note']] = $dataRow['Note'];
-            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round($dataRow['Laufzeit in Stunden'], 2)];
+            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round((float)$dataRow['Laufzeit in Stunden'], 2)];
         }
 
         ksort($allUsedGrades);
@@ -79,6 +82,7 @@ class StatsController extends Controller {
             'statsGlobalRatingCount' => $globalRating,
             'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
             'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
+            'noDurationStats' => $this->receiveFilmsWithoutDuration(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
@@ -111,15 +115,34 @@ class StatsController extends Controller {
             ORDER BY 'Anzahl Bewertung', r
         ");
 
-        $stats = json_decode(json_encode($stats), true);
-        $header = ['r' => 'Anzahl Bewertung', 'c' => 'Anzahl Film', 'd' => 'Laufzeit in Stunden' ];
+        $statsJson = json_encode($stats);
+        $statsJson = $statsJson !== false ? $statsJson : '';
+
+        $stats = (array) json_decode($statsJson, true);
+        $header = ['r' => 'Anzahl Bewertung', 'c' => 'Anzahl Film', 'd' => 'Laufzeit in Stunden'];
         array_unshift($stats, $header);
         return $stats;
 
     }
 
-    private function receiveFilmsWithoutDuration() {
+    /**
+     * @return array<mixed>
+     */
+    private function receiveFilmsWithoutDuration(): array {
 
+        $stats = DB::select("
+            SELECT *
+            FROM films
+            WHERE films.duration = 0
+        ");
+
+        $statsJson = json_encode($stats);
+        $statsJson = $statsJson !== false ? $statsJson : '';
+
+        $stats = (array) json_decode($statsJson, true);
+        $header = ['film_identifier' => 'Film-Identifier', 'name' => 'Film'];
+        array_unshift($stats, $header);
+        return $stats;
     }
 
 }

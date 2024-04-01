@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Model Filmsources
  *
- * @property int id
- * @property string name
+ * @property int $id
+ * @property string $name
  * @package App\Models
 */
 class Filmsources extends Model {

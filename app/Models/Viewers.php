@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Model Viewers
  *
- * @property int id
- * @property int users_id
- * @property string initials
- * @property string comment
- * @property-read \App\Models\Users user // from belongsTo
- * @property-read \App\Models\Films films // from belongsToMany
+ * @property int $id
+ * @property int $users_id
+ * @property string $initials
+ * @property string $comment
+ * @property-read \App\Models\Users $user // from belongsTo
+ * @property-read \App\Models\Films $films // from belongsToMany
  * @package App\Models
 */
 class Viewers extends Model {
@@ -22,11 +22,17 @@ class Viewers extends Model {
     protected $fillable = ['users_id','initials','comment'];
     protected $casts    = ['id' => 'int', 'users_id' => 'int'];
 
-    public function user() {
+    /**
+     * @return BelongsTo<Users, Viewers>
+     */
+    public function user(): BelongsTo {
         return $this->belongsTo('App\Models\Users', 'users_id');
     }
 
-    public function films() {
+    /**
+     * @return HasMany<Ratings>
+     */
+    public function films(): HasMany {
         return $this->hasMany('App\Models\Ratings');
     }
 }

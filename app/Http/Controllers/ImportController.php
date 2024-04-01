@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Filmmodifications;
@@ -228,8 +228,9 @@ class ImportController extends Controller {
         array $languagesInput
     ): void {
 
-        if ($languagesInput === [])
+        if ($languagesInput === []) {
             return;
+        }
 
         $map = [];
         foreach (Languages::all() as $lang) {
@@ -237,7 +238,7 @@ class ImportController extends Controller {
         }
 
         $idAudio    = $map['audio'][strtolower($languagesInput[0])] ?? false;
-        $idSubtitle = $map['subtitle'][strtolower($languagesInput[1] ?? false)] ?? false;
+        $idSubtitle = $map['subtitle'][strtolower($languagesInput[1] ?? '')] ?? false;
 
         if ($idAudio === false && $idSubtitle === false) {
             return;

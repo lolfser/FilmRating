@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Model Filmmodifications
  *
- * @property int id
- * @property string name
- * @property-read \App\Models\Films films // from belongsToMany
+ * @property int $id
+ * @property string $name
+ * @property-read \App\Models\Films $films // from belongsToMany
  * @package App\Models
 */
 class Filmmodifications extends Model {
@@ -18,7 +19,10 @@ class Filmmodifications extends Model {
     protected $casts    = ['id' => 'int'];
     public $timestamps = false;
 
-    public function films() {
+    /**
+     * @return BelongsToMany<Films>
+     */
+    public function films(): BelongsToMany {
         return $this->belongsToMany('App\Models\Films');
     }
 }

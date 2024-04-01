@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Model Languages
  *
- * @property int id
- * @property string language
- * @property string type
- * @property-read \App\Models\Films films // from belongsToMany
+ * @property int $id
+ * @property string $language
+ * @property string $type
+ * @property-read \App\Models\Films $films // from belongsToMany
  * @package App\Models
 */
 class Languages extends Model {
@@ -21,7 +20,10 @@ class Languages extends Model {
     protected $casts    = ['id' => 'int'];
     public $timestamps = false;
 
-    public function films() {
+    /**
+     * @return BelongsToMany<Films>
+     */
+    public function films(): BelongsToMany {
         return $this->belongsToMany('App\Models\Films', 'film_language');
     }
 }

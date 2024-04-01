@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Films;
@@ -7,13 +7,16 @@ use App\Models\Keywords;
 
 class SaveFilmsKeywordsServices {
 
-    public function save(Films $film, array $keyordsInput): void {
+    /**
+     * @param string[] $keywordsInput
+     */
+    public function save(Films $film, array $keywordsInput): void {
 
         $keywords = Keywords::all();
         $film->keywords()->sync([]);
         $attach = [];
 
-        foreach ($keyordsInput as $item) {
+        foreach ($keywordsInput as $item) {
             $item = trim($item);
             if ($item === '') continue;
             $found = false;

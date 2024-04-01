@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Filmmodifications;
@@ -7,6 +7,9 @@ use App\Models\Films;
 
 class SaveFilmModificationService {
 
+    /**
+     * @param string[]|int[] $userInputs
+     */
     public function save(Films $film, array $userInputs): void {
 
         $sync = [];

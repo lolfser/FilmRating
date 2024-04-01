@@ -1,14 +1,17 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Filmmodifications;
 use App\Models\Films;
+use App\Models\Filmstatus;
 use App\Models\Keywords;
+use App\Models\Permissions;
 use App\Models\Ratings;
 use App\Models\Languages;
 use App\Models\Grades;
 use App\Models\Genres;
+use App\Services\HasPermissionService;
 use App\Services\SaveFilmModificationService;
 use App\Services\SaveFilmsKeywordsServices;
 use App\Services\SaveFilmsLanguagesServices;
@@ -21,15 +24,17 @@ class RatingsController extends Controller {
     public function index(): \Inertia\Response {
 
         $films = Films::all();
+        // $films = Films::query()
+        //         ->limit(10)->get();
 
         foreach ($films as $film) {
             // Loading pivots
             $film->ratings;
             $film->genres;
             $film->languages;
-            $film->genres;
             $film->filmmodifications;
             $film->keywords;
+            $film->filmstatus;
         }
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
@@ -38,10 +43,14 @@ class RatingsController extends Controller {
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
+            'filmstatus' => Filmstatus::all(),
             'genres' => Genres::all(),
             'active_filter' => 'all',
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
+            'user' => [
+                'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
+            ],
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -75,7 +84,6 @@ class RatingsController extends Controller {
             $film->ratings;
             $film->genres;
             $film->languages;
-            $film->genres;
             $film->filmmodifications;
             $film->keywords;
         }
@@ -85,24 +93,24 @@ class RatingsController extends Controller {
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
+            'filmstatus' => Filmstatus::all(),
             'genres' => Genres::all(),
             'active_filter' => $filter,
+            'filmModifications' => Filmmodifications::all(),
+            'keywords' => Keywords::all(),
+            'user' => [
+                'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
+            ],
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request): \Illuminate\Http\RedirectResponse|bool {
 
-        $films = Films::where('film_identifier', $request->all()['id']);
+        $film = Films::where('film_identifier', $request->all()['id'])->first();
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
-
-        if ($films->count() === 0) {
-            return redirect(route("rating.index"));
-        }
-
-        $film = $films->first();
 
         if ($film === null) {
             // Todo: Error handling
@@ -126,10 +134,18 @@ class RatingsController extends Controller {
         $rating->comment = $request->all()['comment'] ?? '';
         $rating->save();
 
+        if (
+            ($request->all()['filmstatus'] ?? 0) > 0
+            && (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
+        ) {
+            $film->filmstatus_id = $request->all()['filmstatus'];
+            $film->save();
+        }
+
         (new SaveFilmsLanguagesServices())->save($film, $request->all());
         (new SaveFilmsGenresServices())->save($film, $request->all());
         (new SaveFilmModificationService())->save($film, $request->all());
-        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords']));
+        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords'] ?? ''));
 
         if ($request->all()['isAjax'] ?? false) {
             return true;
@@ -139,29 +155,28 @@ class RatingsController extends Controller {
 
     }
 
-    public function rate(string $filmIdentifier) {
-        $films = Films::where('film_identifier', $filmIdentifier);
-        if ($films->count() === 0) {
+    public function rate(string $filmIdentifier): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+        /** @var Films|null $film */
+        $film = Films::where('film_identifier', $filmIdentifier)->first();
+        if ($film === null) {
             return redirect(route("rating.index"));
         }
-        $film = $films->first();
 
         // Loading pivots
         $film->filmsource;
         $film->genres;
         $film->languages;
-        $film->genres;
+        $film->filmstatus;
         $film->filmmodifications;
         $film->keywords;
 
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
-        $viewerRating = null;
+        $viewerRating = [];
 
-        foreach ($film->ratings as $key => $rating) { // loading pivot
-            if ($rating->viewers_id != $viewersId) {
-                unset($film->ratings[$key]);
-            } else {
+        foreach ($film->ratings as $key => $rating) {
+            if ($rating->viewers_id === $viewersId) {
                 $viewerRating = $rating;
+                break;
             }
         }
 
@@ -171,6 +186,7 @@ class RatingsController extends Controller {
             'languages' => Languages::all()->groupBy('type'),
             '_token' => csrf_token(),
             'grades' => Grades::all(),
+            'filmstatus' => Filmstatus::all(),
             'genres' => Genres::all(),
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
@@ -178,19 +194,19 @@ class RatingsController extends Controller {
 
     }
 
-    public function load(Request $request) {
+    public function load(Request $request): Films|\Illuminate\Http\RedirectResponse {
 
-        $films = Films::where('id', $request->all()['filmId']);
+        /** @var Films|null $film */
+        $film = Films::where('id', $request->all()['filmId'])->first();
 
-        if ($films->count() === 0) {
+        if ($film === null) {
             return redirect(route("rating.index"));
         }
-        $film = $films->first();
+
         // Loading pivots
-        $film->languages;
         $film->genres;
+        $film->languages;
         $film->ratings;
-        $film->grades;
         $film->keywords;
         $film->filmmodifications;
         return $film;
