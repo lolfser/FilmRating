@@ -13,9 +13,9 @@ class TriggerkindsSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Triggerkinds::create(['name' => "Epellepsie"]);
-            Triggerkinds::create(['name' => "Gewalt"]);
-            Triggerkinds::create(['name' => "Pornografie"]);
+            Triggerkinds::create(['name' => 'Epellepsie']);
+            Triggerkinds::create(['name' => 'Gewalt']);
+            Triggerkinds::create(['name' => 'Pornografie']);
 
             DB::commit();
         } catch(\Throwable $t) {

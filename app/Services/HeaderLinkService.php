@@ -27,6 +27,7 @@ class HeaderLinkService {
         }
 
         $links[] = $this->build('/stats', 'Statistiken', $currentPath === 'stats');
+        $links[] = $this->build('/program', 'Programm', $currentPath === 'program');
 
         return $links;
 

@@ -1,22 +1,19 @@
 <?php
 namespace Database\Seeders;
-use App\Models\Filmsources;
+use App\Models\Locations;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Seeder for table filmsources
+ * Seeder for table locations
 */
-class FilmsourcesSeeder extends Seeder {
+class LocationsSeeder extends Seeder {
 
     public function run(): void {
         try {
             DB::beginTransaction();
-
-            Filmsources::create(['name' => 'andere']);
-            Filmsources::create(['name' => 'click4festival']);
-            Filmsources::create(['name' => 'film free way']);
-
+            Locations::create(['name' => 'Open-Air']);
+            Locations::create(['name' => 'Zelt']);
             DB::commit();
         } catch(\Throwable $t) {
             DB::rollback();

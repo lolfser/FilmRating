@@ -11,14 +11,15 @@ import Footer from './Footer.vue';
                     <tr>
                       <th>Film-Identifikator</th>
                       <th>Name</th>
-                      <th>Sprache</th>
                       <th>Genre</th>
                       <th>Actions</th>
                     </tr>
                     <tr v-for="film in films">
                         <td>{{film.film_identifier}}</td>
-                        <td>{{film.name}}</td>
-                        <td>{{calculateLanguage(film)}}</td>
+                        <td>
+                            {{film.name}}
+                            <br>{{film.description}}
+                        </td>
                         <td>{{calculateGenres(film)}}</td>
                         <td>
                             <span v-for="userAction in film.userActions">
@@ -42,25 +43,16 @@ export default {
     'footerLinks'
   ],
   methods: {
-      calculateGenres: function (film) {
-        let returnValue = "";
+    calculateGenres: function (film) {
+      let returnValue = "";
         film.genres.every(function (genre) {
-            if (returnValue !== '') {
-                returnValue += ', ';
-            }
-            returnValue += genre.name;
-            return true; // continue;
-        });
-        return returnValue;
-    },
-    calculateLanguage: function(film) {
-        let result = '';
-        film.languages.every(function(language) {
-            if (result !== '') result = result + ' / ';
-            result += language.type + ' ' + language.language;
-            return true;
-        });
-        return result;
+          if (returnValue !== '') {
+            returnValue += ', ';
+          }
+          returnValue += genre.name;
+          return true; // continue;
+      });
+      return returnValue;
     }
   }
 }

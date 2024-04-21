@@ -13,8 +13,8 @@ class RelationkindsSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Relationkinds::create(['name' => "duplicate"]);
-            Relationkinds::create(['name' => "similar"]);
+            Relationkinds::create(['name' => 'duplicate']);
+            Relationkinds::create(['name' => 'similar']);
 
             DB::commit();
         } catch(\Throwable $t) {

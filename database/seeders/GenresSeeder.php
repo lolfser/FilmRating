@@ -13,11 +13,11 @@ class GenresSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Genres::create(['name' => "Dokumentation",]);
-            Genres::create(['name' => "Horror"]);
-            Genres::create(['name' => "Thriller"]);
-            Genres::create(['name' => "Kömodie"]);
-            Genres::create(['name' => "Tragödie"]);
+            Genres::create(['name' => 'Dokumentation',]);
+            Genres::create(['name' => 'Horror']);
+            Genres::create(['name' => 'Thriller']);
+            Genres::create(['name' => 'Kömodie']);
+            Genres::create(['name' => 'Tragödie']);
 
             DB::commit();
         } catch(\Throwable $t) {
