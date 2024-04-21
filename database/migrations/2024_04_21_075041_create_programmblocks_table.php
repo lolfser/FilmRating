@@ -12,6 +12,7 @@ class CreateProgrammblocksTable extends Migration {
         Schema::create('programmblocks', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('films_id');
+            $table->unsignedInteger('programblockmetas_id');
 
         });
     }
