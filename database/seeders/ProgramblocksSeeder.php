@@ -1,13 +1,13 @@
 <?php
 namespace Database\Seeders;
-use App\Models\Programmblocks;
+use App\Models\Programblocks;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Seeder for table programmblocks
 */
-class ProgrammblocksSeeder extends Seeder {
+class ProgramblocksSeeder extends Seeder {
 
     public function run(): void {
         try {

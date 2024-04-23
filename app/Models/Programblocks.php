@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Model Programmblocks
+ * Model Programblocks
  *
  * @property int $id
  * @property int $films_id
  * @property-read \App\Models\Films $film // from belongsTo
  * @package App\Models
 */
-class Programmblocks extends Model {
-    protected $table    = 'programmblocks';
+class Programblocks extends Model {
+    protected $table    = 'programblocks';
     protected $fillable = ['films_id'];
     protected $casts    = ['id' => 'int', 'films_id' => 'int'];
     public $timestamps = false;

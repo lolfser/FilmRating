@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             TriggerkindsSeeder::class,
             DaysSeeder::class,
             ProgramblockmetasSeeder::class,
-            ProgrammblocksSeeder::class,
+            ProgramblocksSeeder::class,
             ProgramsSeeder::class,
             LocationsSeeder::class,
         ]);

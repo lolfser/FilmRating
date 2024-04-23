@@ -24,7 +24,7 @@ import draggable from "vuedraggable"
                 <td>
                   <draggable
                     class="dragArea list-group"
-                    :list="list1"
+                    :list="availableFilms"
                     :group="{ name: 'filmgroup', pull: 'clone', put: false }"
                     :clone="cloneFilm"
                     @change="log"
@@ -40,17 +40,17 @@ import draggable from "vuedraggable"
                 </td>
             </tr>
         </table>
-        <table style="display:inline-block">
+        <table style="display:inline-block; border:1px solid black" v-for="block in programmetas" :key="key">
             <tr>
                 <td>
-                    <span>Programmblock 1</span>
+                    <span>Start: {{ block.start }}</span>
                 </td>
             </tr>
             <tr>
                 <td>
                   <draggable
                     class="dragArea list-group"
-                    :list="list2"
+                    :list="getList(block.id)"
                     group="filmgroup"
                     @change="log"
                     item-key="id"
@@ -65,32 +65,6 @@ import draggable from "vuedraggable"
                 </td>
             </tr>
         </table>
-        <table style="display:inline-block">
-            <tr>
-                <td>
-                    <span>Programmblock 2</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                  <draggable
-                    class="dragArea list-group"
-                    :list="list3"
-                    group="filmgroup"
-                    @change="log"
-                    item-key="id"
-                    style="border:1px solid black; min-height: 60px; min-width: 60px; display: inline-block"
-                  >
-                    <template #item="{ element }">
-                      <div class="list-group-item">
-                        {{ element.filmIdentifier }}: {{ element.name }}
-                      </div>
-                    </template>
-                  </draggable>
-                </td>
-            </tr>
-        </table>
-
     </div>
   </div>
 
@@ -101,7 +75,7 @@ import draggable from "vuedraggable"
 let idGlobal = 0;
 export default {
   props: [
-      'films', 'footerLinks'
+      'films', 'programmetas', 'footerLinks'
   ],
   computed: {
     headline: function () {return "Programm";},
@@ -111,13 +85,25 @@ export default {
     draggable
   },
   data() {
-    return {
-      list1: this.films,
-      list2: [],
-      list3: []
-    };
+    return this.receiveLists();
   },
   methods: {
+    getList: function(id) {
+        return this['list' + id];
+    },
+    receiveLists: function() {
+        let ret = {
+          availableFilms: this.films,
+        };
+
+        this.programmetas.every(function(meta) {
+            let listName = 'list' + meta.id;
+            ret[listName] = [];
+            return true; // continue
+        })
+
+        return ret;
+    },
     log: function(evt) {
       window.console.log(evt);
     },
