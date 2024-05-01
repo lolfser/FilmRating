@@ -16,14 +16,16 @@ class ProgramblocksController extends Controller {
         $x = Programblocks::find(1);
         $allFilms = Films::query()->limit(10)->get();
 
-        $blocks = Programblockmetas::all();
-        foreach ($blocks as $block) {
-            $block->programblocks;
+        $metas = Programblockmetas::all();
+
+        foreach ($metas as $block) {
+            $block->programblock;
+            $block->location;
         }
 
         return Inertia::render('Program', [
             'films' => $allFilms,
-            'programmetas' => $blocks,
+            'programmetas' => $metas,
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);

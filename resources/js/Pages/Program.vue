@@ -43,7 +43,7 @@ import draggable from "vuedraggable"
         <table style="display:inline-block; border:1px solid black" v-for="block in programmetas" :key="key">
             <tr>
                 <td>
-                    <span>Start: {{ block.start }}</span>
+                    <span>Start: {{ block.start }} ({{block.location.name}})</span>
                 </td>
             </tr>
             <tr>
