@@ -11,8 +11,8 @@ import draggable from "vuedraggable"
             </h2>
         </template>
         <div class="row">
-            <div>
-                <table style="display:inline-block">
+            <div style="display:inline-block">
+                <table style="display:inline-block; min-width: 400px">
                     <tr>
                         <td>
                             <span>Verfügbare Filme</span>
@@ -38,43 +38,63 @@ import draggable from "vuedraggable"
                         </td>
                     </tr>
                 </table>
-                <table style="display:inline-block; border:1px solid black" v-for="block in programmetas" :key="key">
-                    <tr>
-                        <td>
-                            <span>Start: {{ block.start }} ({{block.location.name}})</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            &nbsp;
-                            <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="speichern" alt="speichern"
-                                 v-on:click="saveProgramBlock($event, block.id);"
-                            >
-                            &nbsp;&nbsp;&nbsp;
-                            <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="reload" alt="reload"
-                                v-on:click="loadProgramBlock($event, block.id);"
-                            >
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                          <draggable
-                            class="dragArea list-group"
-                            :list="getList(block.id)"
-                            group="filmgroup"
-                            @change="log"
-                            item-key="id"
-                            style="border:1px solid black; min-height: 60px; min-width: 60px; display: inline-block"
-                          >
-                            <template #item="{ element }">
-                              <div class="list-group-item">
-                                {{ element.filmIdentifier }}: {{ element.name }}
-                              </div>
-                            </template>
-                          </draggable>
-                        </td>
-                    </tr>
-                </table>
+            </div>
+            <div style="
+                display: inline-block;
+                white-space: nowrap;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                max-width: 60%;
+                position: absolute;
+            ">
+                <div style="display: flex">
+                    <table style="
+                        display:inline-block;
+                        border:1px solid black;
+                        min-width: 400px;
+                        padding: 5px;" v-for="block in programmetas" :key="key">
+                        <tr>
+                            <td>
+                                <span>Start: {{ block.start }} ({{block.location.name}})</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <!-- {{ block.films }} -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                                <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="speichern" alt="speichern"
+                                     v-on:click="saveProgramBlock($event, block.id);"
+                                >
+                                &nbsp;&nbsp;&nbsp;
+                                <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="reload" alt="reload"
+                                    v-on:click="loadProgramBlock($event, block.id);"
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                              <draggable
+                                class="dragArea list-group"
+                                :list="getList(block.id)"
+                                group="filmgroup"
+                                @change="log"
+                                item-key="id"
+                                style="border:1px solid black; min-height: 60px; min-width: 60px; display: inline-block"
+                              >
+                                <template #item="{ element }">
+                                  <div class="list-group-item">
+                                    {{ element.filmIdentifier }}: {{ element.name }}
+                                  </div>
+                                </template>
+                              </draggable>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
           </div>
     </AppLayout>
@@ -108,6 +128,17 @@ export default {
         this.programmetas.every(function(meta) {
             let listName = meta.id;
             ret[listName] = [];
+            meta.films?.every(function(film) {
+                ret[listName].push(
+                    {
+                        id: idGlobal++,
+                        name: film.name,
+                        filmIdentifier: film.film_identifier,
+                        description: film.description
+                    }
+                );
+                return true; // continue
+            })
             return true; // continue
         })
 

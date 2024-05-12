@@ -12,14 +12,16 @@ class ProgramblocksController extends Controller {
 
     public function index(): \Inertia\Response  {
 
-        $x = Programblocks::find(1);
         $allFilms = Films::query()->limit(10)->get();
 
         $metas = Programblockmetas::all();
 
-        foreach ($metas as $block) {
-            $block->programblock;
-            $block->location;
+        foreach ($metas as $meta) {
+            $meta->location;
+            foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
+                /** @var Programblocks $block */
+                $meta->addBlock($block->film);
+            }
         }
 
         return Inertia::render('Program', [
@@ -48,6 +50,7 @@ class ProgramblocksController extends Controller {
             $pb->save();
         }
 
+        // TODO
         return ['test', $test];
     }
 

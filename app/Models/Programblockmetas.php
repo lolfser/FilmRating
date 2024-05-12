@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property time|null $start
  * @property float|null $total_length
  * @property float|null $puffer_per_item
+ * @property Collection $films
  * @property-read \App\Models\Locations $location // from belongsTo
  * @property-read \App\Models\Days $day // from belongsTo
  * @package App\Models
@@ -31,5 +32,12 @@ class Programblockmetas extends Model {
 
     public function day() {
         return $this->belongsTo('App\Models\Days', 'days_id');
+    }
+
+    public function addBlock(Films $film) {
+        if ($this->films === null) {
+            $this->films = new Collection();
+        }
+        $this->films->add($film);
     }
 }
