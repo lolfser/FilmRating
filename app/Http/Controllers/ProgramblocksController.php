@@ -14,12 +14,18 @@ class ProgramblocksController extends Controller {
 
         $allFilms = Films::query()->limit(10)->get();
 
+        foreach ($allFilms as $film) {
+            // Loading pivots
+            $film->languages;
+        }
+
         $metas = Programblockmetas::all();
 
         foreach ($metas as $meta) {
             $meta->location;
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
+                $block->film->languages;
                 $meta->addBlock($block->film);
             }
         }

@@ -23,7 +23,9 @@ import draggable from "vuedraggable"
                       >
                         <template #item="{ element }">
                           <div class="list-group-item">
-                            {{ element.film_identifier }}: {{ element.name }}
+                              <span :title="element.description">
+                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}}
+                              </span>
                           </div>
                         </template>
                       </draggable>
@@ -82,7 +84,9 @@ import draggable from "vuedraggable"
                             <template #item="{ element }">
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
                                     <div>
-                                        {{ element.filmIdentifier }}: {{ element.name }}
+                                        <span :title="element.description">
+                                            {{ element.filmIdentifier }}: {{ element.name }}
+                                        </span>
                                     </div>
                                 </div>
                             </template>
@@ -95,6 +99,7 @@ import draggable from "vuedraggable"
     <Footer :footerLinks="footerLinks" />
 </template>
 <script>
+
 let idGlobal = 0;
 export default {
   props: [
@@ -117,25 +122,59 @@ export default {
     getList: function(id) {
         return this.lists[id];
     },
-    receiveLists: function() {
+    defineAudioString: function (film) {
+        let audioString = '';
+        let subtitleString = '';
+        let lang1 = film.languages[0]?.language;
+        let type1 = film.languages[0]?.type;
+        let lang2 = film.languages[1]?.language;
+        let type2 = film.languages[1]?.type;
+        if (typeof lang1 !== "undefined") {
+            if (type1 === 'audio') {
+                audioString = lang1.toUpperCase();
+            } else {
+                subtitleString = lang1.toLowerCase();
+            }
+        }
+        if (typeof lang2 !== "undefined") {
+            if (type2 === 'audio') {
+                audioString = lang2.toUpperCase();
+            } else {
+                subtitleString = lang2.toLowerCase();
+            }
+        }
+        if (audioString !== "" || subtitleString !== "") {
+            if (subtitleString !== "") {
+                return "(" + audioString + "_" + subtitleString + ")";
+            } else {
+                return "(" + audioString + ")";
+            }
+        }
+        return ''
+      },
+      receiveLists: function() {
         let ret = {};
 
-        this.programmetas.every(function(meta) {
+        for (const meta of this.programmetas) {
             let listName = meta.id;
             ret[listName] = [];
-            meta.films?.every(function(film) {
-                ret[listName].push(
-                    {
-                        id: idGlobal++,
-                        name: film.name,
-                        filmIdentifier: film.film_identifier,
-                        description: film.description
-                    }
-                );
-                return true; // continue
-            })
-            return true; // continue
-        })
+
+            if (typeof meta.films !== "undefined") {
+                for (const film of meta.films) {
+
+                    let audio = this.defineAudioString(film);
+
+                    ret[listName].push(
+                        {
+                            id: idGlobal++,
+                            name: film.name + audio ,
+                            filmIdentifier: film.film_identifier,
+                            description: film.description
+                        }
+                    );
+                }
+            }
+        }
 
         return ret;
     },
@@ -250,12 +289,6 @@ export default {
         }
 
         event.target.style.backgroundColor = "";
-    },
-    removeProgramBlock: function(event, blockId, element) {
-        console.log(blockId);
-        console.log(element.id);
-        console.log(this.lists[blockId]);
-        event.currentTarget.parentNode.parentNode.remove();
     }
   }
 }
