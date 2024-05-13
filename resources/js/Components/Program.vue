@@ -46,14 +46,29 @@ import draggable from "vuedraggable"
                 >
                     <div>Start: {{ block.start }} ({{block.location.name}})</div>
                     <div>
-
-                            <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="speichern" alt="speichern"
-                                 v-on:click="saveProgramBlock($event, block.id);"
+                        <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste speichern" alt="Liste speichern"
+                             v-on:click="saveProgramBlock($event, block.id);"
+                        >
+                        &nbsp;&nbsp;&nbsp;
+                        <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste neu laden" alt="Liste neu laden"
+                            v-on:click="loadProgramBlock($event, block.id);"
+                        >
+                        &nbsp;&nbsp;&nbsp;
+                        <div style="display: inline-block" title="Um ein Element zu löschen, dieses per drag & drop hier drauf ziehen">
+                            <draggable
+                                class="dragArea list-group"
+                                :group="{ name: 'trash', pull: false, put: true }"
+                                item-key="id"
+                                style="min-height: 15px; min-width: 15px; max-height: 15px; max-width: 15px;
+                                background-image: url('/svgs/trash-can-regular.svg');
+                                background-repeat: no-repeat;
+                                background-size:  contain;
+                                cursor:pointer;
+                                "
                             >
-                            &nbsp;&nbsp;&nbsp;
-                            <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="reload" alt="reload"
-                                v-on:click="loadProgramBlock($event, block.id);"
-                            >
+                                <template #item="{ element }"></template>
+                            </draggable>
+                        </div>
                     </div>
                     <div>
                         <draggable
@@ -65,8 +80,10 @@ import draggable from "vuedraggable"
                             style="border:1px solid black; min-height: 60px; min-width: 60px;"
                         >
                             <template #item="{ element }">
-                                <div class="list-group-item">
-                                    {{ element.filmIdentifier }}: {{ element.name }}
+                                <div class="list-group-item" style="display: flex; justify-content: space-between">
+                                    <div>
+                                        {{ element.filmIdentifier }}: {{ element.name }}
+                                    </div>
                                 </div>
                             </template>
                         </draggable>
@@ -233,6 +250,12 @@ export default {
         }
 
         event.target.style.backgroundColor = "";
+    },
+    removeProgramBlock: function(event, blockId, element) {
+        console.log(blockId);
+        console.log(element.id);
+        console.log(this.lists[blockId]);
+        event.currentTarget.parentNode.parentNode.remove();
     }
   }
 }
