@@ -24,7 +24,7 @@ import draggable from "vuedraggable"
                         <template #item="{ element }">
                           <div class="list-group-item">
                               <span :title="element.description">
-                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}}
+                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}}
                               </span>
                           </div>
                         </template>
@@ -44,7 +44,7 @@ import draggable from "vuedraggable"
                     display:inline-block;
                     border:1px solid black;
                     min-width: 400px;
-                    padding: 5px;" v-for="block in programmetas" :key="key"
+                    padding: 5px;" v-for="block in programmetas" :key="block.id"
                 >
                     <div>Start: {{ block.start }} ({{block.location.name}})</div>
                     <div>
@@ -102,194 +102,209 @@ import draggable from "vuedraggable"
 
 let idGlobal = 0;
 export default {
-  props: [
-      'films', 'programmetas', 'footerLinks', '_token'
-  ],
-  computed: {
-    headline: function () {return "Programm";},
-  },
-  order: 3,
-  components: {
-    draggable
-  },
-  data() {
-    return {
-        availableFilms: this.films,
-        'lists': this.receiveLists()
-    };
-  },
-  methods: {
-    getList: function(id) {
-        return this.lists[id];
+    props: [
+        'films', 'programmetas', 'footerLinks', '_token'
+    ],
+    computed: {
+        headline: function () {return "Programm";},
     },
-    defineAudioString: function (film) {
-        let audioString = '';
-        let subtitleString = '';
-        let lang1 = film.languages[0]?.language;
-        let type1 = film.languages[0]?.type;
-        let lang2 = film.languages[1]?.language;
-        let type2 = film.languages[1]?.type;
-        if (typeof lang1 !== "undefined") {
-            if (type1 === 'audio') {
-                audioString = lang1.toUpperCase();
-            } else {
-                subtitleString = lang1.toLowerCase();
-            }
-        }
-        if (typeof lang2 !== "undefined") {
-            if (type2 === 'audio') {
-                audioString = lang2.toUpperCase();
-            } else {
-                subtitleString = lang2.toLowerCase();
-            }
-        }
-        if (audioString !== "" || subtitleString !== "") {
-            if (subtitleString !== "") {
-                return "(" + audioString + "_" + subtitleString + ")";
-            } else {
-                return "(" + audioString + ")";
-            }
-        }
-        return ''
-      },
-      receiveLists: function() {
-        let ret = {};
-
-        for (const meta of this.programmetas) {
-            let listName = meta.id;
-            ret[listName] = [];
-
-            if (typeof meta.films !== "undefined") {
-                for (const film of meta.films) {
-
-                    let audio = this.defineAudioString(film);
-
-                    ret[listName].push(
-                        {
-                            id: idGlobal++,
-                            name: film.name + audio ,
-                            filmIdentifier: film.film_identifier,
-                            description: film.description
-                        }
-                    );
+    order: 3,
+    components: {
+        draggable
+    },
+    data() {
+        return {
+            availableFilms: this.films,
+            'lists': this.receiveLists()
+        };
+    },
+    methods: {
+        getList: function(id) {
+            return this.lists[id];
+        },
+        defineAudioString: function (film) {
+            let audioString = '';
+            let subtitleString = '';
+            let lang1 = film.languages[0]?.language;
+            let type1 = film.languages[0]?.type;
+            let lang2 = film.languages[1]?.language;
+            let type2 = film.languages[1]?.type;
+            if (typeof lang1 !== "undefined") {
+                if (type1 === 'audio') {
+                    audioString = lang1.toUpperCase();
+                } else {
+                    subtitleString = lang1.toLowerCase();
                 }
             }
-        }
-
-        return ret;
-    },
-    log: function(evt) {
-      // window.console.log(evt);
-    },
-    cloneFilm({ id }) {
-      return {
-        id: idGlobal++,
-        name: `${this.films[id - 1].name}`,
-        filmIdentifier: `${this.films[id - 1].film_identifier}`,
-        description: `${this.films[id - 1].description}`
-      };
-    },
-    saveProgramBlock: function (event, programmblockId) {
-        let data = new FormData();
-        data.append('_token', this.$props._token);
-        data.append('programmblockId', programmblockId);
-
-        let list = this.getList(programmblockId);
-        let d = [];
-
-        for (const k in list) {
-            let item = list[k];
-            d.push(item.filmIdentifier)
-        }
-
-        data.append('films', d);
-
-        function save(url, callBack, eventTarget, data) {
-            const xhttp=new XMLHttpRequest();
-            xhttp.onload = function() {
-                callBack(this, eventTarget, data);
+            if (typeof lang2 !== "undefined") {
+                if (type2 === 'audio') {
+                    audioString = lang2.toUpperCase();
+                } else {
+                    subtitleString = lang2.toLowerCase();
+                }
             }
-            xhttp.open("POST", url);
-            xhttp.send(data);
-        }
+            if (audioString !== "" || subtitleString !== "") {
+                if (subtitleString !== "") {
+                    return " (" + audioString + "_" + subtitleString + ")";
+                } else {
+                    return " (" + audioString + ")";
+                }
+            }
+            return ''
+        },
+        defineGenreString: function (film) {
+            let genreString = '';
+            for (let genre of film.genres) {
+                if (genreString !== '') {
+                    genreString += ' ';
+                }
+                genreString += genre.name;
+            }
+            if (genreString !== '') {
+                return ' (' + genreString + ')';
+            }
+            return ''
+        },
+        receiveLists: function() {
+            let ret = {};
 
-        function saveCallback(xhttp, eventTarget, data2) {
+            for (const meta of this.programmetas) {
+                let listName = meta.id;
+                ret[listName] = [];
 
+                if (typeof meta.films !== "undefined") {
+                    for (const film of meta.films) {
+
+                        let audio = this.defineAudioString(film);
+                        let genres = this.defineGenreString(film);
+
+                        ret[listName].push(
+                            {
+                                id: idGlobal++,
+                                name: film.name + audio + genres,
+                                filmIdentifier: film.film_identifier,
+                                description: film.description
+                            }
+                        );
+                    }
+                }
+            }
+            return ret;
+        },
+        log: function(evt) {
+            // window.console.log(evt);
+        },
+        cloneFilm({ id }) {
+            return {
+                id: idGlobal++,
+                name: `${this.films[id - 1].name}`,
+                filmIdentifier: `${this.films[id - 1].film_identifier}`,
+                description: `${this.films[id - 1].description}`
+            };
+        },
+        saveProgramBlock: function (event, programmblockId) {
+            let data = new FormData();
+            data.append('_token', this.$props._token);
+            data.append('programmblockId', programmblockId);
+
+            let list = this.getList(programmblockId);
+            let d = [];
+
+            for (const k in list) {
+                let item = list[k];
+                d.push(item.filmIdentifier)
+            }
+
+            data.append('films', d);
+
+            function save(url, callBack, eventTarget, data, programblockId) {
+                const xhttp=new XMLHttpRequest();
+                xhttp.onload = function() {
+                    callBack(event, this, eventTarget, data, programblockId);
+                }
+                xhttp.open("POST", url);
+                xhttp.send(data);
+            }
+
+            event.target.style.backgroundColor = "yellow";
+            save(
+                '/program/save',
+                 this.saveCallback,
+                 event.target,
+                 data,
+                 programmblockId
+            );
+
+            return event;
+        },
+        saveCallback: function(event, xhttp, eventTarget, data, programblockId) {
+            try {
+                data = JSON.parse(xhttp.response);
+                this.reloadListFromData(data, programblockId);
+            } catch (e) {
+                console.log(e.message)
+                event.target.style.backgroundColor = "red";
+                return;
+            }
+            event.target.style.backgroundColor = "";
+        },
+        loadProgramBlock: function (event, programmblockId) {
+            let data = new FormData();
+            data.append('_token', this.$props._token);
+            data.append('programmblockId', programmblockId);
+
+            let list = this.getList(programmblockId);
+
+            function load(url, callBack, eventTarget, data, list, programmblockId, event) {
+                const xhttp=new XMLHttpRequest();
+                xhttp.onload = function() {
+                    callBack(this, eventTarget, data, list, programmblockId, event);
+                }
+                xhttp.open("POST", url);
+                xhttp.send(data);
+            }
+
+            event.target.style.backgroundColor = "yellow";
+            load(
+                '/program/load',
+                 this.loadCallback,
+                 event.target,
+                 data,
+                 list,
+                 programmblockId,
+                 event
+            );
+
+            return event;
+        },
+        loadCallback: function (xhttp, eventTarget, data2, list, programmblockId, event) {
             let data = data2;
 
             try {
                 data = JSON.parse(xhttp.response);
+                this.reloadListFromData(data, programmblockId);
             } catch (e) {
+                console.log(e);
                 event.target.style.backgroundColor = "red";
                 return;
             }
 
             event.target.style.backgroundColor = "";
-        }
-
-        event.target.style.backgroundColor = "yellow";
-        save(
-            '/program/save',
-             saveCallback,
-             event.target,
-             data,
-        );
-
-        return event;
-    },
-    loadProgramBlock: function (event, programmblockId) {
-        let data = new FormData();
-        data.append('_token', this.$props._token);
-        data.append('programmblockId', programmblockId);
-
-        let list = this.getList(programmblockId);
-
-        function load(url, callBack, eventTarget, data, list, programmblockId, event) {
-            const xhttp=new XMLHttpRequest();
-            xhttp.onload = function() {
-                callBack(this, eventTarget, data, list, programmblockId, event);
-            }
-            xhttp.open("POST", url);
-            xhttp.send(data);
-        }
-
-        event.target.style.backgroundColor = "yellow";
-        load(
-            '/program/load',
-             this.loadCallback,
-             event.target,
-             data,
-             list,
-             programmblockId,
-             event
-        );
-
-        return event;
-    },
-    loadCallback: function (xhttp, eventTarget, data2, list, programmblockId, event) {
-        let data = data2;
-
-        try {
-            data = JSON.parse(xhttp.response);
+        },
+        reloadListFromData: function (data, programmblockId) {
+            console.log()
             this.lists[programmblockId] = [];
             for (let x in data) {
-               this.lists[programmblockId].push(
+                const film = data[x];
+                this.lists[programmblockId].push(
                     {
-                        name: data[x].name,
-                        filmIdentifier: data[x].film_identifier,
-                        description: data[x].description
+                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film),
+                        filmIdentifier: film.film_identifier,
+                        description: film.description
                     }
                 );
-
             }
-        } catch (e) {
-            console.log(e);
-            event.target.style.backgroundColor = "red";
-            return;
         }
-
-        event.target.style.backgroundColor = "";
     }
-  }
 }
 </script>

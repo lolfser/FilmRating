@@ -17,6 +17,7 @@ class ProgramblocksController extends Controller {
         foreach ($allFilms as $film) {
             // Loading pivots
             $film->languages;
+            $film->genres;
         }
 
         $metas = Programblockmetas::all();
@@ -25,7 +26,9 @@ class ProgramblocksController extends Controller {
             $meta->location;
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
+                // Loading pivots
                 $block->film->languages;
+                $block->film->genres;
                 $meta->addBlock($block->film);
             }
         }
@@ -45,8 +48,6 @@ class ProgramblocksController extends Controller {
 
         Programblocks::where('programblockmetas_id', $meta->id)->delete();
 
-        $test = explode(',', $request->all()['films']);
-
         foreach (explode(',', $request->all()['films']) as $filmIdentifier) {
             $film = Films::where('film_identifier', $filmIdentifier)->first();
 
@@ -56,8 +57,7 @@ class ProgramblocksController extends Controller {
             $pb->save();
         }
 
-        // TODO
-        return ['test', $test];
+        return $this->load($request);
     }
 
     public function load(Request $request): array|\Illuminate\Http\RedirectResponse {
@@ -70,6 +70,8 @@ class ProgramblocksController extends Controller {
                 'name' => $film->name,
                 'film_identifier' => $film->film_identifier,
                 'description' => $film->description,
+                'genres' => $film->genres,
+                'languages' => $film->languages,
             ];
         }
         return $res;
