@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Model Programblocks
@@ -22,11 +23,17 @@ class Programblocks extends Model {
     protected $casts    = ['id' => 'int', 'films_id' => 'int', 'programblockmetas_id' => 'int'];
     public $timestamps = false;
 
-    public function film() {
+    /**
+     * @return BelongsTo<Films, Programblocks>
+     */
+    public function film(): BelongsTo {
         return $this->belongsTo('App\Models\Films', 'films_id');
     }
 
-    public function programblockmeta() {
+    /**
+     * @return BelongsTo<Programblockmetas, Programblocks>
+     */
+    public function programblockmeta(): BelongsTo {
         return $this->belongsTo('App\Models\Programblockmetas', 'programblockmetas_id');
     }
 }

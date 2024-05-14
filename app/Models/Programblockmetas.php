@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Model Programblockmetas
@@ -26,15 +27,21 @@ class Programblockmetas extends Model {
     protected $casts    = ['id' => 'int', 'locations_id' => 'int', 'days_id' => 'int'];
     public $timestamps = false;
 
-    public function location() {
+    /**
+     * @return BelongsTo<Locations, Programblockmetas>
+     */
+    public function location(): BelongsTo{
         return $this->belongsTo('App\Models\Locations', 'locations_id');
     }
 
-    public function day() {
+    /**
+     * @return BelongsTo<Days, Programblockmetas>
+     */
+    public function day(): BelongsTo {
         return $this->belongsTo('App\Models\Days', 'days_id');
     }
 
-    public function addBlock(Films $film) {
+    public function addBlock(Films $film): void {
         if ($this->films === null) {
             $this->films = new Collection();
         }

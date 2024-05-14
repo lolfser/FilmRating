@@ -42,15 +42,24 @@ class ProgramblocksController extends Controller {
         ]);
     }
 
+    /**
+     * @return array<int, mixed>|\Illuminate\Http\RedirectResponse
+     */
     public function save(Request $request): array|\Illuminate\Http\RedirectResponse {
 
         $meta = Programblockmetas::where('id', $request->all()['programmblockId'])->first();
+
+        if ($meta === null) {
+            return [];
+        }
 
         Programblocks::where('programblockmetas_id', $meta->id)->delete();
 
         foreach (explode(',', $request->all()['films']) as $filmIdentifier) {
             $film = Films::where('film_identifier', $filmIdentifier)->first();
-
+            if ($film === null) {
+                continue;
+            }
             $pb = new Programblocks();
             $pb->programblockmetas_id = $meta->id;
             $pb->films_id = $film->id;
@@ -60,12 +69,21 @@ class ProgramblocksController extends Controller {
         return $this->load($request);
     }
 
+    /**
+     * @return array<int, mixed>|\Illuminate\Http\RedirectResponse
+     */
     public function load(Request $request): array|\Illuminate\Http\RedirectResponse {
         $meta = Programblockmetas::where('id', $request->all()['programmblockId'])->first();
+        if ($meta === null) {
+            return [];
+        }
         $result = Programblocks::where('programblockmetas_id', $meta->id)->get();
         $res = [];
         foreach ($result as $item) {
             $film = $item->film()->first();
+            if ($film === null) {
+                continue;
+            }
             $res[] = [
                 'name' => $film->name,
                 'film_identifier' => $film->film_identifier,

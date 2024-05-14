@@ -196,6 +196,31 @@ parameters:
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
+			message: "#^Expression \"\\$block\\-\\>film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$block\\-\\>film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$meta\\-\\>location\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
 			message: "#^Argument of an invalid type App\\\\Models\\\\Ratings supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
