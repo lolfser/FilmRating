@@ -4,7 +4,7 @@ import Footer from './Footer.vue';
 import draggable from "vuedraggable"
 </script>
 <template>
-    <Headline :headline="headline" />
+    <Headline headline="Programm" />
     <div class="row" style="display: flex">
         <div>
             <div style="display:inline-block; min-width: 20%;">
@@ -112,9 +112,6 @@ export default {
     props: [
         'films', 'programmetas', 'footerLinks', '_token'
     ],
-    computed: {
-        headline: function () {return "Programm";},
-    },
     order: 3,
     components: {
         draggable
@@ -328,7 +325,7 @@ export default {
             const currentLength = this.receiveLength(metaId, puffer_per_item);
             const className = totalLength < currentLength
                 ? 'red'
-                : (totalLength * 0.9 < currentLength ? 'yellow' : 'green')
+                : (totalLength * 0.9 < currentLength ? 'green' : '')
             return "<span class='" + className + "'>"
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
@@ -339,9 +336,6 @@ export default {
 <style>
     .green {
         background-color: green;
-    }
-    .yellow {
-        background-color: yellow;
     }
     .red {
         background-color: red;

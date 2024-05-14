@@ -24,9 +24,6 @@ import Programm from '@/Components/Program.vue';
 export default {
   props: [
       'films', 'programmetas', 'footerLinks', '_token'
-  ],
-  computed: {
-    headline: function () {return "Deine Bewertungen";},
-  }
+  ]
 }
 </script>
