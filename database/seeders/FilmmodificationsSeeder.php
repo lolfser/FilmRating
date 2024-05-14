@@ -13,10 +13,10 @@ class FilmmodificationsSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Filmmodifications::create(['name' => "child9"]);
-            Filmmodifications::create(['name' => "child13"]);
-            Filmmodifications::create(['name' => "child17"]);
-            Filmmodifications::create(['name' => "queer"]);
+            Filmmodifications::create(['name' => 'child9']);
+            Filmmodifications::create(['name' => 'child13']);
+            Filmmodifications::create(['name' => 'child17']);
+            Filmmodifications::create(['name' => 'queer']);
 
             DB::commit();
         } catch(\Throwable $t) {

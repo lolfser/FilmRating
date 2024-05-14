@@ -51,4 +51,7 @@ Route::middleware([
     Route::get('/import/', [\App\Http\Controllers\ImportController::class, 'index']);
     Route::post('/import/', [\App\Http\Controllers\ImportController::class, 'import']);
     Route::get('/stats/', [\App\Http\Controllers\StatsController::class, 'index']);
+    Route::get('/program/', [\App\Http\Controllers\ProgramblocksController::class, 'index']);
+    Route::post('/program/save', [\App\Http\Controllers\ProgramblocksController::class, 'save']);
+    Route::post('/program/load', [\App\Http\Controllers\ProgramblocksController::class, 'load']);
 });

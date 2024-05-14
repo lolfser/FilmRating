@@ -1,21 +1,18 @@
 <?php
 namespace Database\Seeders;
-use App\Models\Filmsources;
+use App\Models\Programblocks;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Seeder for table filmsources
+ * Seeder for table programmblocks
 */
-class FilmsourcesSeeder extends Seeder {
+class ProgramblocksSeeder extends Seeder {
 
     public function run(): void {
         try {
             DB::beginTransaction();
 
-            Filmsources::create(['name' => 'andere']);
-            Filmsources::create(['name' => 'click4festival']);
-            Filmsources::create(['name' => 'film free way']);
 
             DB::commit();
         } catch(\Throwable $t) {

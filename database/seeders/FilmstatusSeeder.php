@@ -13,11 +13,11 @@ class FilmstatusSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Filmstatus::create(['name' => "open"]);
-            Filmstatus::create(['name' => "dabei"]);
-            Filmstatus::create(['name' => "raus"]);
-            Filmstatus::create(['name' => "nur kpj"]);
-            Filmstatus::create(['name' => "vielleicht"]);
+            Filmstatus::create(['name' => 'open']);
+            Filmstatus::create(['name' => 'dabei']);
+            Filmstatus::create(['name' => 'raus']);
+            Filmstatus::create(['name' => 'nur kpj']);
+            Filmstatus::create(['name' => 'vielleicht']);
 
             DB::commit();
         } catch(\Throwable $t) {
