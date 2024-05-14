@@ -24,7 +24,7 @@ import draggable from "vuedraggable"
                         <template #item="{ element }">
                           <div class="list-group-item">
                               <span :title="element.description">
-                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}}
+                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ element.duration / 60 }}min.)
                               </span>
                           </div>
                         </template>
@@ -34,7 +34,6 @@ import draggable from "vuedraggable"
         </div>
         <div>&nbsp;&nbsp;&nbsp;</div>
         <div style="
-            white-space: nowrap;
             overflow-x: scroll;
             overflow-y: hidden;
             max-width: 78%;
@@ -46,7 +45,15 @@ import draggable from "vuedraggable"
                     min-width: 400px;
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
                 >
-                    <div>Start: {{ block.start }} ({{block.location.name}})</div>
+                    <div>
+                        Start: {{ block.start }} ({{ block.location.name }})
+                        Länge: <span v-html="receiveBlockLength(block.id, block.puffer_per_item, block.total_length)"></span>
+                    </div>
+                    <div v-if="block.puffer_per_item">
+                        Puffer pro Film: {{ block.puffer_per_item }}
+                        <span v-if="block.puffer_per_item === 1"> Minute</span>
+                        <span v-else> Minuten</span>
+                    </div>
                     <div>
                         <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste speichern" alt="Liste speichern"
                              v-on:click="saveProgramBlock($event, block.id);"
@@ -169,21 +176,22 @@ export default {
             let ret = {};
 
             for (const meta of this.programmetas) {
-                let listName = meta.id;
+                const listName = meta.id;
                 ret[listName] = [];
 
                 if (typeof meta.films !== "undefined") {
                     for (const film of meta.films) {
 
-                        let audio = this.defineAudioString(film);
-                        let genres = this.defineGenreString(film);
+                        const audio = this.defineAudioString(film);
+                        const genres = this.defineGenreString(film);
 
                         ret[listName].push(
                             {
                                 id: idGlobal++,
-                                name: film.name + audio + genres,
+                                name: film.name + audio + genres + " (" + (film.duration / 60) + "min.)",
                                 filmIdentifier: film.film_identifier,
-                                description: film.description
+                                description: film.description,
+                                duration: film.duration
                             }
                         );
                     }
@@ -195,11 +203,13 @@ export default {
             // window.console.log(evt);
         },
         cloneFilm({ id }) {
+            const film = this.films[id - 1];
             return {
                 id: idGlobal++,
-                name: `${this.films[id - 1].name}`,
-                filmIdentifier: `${this.films[id - 1].film_identifier}`,
-                description: `${this.films[id - 1].description}`
+                name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
+                filmIdentifier: film.film_identifier,
+                description: film.description,
+                duration: film.duration
             };
         },
         saveProgramBlock: function (event, programmblockId) {
@@ -292,19 +302,54 @@ export default {
             event.target.style.backgroundColor = "";
         },
         reloadListFromData: function (data, programmblockId) {
-            console.log()
             this.lists[programmblockId] = [];
-            for (let x in data) {
+            for (const x in data) {
                 const film = data[x];
                 this.lists[programmblockId].push(
                     {
-                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film),
+                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
                         filmIdentifier: film.film_identifier,
-                        description: film.description
+                        description: film.description,
+                        duration: film.duration
                     }
                 );
             }
+        },
+        receiveLength: function(metaId, pufferPerItem) {
+            const puffer = parseInt(pufferPerItem === null ? 0 : pufferPerItem);
+            let filmLength = 0;
+            for (const film of this.lists[metaId]) {
+                filmLength += parseInt(film.duration);
+            }
+            const totalLength = (this.lists[metaId].length * puffer) + (filmLength / 60);
+            return parseInt(totalLength + "");
+        },
+        receiveBlockLength: function(metaId, puffer_per_item, totalLength) {
+            const currentLength = this.receiveLength(metaId, puffer_per_item);
+            const className = totalLength < currentLength
+                ? 'red'
+                : (totalLength * 0.9 < currentLength ? 'yellow' : 'green')
+            return "<span class='" + className + "'>"
+                    + currentLength + " / " + totalLength + " Minuten"
+                 + "</span>";
         }
     }
 }
 </script>
+<style>
+    .green {
+        background-color: green;
+    }
+    .yellow {
+        background-color: yellow;
+    }
+    .red {
+        background-color: red;
+    }
+    .list-group-item:nth-child(2n +2) {
+        background-color: lightgray;
+    }
+    .list-group-item:nth-child(2n +1) {
+        background-color: peachpuff;
+    }
+</style>

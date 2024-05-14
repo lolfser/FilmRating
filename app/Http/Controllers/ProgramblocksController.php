@@ -72,6 +72,7 @@ class ProgramblocksController extends Controller {
                 'description' => $film->description,
                 'genres' => $film->genres,
                 'languages' => $film->languages,
+                'duration' => $film->duration,
             ];
         }
         return $res;
