@@ -14,8 +14,8 @@ class CreateProgramblockmetasTable extends Migration {
             $table->integer('locations_id')->nullable();
             $table->integer('days_id')->nullable();
             $table->time('start')->nullable();
-            $table->float('total_length', 10, 0)->nullable();
-            $table->float('puffer_per_item', 10, 0)->nullable();
+            $table->float('total_length', 10)->nullable();
+            $table->float('puffer_per_item', 10)->nullable();
 
             $table->unique(["locations_id","days_id","start"]); // isUnique => lcoations_days_start
         });
