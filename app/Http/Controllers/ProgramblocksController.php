@@ -12,7 +12,7 @@ class ProgramblocksController extends Controller {
 
     public function index(): \Inertia\Response  {
 
-        $allFilms = Films::query()->limit(10)->get();
+        $allFilms = Films::query()/*->limit(10)*/->get();
 
         foreach ($allFilms as $film) {
             // Loading pivots

@@ -11,7 +11,7 @@ class CreateKeywordsTable extends Migration {
     public function up(): void {
         Schema::create('keywords', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 100);
+            $table->string('name', 100); // coalation: utf8mb4_bin
 
             $table->unique(["name"]); // isUnique => keywords_name_unique
         });

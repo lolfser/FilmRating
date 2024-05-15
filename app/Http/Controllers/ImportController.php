@@ -122,10 +122,10 @@ class ImportController extends Controller {
             $this->handlingFilmModifications(
                 $films,
                 $allMods,
-                $data[$queerIndex] === 'TRUE',
-                $data[$child9Index] === 'TRUE',
-                $data[$child13Index] === 'TRUE',
-                $data[$child17Index] === 'TRUE'
+                strtoupper($data[$queerIndex]) === 'TRUE',
+                strtoupper($data[$child9Index]) === 'TRUE',
+                strtoupper($data[$child13Index]) === 'TRUE',
+                strtoupper($data[$child17Index]) === 'TRUE'
             );
 
             $this->handlingInfoSpalte(
@@ -170,7 +170,7 @@ class ImportController extends Controller {
         $durationParts = explode(':', $durationString);
 
         if (count($durationParts) === 1)
-            return $durationParts[0] ?: 0;
+            return ((int) ($durationParts[0] ?: 0)) * 60;
 
         if (count($durationParts) === 2)
             return ((int) $durationParts[0]) * 60 + ((int) $durationParts[1]);

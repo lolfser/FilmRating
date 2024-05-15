@@ -5,42 +5,43 @@ import draggable from "vuedraggable"
 </script>
 <template>
     <Headline headline="Programm" />
-    <div class="row" style="display: flex">
+    <div style="height: 85vh; width: 25%; overflow-y:scroll; display: inline-block;">
         <div>
-            <div style="display:inline-block; min-width: 20%;">
-                <div>
-                    <span>Verfügbare Filme</span>
-                </div>
-                <div>
-                      <draggable
-                        class="dragArea list-group"
-                        :list="availableFilms"
-                        :group="{ name: 'filmgroup', pull: 'clone', put: false }"
-                        :clone="cloneFilm"
-                        @change="log"
-                        item-key="element"
-                        style="border:1px solid black; min-height: 60px; min-width: 60px;"
-                      >
-                        <template #item="{ element }">
-                          <div class="list-group-item">
-                              <span :title="element.description">
-                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ element.duration / 60 }}min.)
-                              </span>
-                          </div>
-                        </template>
-                      </draggable>
-                </div>
+            <div>
+                <span>Verfügbare Filme</span>
+            </div>
+            <div>
+                  <draggable
+                    class="dragArea list-group"
+                    :list="availableFilms"
+                    :group="{ name: 'filmgroup', pull: 'clone', put: false }"
+                    :clone="cloneFilm"
+                    @change="log"
+                    item-key="element"
+                    style="border:1px solid black;"
+                  >
+                    <template #item="{ element }">
+                      <div class="list-group-item">
+                          <span :title="element.description">
+                              {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ receiveDuration(element) }}min.)
+                          </span>
+                      </div>
+                    </template>
+                  </draggable>
             </div>
         </div>
-        <div>&nbsp;&nbsp;&nbsp;</div>
+    </div>
+    <div style="height: 85vh; width: 73%; overflow-y:scroll; display: inline-block;">
         <div style="
             overflow-x: scroll;
             overflow-y: hidden;
-            max-width: 78%;
+            left: 30%;
+            height: 100%;
         ">
-            <div style="display: flex">
+            <div style="display: flex; height: 100%">
                 <div style="
-                    display:inline-block;
+                    display:flex;
+                    flex-direction: column;
                     border:1px solid black;
                     min-width: 400px;
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
@@ -86,7 +87,7 @@ import draggable from "vuedraggable"
                             group="filmgroup"
                             @change="log"
                             item-key="id"
-                            style="border:1px solid black; min-height: 60px; min-width: 60px;"
+                            style="border:1px solid black; min-height: 60px; min-width: 60px; overflow-y: scroll; height: 70vh"
                         >
                             <template #item="{ element }">
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
@@ -185,7 +186,7 @@ export default {
                         ret[listName].push(
                             {
                                 id: idGlobal++,
-                                name: film.name + audio + genres + " (" + (film.duration / 60) + "min.)",
+                                name: film.name + audio + genres + " (" + this.receiveDuration(film) + "min.)",
                                 filmIdentifier: film.film_identifier,
                                 description: film.description,
                                 duration: film.duration
@@ -203,7 +204,7 @@ export default {
             const film = this.films[id - 1];
             return {
                 id: idGlobal++,
-                name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
+                name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + this.receiveDuration(film) + "min.)",
                 filmIdentifier: film.film_identifier,
                 description: film.description,
                 duration: film.duration
@@ -304,7 +305,7 @@ export default {
                 const film = data[x];
                 this.lists[programmblockId].push(
                     {
-                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
+                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + this.receiveDuration(film) + "min.)",
                         filmIdentifier: film.film_identifier,
                         description: film.description,
                         duration: film.duration
@@ -318,8 +319,14 @@ export default {
             for (const film of this.lists[metaId]) {
                 filmLength += parseInt(film.duration);
             }
-            const totalLength = (this.lists[metaId].length * puffer) + (filmLength / 60);
+            const totalLength = (this.lists[metaId].length * puffer) + this.receiveDurationFromSecs(filmLength);
             return parseInt(totalLength + "");
+        },
+        receiveDuration: function(film) {
+            return this.receiveDurationFromSecs(film.duration);
+        },
+        receiveDurationFromSecs: function(seconds) {
+            return (seconds / 60).toFixed(2);
         },
         receiveBlockLength: function(metaId, puffer_per_item, totalLength) {
             const currentLength = this.receiveLength(metaId, puffer_per_item);

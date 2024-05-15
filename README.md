@@ -4,6 +4,7 @@ Mit dieser Projekt können Filme, dessen Metadaten vorher in das System eingepfl
 
 ## Installation
 ./vendor/bin/sail artisan migrate
+--> keywords COLLATE 'utf8mb4_bin',
 ./vendor/bin/sail artisan db:seed
 
 ## dev start
