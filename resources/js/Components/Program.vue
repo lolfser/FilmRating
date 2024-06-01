@@ -314,12 +314,12 @@ export default {
             }
         },
         receiveLength: function(metaId, pufferPerItem) {
-            const puffer = parseInt(pufferPerItem === null ? 0 : pufferPerItem);
+            const puffer = parseInt(pufferPerItem === null ? 0 : pufferPerItem) * 60;
             let filmLength = 0;
             for (const film of this.lists[metaId]) {
                 filmLength += parseInt(film.duration);
             }
-            const totalLength = (this.lists[metaId].length * puffer) + this.receiveDurationFromSecs(filmLength);
+            const totalLength = this.receiveDurationFromSecs(filmLength + (this.lists[metaId].length * puffer));
             return parseInt(totalLength + "");
         },
         receiveDuration: function(film) {
