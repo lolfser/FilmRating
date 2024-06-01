@@ -337,8 +337,7 @@ export default {
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
         },
-        receiveTitle(description){
-            console.log(description)
+        receiveTitle(description) {
             return description == '' ? 'keine Beschreibung' : description
         }
     }

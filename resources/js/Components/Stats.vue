@@ -15,7 +15,7 @@ import Footer from './Footer.vue';
     }
 </style>
 <template>
-<Headline :headline="headline" />
+<Headline headline="Statistiken" />
 <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
     <pre>$('.stats').innerHTML </pre>
 </div>

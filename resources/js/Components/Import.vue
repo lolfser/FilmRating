@@ -38,7 +38,7 @@ import Footer from './Footer.vue';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors', 'footerLinks'],
   methods: {
   },
   computed: {

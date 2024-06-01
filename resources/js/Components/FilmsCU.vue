@@ -1,5 +1,6 @@
 <script setup>
 import TextInput from './TextInput.vue';
+import InputNumber from 'primevue/inputnumber';
 import PrimaryButton from './PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
@@ -58,14 +59,14 @@ import { translate } from './../trans';
                 <tr>
                   <td>{{ translate('attributes.year') }}</td>
                   <td>
-                    <TextInput name="year" v-model="film.year" />
+                    <InputNumber :inputProps="{name: 'year'}" v-model="film.year" />
                     <InputError class="mt-2" :message="errors.year" />
                   </td>
                 </tr>
                 <tr>
                   <td>{{ translate('attributes.duration') }}</td>
                   <td>
-                    <TextInput name="duration" v-model="film.duration" />
+                    <InputNumber :inputProps="{name: 'duration'}"  v-model="film.duration" />
                     <InputError class="mt-2" :message="errors.duration" />
                   </td>
                 </tr>
@@ -106,7 +107,6 @@ export default {
         return result;
     },
     isSelectedStatus: function (filmLanguages, currentLanguage) {
-        console.log(filmLanguages, currentLanguage)
         return filmLanguages === currentLanguage;
     },
   },
@@ -120,10 +120,6 @@ export default {
     computedId: function () {
         if (typeof this.film.id === "undefined") return 0;
         return this.film.id;
-    },
-    headline: function() {
-        if (typeof this.film.id === "undefined") return 'Film erstellen';
-        return 'Film bearbeiten';
     }
   }
 }
