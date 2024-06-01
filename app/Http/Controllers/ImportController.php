@@ -189,6 +189,7 @@ class ImportController extends Controller {
         $usedKeywords = [];
         $usedDescriptions = [];
         $allGenresArray = [];
+        $status = 1;
 
         foreach ($allGenres as $genre) {
             $allGenresArray[$genre->name] = $genre;
@@ -204,6 +205,20 @@ class ImportController extends Controller {
                 continue;
             }
 
+            if (\in_array(
+                    $input,
+                    [
+                        'raus: weil Einreichung aus letzten Jahren',
+                        'raus: Complettion Date vor 2022',
+                        'raus: weil Bewertungen'
+                    ],
+                    true
+                )
+            ) {
+                $status = 3;
+                continue;
+            }
+
             if (count(explode(' ', $input)) > 2) {
                 $usedDescriptions[] = $input;
                 continue;
@@ -213,6 +228,7 @@ class ImportController extends Controller {
 
         }
 
+        $film->filmstatus_id = $status;
         $film->description = implode(', ', $usedDescriptions);
         $saveFilmsKeywordsServices->save($film, $usedKeywords);
 

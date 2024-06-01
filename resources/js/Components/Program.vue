@@ -22,7 +22,7 @@ import draggable from "vuedraggable"
                   >
                     <template #item="{ element }">
                       <div class="list-group-item">
-                          <span :title="element.description">
+                          <span :title="receiveTitle(element.description)">
                               {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ receiveDuration(element) }}min.)
                           </span>
                       </div>
@@ -92,7 +92,7 @@ import draggable from "vuedraggable"
                             <template #item="{ element }">
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
                                     <div>
-                                        <span :title="element.description">
+                                        <span :title="receiveTitle(element.description)">
                                             {{ element.filmIdentifier }}: {{ element.name }}
                                         </span>
                                     </div>
@@ -336,6 +336,10 @@ export default {
             return "<span class='" + className + "'>"
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
+        },
+        receiveTitle(description){
+            console.log(description)
+            return description == '' ? 'keine Beschreibung' : description
         }
     }
 }

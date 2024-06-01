@@ -16,7 +16,7 @@ class GenresSeeder extends Seeder {
             Genres::create(['name' => 'Dokumentation',]);
             Genres::create(['name' => 'Horror']);
             Genres::create(['name' => 'Thriller']);
-            Genres::create(['name' => 'Kömodie']);
+            Genres::create(['name' => 'Komödie']);
             Genres::create(['name' => 'Tragödie']);
 
             DB::commit();
