@@ -2,9 +2,22 @@
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 import draggable from "vuedraggable"
+import MultiSelect from "@/Components/MultiSelect.vue";
+
 </script>
 <template>
-    <Headline headline="Programm" />
+    <Headline :headline="headline" />
+    <div>
+        <MultiSelect :options="filmstatus" :optionLabel="getFilmStatusLabel" :optionValue="getFilmStatusId"
+            placeholder="Filme Status filtern"
+            name="filmstatus"
+            autoFilterFocus
+            v-model="selectedFilmStatus"
+            style="display: inline"
+        />
+        <label><input type="checkbox" :checked="only_not_set" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
+        <br><input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
+    </div>
     <div style="height: 85vh; width: 25%; overflow-y:scroll; display: inline-block;">
         <div>
             <div>
@@ -111,7 +124,7 @@ import draggable from "vuedraggable"
 let idGlobal = 0;
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token'
+        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter'
     ],
     order: 3,
     components: {
@@ -120,7 +133,9 @@ export default {
     data() {
         return {
             availableFilms: this.films,
-            'lists': this.receiveLists()
+            'lists': this.receiveLists(),
+            selectedFilmStatus: this.filter.filmstatus,
+            only_not_set: this.filter.only_not_set,
         };
     },
     methods: {
@@ -339,6 +354,61 @@ export default {
         },
         receiveTitle(description) {
             return description == '' ? 'keine Beschreibung' : description
+        },
+        getFilmStatusId: function (filmstatus) {
+            return filmstatus.id;
+        },
+        getFilmStatusLabel: function (filmstatus) {
+            return filmstatus.name;
+        },
+        filterFunction: function (event) {
+            let data = new FormData();
+            data.append('filmstatus', this.selectedFilmStatus);
+            data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked)
+
+            function filterRequest(url, callBack, eventTarget, data, event, _token) {
+                let tokenData = new FormData();
+                tokenData.append('_token', _token);
+
+                const xhttp=new XMLHttpRequest();
+
+                xhttp.onload = function() {
+                    callBack(this, eventTarget, event);
+                }
+
+                const queryString = new URLSearchParams(data).toString()
+                xhttp.open("POST", url + '?' +queryString);
+                window.history.replaceState(
+                    {},
+                    '',
+                    window.location.origin + window.location.pathname + '?' + queryString
+                );
+                xhttp.send(tokenData);
+            }
+
+            event.target.style.backgroundColor = "yellow";
+            filterRequest(
+                '/program/filter',
+                 this.filterCallback,
+                 event.target,
+                 data,
+                 event,
+                this.$props._token
+            );
+
+            return event;
+        },
+        filterCallback: function (xhttp, eventTarget, event) {
+
+            try {
+                const data = JSON.parse(xhttp.response);
+                this.availableFilms = data;
+            } catch (e) {
+                console.log(e);
+                event.target.style.backgroundColor = "red";
+                return;
+            }
+            event.target.style.backgroundColor = "";
         }
     }
 }

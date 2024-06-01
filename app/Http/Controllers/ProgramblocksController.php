@@ -3,22 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Films;
+use App\Models\Filmstatus;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProgramblocksController extends Controller {
 
-    public function index(): \Inertia\Response  {
+    public function index(Request $request): \Inertia\Response {
 
-        $allFilms = Films::query()/*->limit(10)*/->get();
-
-        foreach ($allFilms as $film) {
-            // Loading pivots
-            $film->languages;
-            $film->genres;
-        }
+        $films = $this->buildFilmsQuery($request->all());
+        $allFilms = $films/*->limit(10)*/->get();
+        $this->loadPivots($allFilms);
 
         $metas = Programblockmetas::all();
 
@@ -33,12 +31,25 @@ class ProgramblocksController extends Controller {
             }
         }
 
+        $selectedIds = array_map(
+            function ($item) {
+                return (int) $item;
+            },
+            explode(',', $request->all()['filmstatus'] ?? '')
+        );
+
         return Inertia::render('Program', [
             'films' => $allFilms,
             'programmetas' => $metas,
+            'filmstatus' => Filmstatus::all(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             '_token' => csrf_token(),
+            'filter' => [
+                //'filmstatus' => Filmstatus::query()->whereIn('id', $selectedIds)->get(),
+                'filmstatus' => array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
+            ]
         ]);
     }
 
@@ -96,5 +107,52 @@ class ProgramblocksController extends Controller {
         return $res;
     }
 
+    /**
+     * @return array<int, mixed>|\Illuminate\Http\RedirectResponse
+     */
+    public function filter(Request $request): mixed/*|array|\Illuminate\Http\RedirectResponse*/ {
+
+        $films = $this->buildFilmsQuery($request->all());
+        $films = $films/*->limit(10)*/->get();
+        $this->loadPivots($films);
+
+        return $films;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Collection|array $allFilms
+     * @return void
+     */
+    public function loadPivots(\Illuminate\Database\Eloquent\Collection|array $allFilms): void
+    {
+        foreach ($allFilms as $film) {
+            // Loading pivots
+            $film->languages;
+            $film->genres;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder
+    {
+        $filmStatus = $requestParam['filmstatus'] ?? [];
+        $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
+
+        $films = Films::query();
+
+        if ($filmStatus !== []) {
+            $films = $films->whereIn('filmstatus_id', explode(',', $filmStatus));
+        }
+
+        if ($onlyNotSet) {
+            $filmsAlreadyUsed = DB::table('programblocks')->select('films_id')->groupBy('films_id')->pluck('films_id')->values()->toArray();
+            $films = $films->whereNotIn('id', $filmsAlreadyUsed);
+        }
+
+        return $films;
+    }
 
 }

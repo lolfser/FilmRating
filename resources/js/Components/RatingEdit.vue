@@ -127,10 +127,10 @@ export default {
     }
   },
   methods: {
-      genreValues: function (genre) {
+    genreValues: function (genre) {
         return genre.id;
     },
-      genreLabels: function (genre) {
+    genreLabels: function (genre) {
         return genre.name;
     },
     keywordsConcat: function(keywords) {

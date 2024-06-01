@@ -54,4 +54,5 @@ Route::middleware([
     Route::get('/program/', [\App\Http\Controllers\ProgramblocksController::class, 'index']);
     Route::post('/program/save', [\App\Http\Controllers\ProgramblocksController::class, 'save']);
     Route::post('/program/load', [\App\Http\Controllers\ProgramblocksController::class, 'load']);
+    Route::post('/program/filter', [\App\Http\Controllers\ProgramblocksController::class, 'filter']);
 });
