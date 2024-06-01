@@ -32,7 +32,7 @@ import { translate } from './../trans';
                 <tr>
                     <td>{{ translate('attributes.description') }}</td>
                   <td>
-                    <TextInput name="description" v-model="film.description" />
+                    <textarea cols="30" rows="3" name="description" v-model="film.description"></textarea>
                     <InputError class="mt-2" :message="errors.description" />
                   </td>
                 </tr>
@@ -72,8 +72,11 @@ import { translate } from './../trans';
                 <tr>
                   <td>{{ translate('attributes.filmstatus_id') }}</td>
                   <td>
-                    <TextInput name="filmstatus_id" v-model="film.filmstatus_id" />
-                    <InputError class="mt-2" :message="errors.filmstatus_id" />
+                    <span v-for="filmstatus in filmstatus">
+                        <label><input :checked="isSelectedStatus(filmstatus.id, film.filmstatus_id)" type="radio" name="filmstatus_id" :value="filmstatus.id" /> {{filmstatus.name}}</label>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
+
                   </td>
                 </tr>
             </table>
@@ -88,7 +91,7 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', 'languages', 'filmstatus', '_token', 'headline', 'errors'],
   methods: {
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;
@@ -101,6 +104,10 @@ export default {
         })
         if (typeof this.film.id === "undefined") return 0;
         return result;
+    },
+    isSelectedStatus: function (filmLanguages, currentLanguage) {
+        console.log(filmLanguages, currentLanguage)
+        return filmLanguages === currentLanguage;
     },
   },
   computed: {
@@ -116,7 +123,7 @@ export default {
     },
     headline: function() {
         if (typeof this.film.id === "undefined") return 'Film erstellen';
-         return 'Film bearbeiten';
+        return 'Film bearbeiten';
     }
   }
 }

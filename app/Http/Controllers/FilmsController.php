@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Films;
 use App\Models\Filmsources;
+use App\Models\Filmstatus;
 use App\Models\Languages;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
@@ -94,6 +95,7 @@ class FilmsController extends Controller {
             'film' => $film,
             'filmsources' => Filmsources::all(),
             'languages' => Languages::all()->groupBy('type'),
+            'filmstatus' => Filmstatus::all(),
             '_token' => csrf_token(),
             'errors' => $errors,
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
