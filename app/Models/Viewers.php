@@ -21,6 +21,7 @@ class Viewers extends Model {
     protected $table    = 'viewers';
     protected $fillable = ['users_id','initials','comment'];
     protected $casts    = ['id' => 'int', 'users_id' => 'int'];
+    public $timestamps = false;
 
     /**
      * @return BelongsTo<Users, Viewers>
