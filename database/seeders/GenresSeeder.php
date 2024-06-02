@@ -13,11 +13,11 @@ class GenresSeeder extends Seeder {
         try {
             DB::beginTransaction();
 
-            Genres::create(['name' => 'Dokumentation',]);
-            Genres::create(['name' => 'Horror']);
-            Genres::create(['name' => 'Thriller']);
-            Genres::create(['name' => 'Kömodie']);
-            Genres::create(['name' => 'Tragödie']);
+            Genres::create(['name' => 'Dokumentation', 'bgcolor' => '#111111', 'fontcolor' => '#EEEEEE']);
+            Genres::create(['name' => 'Horror', 'bgcolor' => '#555555', 'fontcolor' => '#EEEEEE']);
+            Genres::create(['name' => 'Thriller', 'bgcolor' => '#FF0000', 'fontcolor' => '#000000']);
+            Genres::create(['name' => 'Komödie', 'bgcolor' => '#00FF00', 'fontcolor' => '#000000']);
+            Genres::create(['name' => 'Tragödie', 'bgcolor' => '#000011', 'fontcolor' => '#FFFFFF']);
 
             DB::commit();
         } catch(\Throwable $t) {

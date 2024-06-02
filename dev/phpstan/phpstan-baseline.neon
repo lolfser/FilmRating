@@ -186,17 +186,27 @@ parameters:
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveDuration\\(\\) should return int but returns int\\|string\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
 			message: "#^Property App\\\\Models\\\\Ratings\\:\\:\\$grades_id \\(int\\) does not accept int\\|string\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
+			message: "#^Expression \"\\$block\\-\\>film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$block\\-\\>film\\-\\>filmstatus\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
 			message: "#^Expression \"\\$block\\-\\>film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$block\\-\\>film\\-\\>keywords\" on a separate line does not do anything\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
@@ -206,7 +216,22 @@ parameters:
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
+			message: "#^Expression \"\\$film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>filmstatus\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
 			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: "#^Expression \"\\$film\\-\\>keywords\" on a separate line does not do anything\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 

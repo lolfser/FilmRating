@@ -29,6 +29,15 @@ class ImportController extends Controller {
 
     public function import(Request $request) {
 
+        /*
+            TRUNCATE films_keywords;
+            TRUNCATE keywords;
+            TRUNCATE films_languages;
+            TRUNCATE films_genres;
+            TRUNCATE films;
+            TRUNCATE filmmodifications_films;
+         */
+
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_IMPORT)) {
             $errors[] = 'no permission';
             var_dump($errors);
@@ -122,10 +131,10 @@ class ImportController extends Controller {
             $this->handlingFilmModifications(
                 $films,
                 $allMods,
-                $data[$queerIndex] === 'TRUE',
-                $data[$child9Index] === 'TRUE',
-                $data[$child13Index] === 'TRUE',
-                $data[$child17Index] === 'TRUE'
+                strtoupper($data[$queerIndex]) === 'TRUE',
+                strtoupper($data[$child9Index]) === 'TRUE',
+                strtoupper($data[$child13Index]) === 'TRUE',
+                strtoupper($data[$child17Index]) === 'TRUE'
             );
 
             $this->handlingInfoSpalte(
@@ -170,7 +179,7 @@ class ImportController extends Controller {
         $durationParts = explode(':', $durationString);
 
         if (count($durationParts) === 1)
-            return $durationParts[0] ?: 0;
+            return ((int) ($durationParts[0] ?: 0)) * 60;
 
         if (count($durationParts) === 2)
             return ((int) $durationParts[0]) * 60 + ((int) $durationParts[1]);
@@ -189,6 +198,7 @@ class ImportController extends Controller {
         $usedKeywords = [];
         $usedDescriptions = [];
         $allGenresArray = [];
+        $status = 1;
 
         foreach ($allGenres as $genre) {
             $allGenresArray[$genre->name] = $genre;
@@ -204,6 +214,20 @@ class ImportController extends Controller {
                 continue;
             }
 
+            if (\in_array(
+                    $input,
+                    [
+                        'raus: weil Einreichung aus letzten Jahren',
+                        'raus: Complettion Date vor 2022',
+                        'raus: weil Bewertungen'
+                    ],
+                    true
+                )
+            ) {
+                $status = 3;
+                continue;
+            }
+
             if (count(explode(' ', $input)) > 2) {
                 $usedDescriptions[] = $input;
                 continue;
@@ -213,6 +237,7 @@ class ImportController extends Controller {
 
         }
 
+        $film->filmstatus_id = $status;
         $film->description = implode(', ', $usedDescriptions);
         $saveFilmsKeywordsServices->save($film, $usedKeywords);
 
@@ -367,19 +392,19 @@ class ImportController extends Controller {
     {
         $allMods = [];
         foreach (Filmmodifications::all() as $mod) {
-            if ($mod->name === 'child9') {
+            if ($mod->key === 'child9') {
                 $allMods['child9'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'child13') {
+            if ($mod->key === 'child13') {
                 $allMods['child13'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'child17') {
+            if ($mod->key === 'child17') {
                 $allMods['child17'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'queer') {
+            if ($mod->key === 'queer') {
                 $allMods['queer'] = $mod->id;
                 continue;
             }

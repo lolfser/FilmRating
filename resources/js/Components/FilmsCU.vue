@@ -1,5 +1,6 @@
 <script setup>
 import TextInput from './TextInput.vue';
+import InputNumber from 'primevue/inputnumber';
 import PrimaryButton from './PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
@@ -32,7 +33,7 @@ import { translate } from './../trans';
                 <tr>
                     <td>{{ translate('attributes.description') }}</td>
                   <td>
-                    <TextInput name="description" v-model="film.description" />
+                    <textarea cols="30" rows="3" name="description" v-model="film.description"></textarea>
                     <InputError class="mt-2" :message="errors.description" />
                   </td>
                 </tr>
@@ -58,22 +59,25 @@ import { translate } from './../trans';
                 <tr>
                   <td>{{ translate('attributes.year') }}</td>
                   <td>
-                    <TextInput name="year" v-model="film.year" />
+                    <InputNumber :inputProps="{name: 'year'}" v-model="film.year" />
                     <InputError class="mt-2" :message="errors.year" />
                   </td>
                 </tr>
                 <tr>
                   <td>{{ translate('attributes.duration') }}</td>
                   <td>
-                    <TextInput name="duration" v-model="film.duration" />
+                    <InputNumber :inputProps="{name: 'duration'}"  v-model="film.duration" />
                     <InputError class="mt-2" :message="errors.duration" />
                   </td>
                 </tr>
                 <tr>
                   <td>{{ translate('attributes.filmstatus_id') }}</td>
                   <td>
-                    <TextInput name="filmstatus_id" v-model="film.filmstatus_id" />
-                    <InputError class="mt-2" :message="errors.filmstatus_id" />
+                    <span v-for="filmstatus in filmstatus">
+                        <label><input :checked="isSelectedStatus(filmstatus.id, film.filmstatus_id)" type="radio" name="filmstatus_id" :value="filmstatus.id" /> {{filmstatus.name}}</label>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
+
                   </td>
                 </tr>
             </table>
@@ -88,7 +92,7 @@ import { translate } from './../trans';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', 'languages', 'filmstatus', '_token', 'headline', 'errors'],
   methods: {
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;
@@ -102,6 +106,9 @@ export default {
         if (typeof this.film.id === "undefined") return 0;
         return result;
     },
+    isSelectedStatus: function (filmLanguages, currentLanguage) {
+        return filmLanguages === currentLanguage;
+    },
   },
   computed: {
     token: function () {
@@ -113,10 +120,6 @@ export default {
     computedId: function () {
         if (typeof this.film.id === "undefined") return 0;
         return this.film.id;
-    },
-    headline: function() {
-        if (typeof this.film.id === "undefined") return 'Film erstellen';
-         return 'Film bearbeiten';
     }
   }
 }

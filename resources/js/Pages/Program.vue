@@ -11,9 +11,13 @@ import Programm from '@/Components/Program.vue';
                     <Programm
                         :films="films"
                         :programmetas="programmetas"
+                        :filmstatus="filmstatus"
                         headline="Programm"
                         :footerLinks="footerLinks"
                         :_token="_token"
+                        :filter="filter"
+                        :keywords="keywords"
+                        :filmmodifications="filmmodifications"
                      />
                 </div>
             </div>
@@ -23,7 +27,7 @@ import Programm from '@/Components/Program.vue';
 <script>
 export default {
   props: [
-      'films', 'programmetas', 'footerLinks', '_token'
+      'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'filter', 'keywords', 'filmmodifications'
   ]
 }
 </script>

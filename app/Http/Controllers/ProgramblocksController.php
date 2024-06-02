@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Filmmodifications;
 use App\Models\Films;
+use App\Models\Filmstatus;
+use App\Models\Keywords;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProgramblocksController extends Controller {
 
-    public function index(): \Inertia\Response  {
+    public function index(Request $request): \Inertia\Response {
 
-        $allFilms = Films::query()->limit(10)->get();
-
-        foreach ($allFilms as $film) {
-            // Loading pivots
-            $film->languages;
-            $film->genres;
-        }
+        $films = $this->buildFilmsQuery($request->all());
+        $allFilms = $films/*->limit(10)*/->get();
+        $this->loadPivots($allFilms);
 
         $metas = Programblockmetas::all();
 
@@ -26,9 +28,13 @@ class ProgramblocksController extends Controller {
             $meta->location;
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
+                if ($block->film === null) continue;
                 // Loading pivots
                 $block->film->languages;
                 $block->film->genres;
+                $block->film->filmstatus;
+                $block->film->keywords;
+                $block->film->filmmodifications;
                 $meta->addBlock($block->film);
             }
         }
@@ -36,9 +42,24 @@ class ProgramblocksController extends Controller {
         return Inertia::render('Program', [
             'films' => $allFilms,
             'programmetas' => $metas,
+            'filmstatus' => Filmstatus::all(),
+            'keywords' => Keywords::all(),
+            'filmmodifications' => Filmmodifications::all(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             '_token' => csrf_token(),
+            'filter' => [
+                'filmstatus' =>
+                    ($request->all()['filmstatus'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                'keywords' =>
+                    ($request->all()['keywords'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['keywords'] ?? '')),
+                'title_description' => $request->all()['title_description'] ?? '',
+                'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
+            ]
         ]);
     }
 
@@ -89,12 +110,87 @@ class ProgramblocksController extends Controller {
                 'film_identifier' => $film->film_identifier,
                 'description' => $film->description,
                 'genres' => $film->genres,
+                'keywords' => $film->keywords,
                 'languages' => $film->languages,
                 'duration' => $film->duration,
+                'filmstatus' => $film->filmstatus,
+                'filmmodifications' => $film->filmmodifications,
             ];
         }
         return $res;
     }
 
+    /**
+     * @return Collection<int, Films>
+     */
+    public function filter(Request $request): Collection {
+
+        $films = $this->buildFilmsQuery($request->all());
+        $films = $films/*->limit(10)*/->get();
+        $this->loadPivots($films);
+
+        return $films;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Collection<int, Films> $allFilms
+     * @return void
+     */
+    public function loadPivots(\Illuminate\Database\Eloquent\Collection $allFilms): void
+    {
+        foreach ($allFilms as $film) {
+            // Loading pivots
+            $film->languages;
+            $film->genres;
+            $film->filmstatus;
+            $film->keywords;
+            $film->filmmodifications;
+        }
+    }
+
+    /**
+     * @param array<string, string> $requestParam
+     * @return \Illuminate\Database\Eloquent\Builder<Films>
+     */
+    public function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder
+    {
+        $filmStatus = $requestParam['filmstatus'] ?? '';
+        $keywords = $requestParam['keywords'] ?? '';
+        $filmModifications = $requestParam['filmmodifications'] ?? '';
+        $titleDescription = $requestParam['title_description'] ?? '';
+        $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
+
+        $films = Films::query();
+
+        if ($filmStatus !== '') {
+            $films = $films->whereIn('filmstatus_id', explode(',', $filmStatus));
+        }
+
+        if ($keywords !== '') {
+            $films = $films->join('films_keywords', 'id', '=', 'films_id')
+                ->whereIn('keywords_id', explode(',', $keywords));
+        }
+
+        if ($filmModifications !== '') {
+            $films = $films->join('filmmodifications_films', 'id', '=', 'films_id')
+                ->whereIn('filmmodifications_id', explode(',', $filmModifications));
+        }
+
+        if ($titleDescription !== '') {
+            $films = $films->whereNested(
+                function($query) use ($titleDescription) {
+                    $query->where('name', 'like', '%' . $titleDescription . '%')
+                        ->orWhere('description', 'like', '%' . $titleDescription . '%');
+                }
+            );
+        }
+
+        if ($onlyNotSet) {
+            $filmsAlreadyUsed = DB::table('programblocks')->select('films_id')->groupBy('films_id')->pluck('films_id')->values()->toArray();
+            $films = $films->whereNotIn('id', $filmsAlreadyUsed);
+        }
+
+        return $films;
+    }
 
 }

@@ -1,46 +1,75 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
+import ProgramDragableContent from './ProgramDragableContent.vue';
 import draggable from "vuedraggable"
+import MultiSelect from "@/Components/MultiSelect.vue";
+
 </script>
 <template>
-    <Headline headline="Programm" />
-    <div class="row" style="display: flex">
+    <Headline :headline="headline" />
+    <div>
+        <input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
+        <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
+            placeholder="Nach Status filtern"
+            name="filmstatus"
+            autoFilterFocus
+            v-model="selectedFilmStatus"
+            style="display: inline"
+        />
+        <MultiSelect :options="keywords" :optionLabel="getElementName" :optionValue="getElementId"
+            placeholder="Nach Schlüsselwörtern filtern"
+            name="keywords"
+            autoFilterFocus
+            v-model="selectedKeywords"
+            style="display: inline"
+        />
+        <MultiSelect :options="filmmodifications" :optionLabel="getElementName" :optionValue="getElementId"
+            placeholder="Nach Modifikationen filtern"
+            name="filmmodifications"
+            autoFilterFocus
+            v-model="selectedFilmModifications"
+            style="display: inline"
+        />
+        <label><input type="text" name="title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitelDescription"/></label>
+        &nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
+    </div>
+    <br>
+    <div style="height: 85vh; width: 25%; overflow-y:scroll; display: inline-block;">
         <div>
-            <div style="display:inline-block; min-width: 20%;">
-                <div>
-                    <span>Verfügbare Filme</span>
-                </div>
-                <div>
-                      <draggable
-                        class="dragArea list-group"
-                        :list="availableFilms"
-                        :group="{ name: 'filmgroup', pull: 'clone', put: false }"
-                        :clone="cloneFilm"
-                        @change="log"
-                        item-key="element"
-                        style="border:1px solid black; min-height: 60px; min-width: 60px;"
-                      >
-                        <template #item="{ element }">
-                          <div class="list-group-item">
-                              <span :title="element.description">
-                                  {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ element.duration / 60 }}min.)
-                              </span>
-                          </div>
-                        </template>
-                      </draggable>
-                </div>
+            <div>
+                <span>Verfügbare Filme</span>
+            </div>
+            <div>
+                  <draggable
+                    class="dragArea list-group"
+                    :list="availableFilms"
+                    group="filmgroup"
+                    @change="log"
+                    item-key="id"
+                    style="border:1px solid black;"
+                  >
+                    <template #item="{ element }">
+                      <div class="list-group-item">
+                          <ProgramDragableContent :element="element"/>
+                      </div>
+                    </template>
+                  </draggable>
             </div>
         </div>
-        <div>&nbsp;&nbsp;&nbsp;</div>
+    </div>
+    <div style="height: 85vh; width: 73%; overflow-y:scroll; display: inline-block;">
         <div style="
             overflow-x: scroll;
             overflow-y: hidden;
-            max-width: 78%;
+            left: 30%;
+            height: 100%;
         ">
-            <div style="display: flex">
+            <div style="display: flex; height: 100%">
                 <div style="
-                    display:inline-block;
+                    display:flex;
+                    flex-direction: column;
                     border:1px solid black;
                     min-width: 400px;
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
@@ -86,14 +115,12 @@ import draggable from "vuedraggable"
                             group="filmgroup"
                             @change="log"
                             item-key="id"
-                            style="border:1px solid black; min-height: 60px; min-width: 60px;"
+                            style="border:1px solid black; min-height: 60px; min-width: 60px; overflow-y: scroll; height: 70vh"
                         >
                             <template #item="{ element }">
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
                                     <div>
-                                        <span :title="element.description">
-                                            {{ element.filmIdentifier }}: {{ element.name }}
-                                        </span>
+                                          <ProgramDragableContent :element="element"/>
                                     </div>
                                 </div>
                             </template>
@@ -107,67 +134,57 @@ import draggable from "vuedraggable"
 </template>
 <script>
 
-let idGlobal = 0;
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token'
+        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords', 'filmmodifications'
     ],
-    order: 3,
     components: {
         draggable
     },
     data() {
         return {
-            availableFilms: this.films,
-            'lists': this.receiveLists()
+            availableFilms: this.prepareAvailableFilms(this.films),
+            'lists': this.receiveLists(),
+            selectedFilmStatus: this.filter.filmstatus,
+            selectedKeywords: this.filter.keywords,
+            selectedFilmModifications: this.filter.filmmodifications,
+            selectedTitelDescription: this.filter.title_description,
+            onlyNotSet: this.filter.only_not_set
         };
     },
     methods: {
+        prepareAvailableFilms(films) {
+            for (const film of films) {
+                film.filmstatusName = this.receiveFilmStatusName(film.filmstatus.id)
+            }
+            return films;
+        },
         getList: function(id) {
+            if (id === 0) {
+                return this.availableFilms
+            }
             return this.lists[id];
         },
-        defineAudioString: function (film) {
-            let audioString = '';
-            let subtitleString = '';
-            let lang1 = film.languages[0]?.language;
-            let type1 = film.languages[0]?.type;
-            let lang2 = film.languages[1]?.language;
-            let type2 = film.languages[1]?.type;
-            if (typeof lang1 !== "undefined") {
-                if (type1 === 'audio') {
-                    audioString = lang1.toUpperCase();
-                } else {
-                    subtitleString = lang1.toLowerCase();
-                }
+        generateDragableElement(film) {
+            return {
+                id: film.id,
+                name: film.name,
+                film_identifier: film.film_identifier,
+                description: film.description,
+                duration: film.duration,
+                languages: film.languages,
+                genres: film.genres,
+                filmmodifications: film.filmmodifications,
+                filmstatusName: this.receiveFilmStatusName(film.filmstatus.id)
             }
-            if (typeof lang2 !== "undefined") {
-                if (type2 === 'audio') {
-                    audioString = lang2.toUpperCase();
-                } else {
-                    subtitleString = lang2.toLowerCase();
-                }
-            }
-            if (audioString !== "" || subtitleString !== "") {
-                if (subtitleString !== "") {
-                    return " (" + audioString + "_" + subtitleString + ")";
-                } else {
-                    return " (" + audioString + ")";
-                }
-            }
-            return ''
         },
-        defineGenreString: function (film) {
-            let genreString = '';
-            for (let genre of film.genres) {
-                if (genreString !== '') {
-                    genreString += ' ';
+        receiveFilmStatusName(id) {
+            for (const status of this.filmstatus) {
+                if (status.id === id) {
+                    return status.name;
                 }
-                genreString += genre.name;
             }
-            if (genreString !== '') {
-                return ' (' + genreString + ')';
-            }
-            return ''
+            return 'unbekannter Status';
         },
         receiveLists: function() {
             let ret = {};
@@ -178,19 +195,7 @@ export default {
 
                 if (typeof meta.films !== "undefined") {
                     for (const film of meta.films) {
-
-                        const audio = this.defineAudioString(film);
-                        const genres = this.defineGenreString(film);
-
-                        ret[listName].push(
-                            {
-                                id: idGlobal++,
-                                name: film.name + audio + genres + " (" + (film.duration / 60) + "min.)",
-                                filmIdentifier: film.film_identifier,
-                                description: film.description,
-                                duration: film.duration
-                            }
-                        );
+                        ret[listName].push(this.generateDragableElement(film));
                     }
                 }
             }
@@ -198,16 +203,6 @@ export default {
         },
         log: function(evt) {
             // window.console.log(evt);
-        },
-        cloneFilm({ id }) {
-            const film = this.films[id - 1];
-            return {
-                id: idGlobal++,
-                name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
-                filmIdentifier: film.film_identifier,
-                description: film.description,
-                duration: film.duration
-            };
         },
         saveProgramBlock: function (event, programmblockId) {
             let data = new FormData();
@@ -219,7 +214,7 @@ export default {
 
             for (const k in list) {
                 let item = list[k];
-                d.push(item.filmIdentifier)
+                d.push(item.film_identifier)
             }
 
             data.append('films', d);
@@ -265,7 +260,7 @@ export default {
             function load(url, callBack, eventTarget, data, list, programmblockId, event) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
-                    callBack(this, eventTarget, data, list, programmblockId, event);
+                    callBack(this, eventTarget, list, programmblockId, event);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
@@ -284,11 +279,9 @@ export default {
 
             return event;
         },
-        loadCallback: function (xhttp, eventTarget, data2, list, programmblockId, event) {
-            let data = data2;
-
+        loadCallback: function (xhttp, eventTarget, list, programmblockId, event) {
             try {
-                data = JSON.parse(xhttp.response);
+                let data = JSON.parse(xhttp.response);
                 this.reloadListFromData(data, programmblockId);
             } catch (e) {
                 console.log(e);
@@ -302,24 +295,23 @@ export default {
             this.lists[programmblockId] = [];
             for (const x in data) {
                 const film = data[x];
-                this.lists[programmblockId].push(
-                    {
-                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + (film.duration / 60) + "min.)",
-                        filmIdentifier: film.film_identifier,
-                        description: film.description,
-                        duration: film.duration
-                    }
-                );
+                this.lists[programmblockId].push(this.generateDragableElement(film));
             }
         },
         receiveLength: function(metaId, pufferPerItem) {
-            const puffer = parseInt(pufferPerItem === null ? 0 : pufferPerItem);
+            const puffer = parseInt(pufferPerItem === null ? 0 : pufferPerItem) * 60;
             let filmLength = 0;
             for (const film of this.lists[metaId]) {
                 filmLength += parseInt(film.duration);
             }
-            const totalLength = (this.lists[metaId].length * puffer) + (filmLength / 60);
+            const totalLength = this.receiveDurationFromSecs(filmLength + (this.lists[metaId].length * puffer));
             return parseInt(totalLength + "");
+        },
+        receiveDuration: function(film) {
+            return this.receiveDurationFromSecs(film.duration);
+        },
+        receiveDurationFromSecs: function(seconds) {
+            return (seconds / 60).toFixed(2);
         },
         receiveBlockLength: function(metaId, puffer_per_item, totalLength) {
             const currentLength = this.receiveLength(metaId, puffer_per_item);
@@ -329,6 +321,65 @@ export default {
             return "<span class='" + className + "'>"
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
+        },
+        getElementId: function (element) {
+            return element.id;
+        },
+        getElementName: function (element) {
+            return element.name;
+        },
+        filterFunction: function (event) {
+            let data = new FormData();
+            data.append('filmstatus', this.selectedFilmStatus);
+            data.append('keywords', this.selectedKeywords);
+            if (typeof this.selectedFilmModifications !== "undefined")
+            data.append('filmmodifications', this.selectedFilmModifications);
+            data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked);
+            this.selectedTitelDescription = document.getElementsByName('title_description')[0].value;
+            data.append('title_description', this.selectedTitelDescription);
+
+            function filterRequest(url, callBack, eventTarget, data, event, _token) {
+                let tokenData = new FormData();
+                tokenData.append('_token', _token);
+
+                const xhttp=new XMLHttpRequest();
+
+                xhttp.onload = function() {
+                    callBack(this, eventTarget, event);
+                }
+
+                const queryString = new URLSearchParams(data).toString()
+                xhttp.open("POST", url + '?' +queryString);
+                window.history.replaceState(
+                    {},
+                    '',
+                    window.location.origin + window.location.pathname + '?' + queryString
+                );
+                xhttp.send(tokenData);
+            }
+
+            event.target.style.backgroundColor = "yellow";
+            filterRequest(
+                '/program/filter',
+                this.filterCallback,
+                event.target,
+                data,
+                event,
+                this.$props._token
+            );
+
+            return event;
+        },
+        filterCallback: function (xhttp, eventTarget, event) {
+
+            try {
+                this.availableFilms = this.prepareAvailableFilms(JSON.parse(xhttp.response));
+            } catch (e) {
+                console.log(e);
+                event.target.style.backgroundColor = "red";
+                return;
+            }
+            event.target.style.backgroundColor = "";
         }
     }
 }
