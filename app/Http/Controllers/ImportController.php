@@ -29,6 +29,15 @@ class ImportController extends Controller {
 
     public function import(Request $request) {
 
+        /*
+            TRUNCATE films_keywords;
+            TRUNCATE keywords;
+            TRUNCATE films_languages;
+            TRUNCATE films_genres;
+            TRUNCATE films;
+            TRUNCATE filmmodifications_films;
+         */
+
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_IMPORT)) {
             $errors[] = 'no permission';
             var_dump($errors);

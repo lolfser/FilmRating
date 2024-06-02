@@ -26,6 +26,7 @@ class ProgramblocksController extends Controller {
             $meta->location;
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
+                if ($block->film === null) continue;
                 // Loading pivots
                 $block->film->languages;
                 $block->film->genres;

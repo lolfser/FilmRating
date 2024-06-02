@@ -362,7 +362,7 @@ export default {
         filterCallback: function (xhttp, eventTarget, event) {
 
             try {
-                this.availableFilms = JSON.parse(xhttp.response);
+                this.availableFilms = this.prepareAvailableFilms(JSON.parse(xhttp.response));
             } catch (e) {
                 console.log(e);
                 event.target.style.backgroundColor = "red";
