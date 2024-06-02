@@ -1,5 +1,5 @@
 <script setup>
-import PrimaryButton from './PrimaryButton.vue';
+import PrimaryButton from '../Components/PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 

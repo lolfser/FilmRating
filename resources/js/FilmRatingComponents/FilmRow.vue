@@ -1,6 +1,6 @@
 <script setup>
     import AutoComplete from './PrimeVueAutoComplete.vue';
-    import MultiSelect from "@/Components/MultiSelect.vue";
+    import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
     import Checkbox from 'primevue/checkbox';
 </script>
 <style>

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompStats from '@/Components/Stats.vue';
+import CompStats from '@/FilmRatingComponents/Stats.vue';
 </script>
 
 <template>
