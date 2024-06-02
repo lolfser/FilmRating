@@ -9,23 +9,33 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 <template>
     <Headline :headline="headline" />
     <div>
-        <MultiSelect :options="filmstatus" :optionLabel="getFilmStatusLabel" :optionValue="getFilmStatusId"
-            placeholder="Filme nach Status filtern"
+        <input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
+        <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
+            placeholder="Nach Status filtern"
             name="filmstatus"
             autoFilterFocus
             v-model="selectedFilmStatus"
             style="display: inline"
         />
-        <MultiSelect :options="keywords" :optionLabel="getKeywordLabel" :optionValue="getKeywordId"
+        <MultiSelect :options="keywords" :optionLabel="getElementName" :optionValue="getElementId"
             placeholder="Nach Schlüsselwörtern filtern"
             name="keywords"
             autoFilterFocus
             v-model="selectedKeywords"
             style="display: inline"
         />
+        <MultiSelect :options="filmmodifications" :optionLabel="getElementName" :optionValue="getElementId"
+            placeholder="Nach Modifikationen filtern"
+            name="filmmodifications"
+            autoFilterFocus
+            v-model="selectedFilmModifications"
+            style="display: inline"
+        />
+        <label><input type="text" name="title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitelDescription"/></label>
+        &nbsp;&nbsp;&nbsp;
         <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
-        <br><input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
     </div>
+    <br>
     <div style="height: 85vh; width: 25%; overflow-y:scroll; display: inline-block;">
         <div>
             <div>
@@ -126,7 +136,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords'
+        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords', 'filmmodifications'
     ],
     components: {
         draggable
@@ -137,6 +147,8 @@ export default {
             'lists': this.receiveLists(),
             selectedFilmStatus: this.filter.filmstatus,
             selectedKeywords: this.filter.keywords,
+            selectedFilmModifications: this.filter.filmmodifications,
+            selectedTitelDescription: this.filter.title_description,
             onlyNotSet: this.filter.only_not_set
         };
     },
@@ -162,6 +174,7 @@ export default {
                 duration: film.duration,
                 languages: film.languages,
                 genres: film.genres,
+                filmmodifications: film.filmmodifications,
                 filmstatusName: this.receiveFilmStatusName(film.filmstatus.id)
             }
         },
@@ -309,23 +322,21 @@ export default {
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
         },
-        getFilmStatusId: function (filmstatus) {
-            return filmstatus.id;
+        getElementId: function (element) {
+            return element.id;
         },
-        getFilmStatusLabel: function (filmstatus) {
-            return filmstatus.name;
-        },
-        getKeywordId: function (filmstatus) {
-            return filmstatus.id;
-        },
-        getKeywordLabel: function (filmstatus) {
-            return filmstatus.name;
+        getElementName: function (element) {
+            return element.name;
         },
         filterFunction: function (event) {
             let data = new FormData();
             data.append('filmstatus', this.selectedFilmStatus);
             data.append('keywords', this.selectedKeywords);
-            data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked)
+            if (typeof this.selectedFilmModifications !== "undefined")
+            data.append('filmmodifications', this.selectedFilmModifications);
+            data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked);
+            this.selectedTitelDescription = document.getElementsByName('title_description')[0].value;
+            data.append('title_description', this.selectedTitelDescription);
 
             function filterRequest(url, callBack, eventTarget, data, event, _token) {
                 let tokenData = new FormData();

@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * Model Filmmodifications
  *
  * @property int $id
+ * @property string $key
  * @property string $name
  * @property-read \App\Models\Films $films // from belongsToMany
  * @package App\Models
 */
 class Filmmodifications extends Model {
     protected $table    = 'filmmodifications';
-    protected $fillable = ['name'];
+    protected $fillable = ['key', 'name'];
     protected $casts    = ['id' => 'int'];
     public $timestamps = false;
 

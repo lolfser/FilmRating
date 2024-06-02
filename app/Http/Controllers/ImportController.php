@@ -392,19 +392,19 @@ class ImportController extends Controller {
     {
         $allMods = [];
         foreach (Filmmodifications::all() as $mod) {
-            if ($mod->name === 'child9') {
+            if ($mod->key === 'child9') {
                 $allMods['child9'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'child13') {
+            if ($mod->key === 'child13') {
                 $allMods['child13'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'child17') {
+            if ($mod->key === 'child17') {
                 $allMods['child17'] = $mod->id;
                 continue;
             }
-            if ($mod->name === 'queer') {
+            if ($mod->key === 'queer') {
                 $allMods['queer'] = $mod->id;
                 continue;
             }

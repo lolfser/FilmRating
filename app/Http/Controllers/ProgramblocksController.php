@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Filmmodifications;
 use App\Models\Films;
 use App\Models\Filmstatus;
 use App\Models\Keywords;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +34,7 @@ class ProgramblocksController extends Controller {
                 $block->film->genres;
                 $block->film->filmstatus;
                 $block->film->keywords;
+                $block->film->filmmodifications;
                 $meta->addBlock($block->film);
             }
         }
@@ -41,6 +44,7 @@ class ProgramblocksController extends Controller {
             'programmetas' => $metas,
             'filmstatus' => Filmstatus::all(),
             'keywords' => Keywords::all(),
+            'filmmodifications' => Filmmodifications::all(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             '_token' => csrf_token(),
@@ -53,6 +57,7 @@ class ProgramblocksController extends Controller {
                     ($request->all()['keywords'] ?? '') === ''
                         ? ''
                         : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['keywords'] ?? '')),
+                'title_description' => $request->all()['title_description'] ?? '',
                 'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
             ]
         ]);
@@ -109,6 +114,7 @@ class ProgramblocksController extends Controller {
                 'languages' => $film->languages,
                 'duration' => $film->duration,
                 'filmstatus' => $film->filmstatus,
+                'filmmodifications' => $film->filmmodifications,
             ];
         }
         return $res;
@@ -138,6 +144,7 @@ class ProgramblocksController extends Controller {
             $film->genres;
             $film->filmstatus;
             $film->keywords;
+            $film->filmmodifications;
         }
     }
 
@@ -149,6 +156,8 @@ class ProgramblocksController extends Controller {
     {
         $filmStatus = $requestParam['filmstatus'] ?? '';
         $keywords = $requestParam['keywords'] ?? '';
+        $filmModifications = $requestParam['filmmodifications'] ?? '';
+        $titleDescription = $requestParam['title_description'] ?? '';
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = Films::query();
@@ -159,8 +168,21 @@ class ProgramblocksController extends Controller {
 
         if ($keywords !== '') {
             $films = $films->join('films_keywords', 'id', '=', 'films_id')
-                ->whereIn('keywords_id', explode(',', $keywords))
-            ;
+                ->whereIn('keywords_id', explode(',', $keywords));
+        }
+
+        if ($filmModifications !== '') {
+            $films = $films->join('filmmodifications_films', 'id', '=', 'films_id')
+                ->whereIn('filmmodifications_id', explode(',', $filmModifications));
+        }
+
+        if ($titleDescription !== '') {
+            $films = $films->whereNested(
+                function($query) use ($titleDescription) {
+                    $query->where('name', 'like', '%' . $titleDescription . '%')
+                        ->orWhere('description', 'like', '%' . $titleDescription . '%');
+                }
+            );
         }
 
         if ($onlyNotSet) {

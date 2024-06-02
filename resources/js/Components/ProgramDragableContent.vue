@@ -9,9 +9,11 @@
     <div style="line-height: 10px">
         <span style="font-size: 10px">Status: {{ element.filmstatusName }}</span>
         &nbsp;&nbsp;
-        <span style="font-size: 10px">Länge: ({{ receiveDuration(element) }}min.)</span>
+        <span style="font-size: 10px">Länge: {{ receiveDuration(element) }}min.</span>
         &nbsp;&nbsp;
         <span v-html="defineGenreString(element)"></span>
+        &nbsp;&nbsp;
+        <span style="font-size: 10px">{{ defineModificationString(element) }}</span>
     </div>
 </div>
 </template>
@@ -69,6 +71,16 @@ export default {
                     '">' + genre.name + '</span>'
             }
             return genreString;
+        },
+        defineModificationString: function(film) {
+            let resultString = '';
+            for (let filmModification of film.filmmodifications) {
+                if (resultString !== '') {
+                    resultString += ', ';
+                }
+                resultString += filmModification.name
+            }
+            return resultString;
         },
         receiveDuration: function(film) {
             return this.receiveDurationFromSecs(film.duration);

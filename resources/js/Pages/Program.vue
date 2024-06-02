@@ -17,6 +17,7 @@ import Programm from '@/Components/Program.vue';
                         :_token="_token"
                         :filter="filter"
                         :keywords="keywords"
+                        :filmmodifications="filmmodifications"
                      />
                 </div>
             </div>
@@ -26,7 +27,7 @@ import Programm from '@/Components/Program.vue';
 <script>
 export default {
   props: [
-      'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'filter', 'keywords'
+      'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'filter', 'keywords', 'filmmodifications'
   ]
 }
 </script>
