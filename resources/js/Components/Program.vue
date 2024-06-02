@@ -1,6 +1,7 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
+import ProgramDragableContent from './ProgramDragableContent.vue';
 import draggable from "vuedraggable"
 import MultiSelect from "@/Components/MultiSelect.vue";
 
@@ -9,7 +10,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
     <Headline :headline="headline" />
     <div>
         <MultiSelect :options="filmstatus" :optionLabel="getFilmStatusLabel" :optionValue="getFilmStatusId"
-            placeholder="Filme Status filtern"
+            placeholder="Filme nach Status filtern"
             name="filmstatus"
             autoFilterFocus
             v-model="selectedFilmStatus"
@@ -34,9 +35,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                   >
                     <template #item="{ element }">
                       <div class="list-group-item">
-                          <span :title="receiveTitle(element.description)">
-                              {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ receiveDuration(element) }}min.)
-                          </span>
+                          <ProgramDragableContent :element="element"/>
                       </div>
                     </template>
                   </draggable>
@@ -104,9 +103,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                             <template #item="{ element }">
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
                                     <div>
-                                        <span :title="receiveTitle(element.description)">
-                                            {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ receiveDuration(element) }}min.)
-                                        </span>
+                                          <ProgramDragableContent :element="element"/>
                                     </div>
                                 </div>
                             </template>
@@ -129,61 +126,24 @@ export default {
     },
     data() {
         return {
-            availableFilms: this.films,
+            availableFilms: this.prepareAvailableFilms(this.films),
             'lists': this.receiveLists(),
             selectedFilmStatus: this.filter.filmstatus,
             onlyNotSet: this.filter.only_not_set
         };
     },
     methods: {
+        prepareAvailableFilms(films) {
+            for (const film of films) {
+                film.filmstatusName = this.receiveFilmStatusName(film.filmstatus.id)
+            }
+            return films;
+        },
         getList: function(id) {
             if (id === 0) {
                 return this.availableFilms
             }
             return this.lists[id];
-        },
-        defineAudioString: function (film) {
-            let audioString = '';
-            let subtitleString = '';
-            let lang1 = film.languages[0]?.language;
-            let type1 = film.languages[0]?.type;
-            let lang2 = film.languages[1]?.language;
-            let type2 = film.languages[1]?.type;
-            if (typeof lang1 !== "undefined") {
-                if (type1 === 'audio') {
-                    audioString = lang1.toUpperCase();
-                } else {
-                    subtitleString = lang1.toLowerCase();
-                }
-            }
-            if (typeof lang2 !== "undefined") {
-                if (type2 === 'audio') {
-                    audioString = lang2.toUpperCase();
-                } else {
-                    subtitleString = lang2.toLowerCase();
-                }
-            }
-            if (audioString !== "" || subtitleString !== "") {
-                if (subtitleString !== "") {
-                    return " (" + audioString + "_" + subtitleString + ")";
-                } else {
-                    return " (" + audioString + ")";
-                }
-            }
-            return '';
-        },
-        defineGenreString: function (film) {
-            let genreString = '';
-            for (let genre of film.genres) {
-                if (genreString !== '') {
-                    genreString += ' ';
-                }
-                genreString += genre.name;
-            }
-            if (genreString !== '') {
-                return ' (' + genreString + ')';
-            }
-            return '';
         },
         generateDragableElement(film) {
             return {
@@ -194,7 +154,16 @@ export default {
                 duration: film.duration,
                 languages: film.languages,
                 genres: film.genres,
+                filmstatusName: this.receiveFilmStatusName(film.filmstatus.id)
             }
+        },
+        receiveFilmStatusName(id) {
+            for (const status of this.filmstatus) {
+                if (status.id === id) {
+                    return status.name;
+                }
+            }
+            return 'unbekannter Status';
         },
         receiveLists: function() {
             let ret = {};
@@ -331,9 +300,6 @@ export default {
             return "<span class='" + className + "'>"
                     + currentLength + " / " + totalLength + " Minuten"
                  + "</span>";
-        },
-        receiveTitle(description) {
-            return description == '' ? 'keine Beschreibung' : description
         },
         getFilmStatusId: function (filmstatus) {
             return filmstatus.id;

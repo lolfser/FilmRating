@@ -7,7 +7,6 @@ use App\Models\Filmstatus;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -29,6 +28,7 @@ class ProgramblocksController extends Controller {
                 // Loading pivots
                 $block->film->languages;
                 $block->film->genres;
+                $block->film->filmstatus;
                 $meta->addBlock($block->film);
             }
         }
@@ -99,6 +99,7 @@ class ProgramblocksController extends Controller {
                 'genres' => $film->genres,
                 'languages' => $film->languages,
                 'duration' => $film->duration,
+                'filmstatus' => $film->filmstatus,
             ];
         }
         return $res;
@@ -126,6 +127,7 @@ class ProgramblocksController extends Controller {
             // Loading pivots
             $film->languages;
             $film->genres;
+            $film->filmstatus;
         }
     }
 
@@ -140,7 +142,7 @@ class ProgramblocksController extends Controller {
 
         $films = Films::query();
 
-        if ($filmStatus !== []) {
+        if ($filmStatus !== '') {
             $films = $films->whereIn('filmstatus_id', explode(',', $filmStatus));
         }
 
