@@ -186,11 +186,6 @@ parameters:
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:receiveDuration\\(\\) should return int but returns int\\|string\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ImportController.php
-
-		-
 			message: "#^Property App\\\\Models\\\\Ratings\\:\\:\\$grades_id \\(int\\) does not accept int\\|string\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php

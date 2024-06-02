@@ -6,6 +6,8 @@ use App\Models\Films;
 use App\Models\Filmstatus;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -103,9 +105,9 @@ class ProgramblocksController extends Controller {
     }
 
     /**
-     * @return array<int, mixed>|\Illuminate\Http\RedirectResponse
+     * @return Collection<int, Films>
      */
-    public function filter(Request $request): mixed/*|array|\Illuminate\Http\RedirectResponse*/ {
+    public function filter(Request $request): Collection {
 
         $films = $this->buildFilmsQuery($request->all());
         $films = $films/*->limit(10)*/->get();
@@ -115,10 +117,10 @@ class ProgramblocksController extends Controller {
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Collection|array $allFilms
+     * @param \Illuminate\Database\Eloquent\Collection<int, Films> $allFilms
      * @return void
      */
-    public function loadPivots(\Illuminate\Database\Eloquent\Collection|array $allFilms): void
+    public function loadPivots(\Illuminate\Database\Eloquent\Collection $allFilms): void
     {
         foreach ($allFilms as $film) {
             // Loading pivots
@@ -128,12 +130,12 @@ class ProgramblocksController extends Controller {
     }
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param array<string, string> $requestParam
+     * @return \Illuminate\Database\Eloquent\Builder<Films>
      */
     public function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder
     {
-        $filmStatus = $requestParam['filmstatus'] ?? [];
+        $filmStatus = $requestParam['filmstatus'] ?? '';
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = Films::query();
