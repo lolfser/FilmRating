@@ -16,6 +16,13 @@ import MultiSelect from "@/Components/MultiSelect.vue";
             v-model="selectedFilmStatus"
             style="display: inline"
         />
+        <MultiSelect :options="keywords" :optionLabel="getKeywordLabel" :optionValue="getKeywordId"
+            placeholder="Nach Schlüsselwörtern filtern"
+            name="keywords"
+            autoFilterFocus
+            v-model="selectedKeywords"
+            style="display: inline"
+        />
         <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
         <br><input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
     </div>
@@ -119,7 +126,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter'
+        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords'
     ],
     components: {
         draggable
@@ -129,6 +136,7 @@ export default {
             availableFilms: this.prepareAvailableFilms(this.films),
             'lists': this.receiveLists(),
             selectedFilmStatus: this.filter.filmstatus,
+            selectedKeywords: this.filter.keywords,
             onlyNotSet: this.filter.only_not_set
         };
     },
@@ -307,9 +315,16 @@ export default {
         getFilmStatusLabel: function (filmstatus) {
             return filmstatus.name;
         },
+        getKeywordId: function (filmstatus) {
+            return filmstatus.id;
+        },
+        getKeywordLabel: function (filmstatus) {
+            return filmstatus.name;
+        },
         filterFunction: function (event) {
             let data = new FormData();
             data.append('filmstatus', this.selectedFilmStatus);
+            data.append('keywords', this.selectedKeywords);
             data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked)
 
             function filterRequest(url, callBack, eventTarget, data, event, _token) {
