@@ -15,7 +15,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
             v-model="selectedFilmStatus"
             style="display: inline"
         />
-        <label><input type="checkbox" :checked="only_not_set" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
+        <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
         <br><input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
     </div>
     <div style="height: 85vh; width: 25%; overflow-y:scroll; display: inline-block;">
@@ -27,10 +27,9 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                   <draggable
                     class="dragArea list-group"
                     :list="availableFilms"
-                    :group="{ name: 'filmgroup', pull: 'clone', put: false }"
-                    :clone="cloneFilm"
+                    group="filmgroup"
                     @change="log"
-                    item-key="element"
+                    item-key="id"
                     style="border:1px solid black;"
                   >
                     <template #item="{ element }">
@@ -106,7 +105,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                                 <div class="list-group-item" style="display: flex; justify-content: space-between">
                                     <div>
                                         <span :title="receiveTitle(element.description)">
-                                            {{ element.filmIdentifier }}: {{ element.name }}
+                                            {{ element.film_identifier }}: {{ element.name }} {{defineAudioString(element)}} {{defineGenreString(element)}} ({{ receiveDuration(element) }}min.)
                                         </span>
                                     </div>
                                 </div>
@@ -133,11 +132,14 @@ export default {
             availableFilms: this.films,
             'lists': this.receiveLists(),
             selectedFilmStatus: this.filter.filmstatus,
-            only_not_set: this.filter.only_not_set,
+            onlyNotSet: this.filter.only_not_set
         };
     },
     methods: {
         getList: function(id) {
+            if (id === 0) {
+                return this.availableFilms
+            }
             return this.lists[id];
         },
         defineAudioString: function (film) {
@@ -168,7 +170,7 @@ export default {
                     return " (" + audioString + ")";
                 }
             }
-            return ''
+            return '';
         },
         defineGenreString: function (film) {
             let genreString = '';
@@ -181,7 +183,18 @@ export default {
             if (genreString !== '') {
                 return ' (' + genreString + ')';
             }
-            return ''
+            return '';
+        },
+        generateDragableElement(film) {
+            return {
+                id: film.id,
+                name: film.name,
+                film_identifier: film.film_identifier,
+                description: film.description,
+                duration: film.duration,
+                languages: film.languages,
+                genres: film.genres,
+            }
         },
         receiveLists: function() {
             let ret = {};
@@ -192,19 +205,7 @@ export default {
 
                 if (typeof meta.films !== "undefined") {
                     for (const film of meta.films) {
-
-                        const audio = this.defineAudioString(film);
-                        const genres = this.defineGenreString(film);
-
-                        ret[listName].push(
-                            {
-                                id: film.id,
-                                name: film.name + audio + genres + " (" + this.receiveDuration(film) + "min.)",
-                                filmIdentifier: film.film_identifier,
-                                description: film.description,
-                                duration: film.duration
-                            }
-                        );
+                        ret[listName].push(this.generateDragableElement(film));
                     }
                 }
             }
@@ -212,24 +213,6 @@ export default {
         },
         log: function(evt) {
             // window.console.log(evt);
-        },
-        getFilmById(id) {
-            for (const film of this.availableFilms) {
-                if (film.id === id) {
-                    return film;
-                }
-            }
-            return null;
-        },
-        cloneFilm({ id }) {
-            const film = this.getFilmById(id);
-            return {
-                id: film.id,
-                name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + this.receiveDuration(film) + "min.)",
-                filmIdentifier: film.film_identifier,
-                description: film.description,
-                duration: film.duration
-            };
         },
         saveProgramBlock: function (event, programmblockId) {
             let data = new FormData();
@@ -241,7 +224,7 @@ export default {
 
             for (const k in list) {
                 let item = list[k];
-                d.push(item.filmIdentifier)
+                d.push(item.film_identifier)
             }
 
             data.append('films', d);
@@ -287,7 +270,7 @@ export default {
             function load(url, callBack, eventTarget, data, list, programmblockId, event) {
                 const xhttp=new XMLHttpRequest();
                 xhttp.onload = function() {
-                    callBack(this, eventTarget, data, list, programmblockId, event);
+                    callBack(this, eventTarget, list, programmblockId, event);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
@@ -306,11 +289,9 @@ export default {
 
             return event;
         },
-        loadCallback: function (xhttp, eventTarget, data2, list, programmblockId, event) {
-            let data = data2;
-
+        loadCallback: function (xhttp, eventTarget, list, programmblockId, event) {
             try {
-                data = JSON.parse(xhttp.response);
+                let data = JSON.parse(xhttp.response);
                 this.reloadListFromData(data, programmblockId);
             } catch (e) {
                 console.log(e);
@@ -324,14 +305,7 @@ export default {
             this.lists[programmblockId] = [];
             for (const x in data) {
                 const film = data[x];
-                this.lists[programmblockId].push(
-                    {
-                        name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + this.receiveDuration(film) + "min.)",
-                        filmIdentifier: film.film_identifier,
-                        description: film.description,
-                        duration: film.duration
-                    }
-                );
+                this.lists[programmblockId].push(this.generateDragableElement(film));
             }
         },
         receiveLength: function(metaId, pufferPerItem) {
@@ -395,10 +369,10 @@ export default {
             event.target.style.backgroundColor = "yellow";
             filterRequest(
                 '/program/filter',
-                 this.filterCallback,
-                 event.target,
-                 data,
-                 event,
+                this.filterCallback,
+                event.target,
+                data,
+                event,
                 this.$props._token
             );
 
@@ -407,8 +381,7 @@ export default {
         filterCallback: function (xhttp, eventTarget, event) {
 
             try {
-                const data = JSON.parse(xhttp.response);
-                this.availableFilms = data;
+                this.availableFilms = JSON.parse(xhttp.response);
             } catch (e) {
                 console.log(e);
                 event.target.style.backgroundColor = "red";
