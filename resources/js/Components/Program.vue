@@ -121,12 +121,10 @@ import MultiSelect from "@/Components/MultiSelect.vue";
 </template>
 <script>
 
-let idGlobal = 0;
 export default {
     props: [
         'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter'
     ],
-    order: 3,
     components: {
         draggable
     },
@@ -200,7 +198,7 @@ export default {
 
                         ret[listName].push(
                             {
-                                id: idGlobal++,
+                                id: film.id,
                                 name: film.name + audio + genres + " (" + this.receiveDuration(film) + "min.)",
                                 filmIdentifier: film.film_identifier,
                                 description: film.description,
@@ -215,10 +213,18 @@ export default {
         log: function(evt) {
             // window.console.log(evt);
         },
+        getFilmById(id) {
+            for (const film of this.availableFilms) {
+                if (film.id === id) {
+                    return film;
+                }
+            }
+            return null;
+        },
         cloneFilm({ id }) {
-            const film = this.films[id - 1];
+            const film = this.getFilmById(id);
             return {
-                id: idGlobal++,
+                id: film.id,
                 name: film.name + this.defineAudioString(film) + this.defineGenreString(film) + " (" + this.receiveDuration(film) + "min.)",
                 filmIdentifier: film.film_identifier,
                 description: film.description,

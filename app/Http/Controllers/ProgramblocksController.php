@@ -31,13 +31,6 @@ class ProgramblocksController extends Controller {
             }
         }
 
-        $selectedIds = array_map(
-            function ($item) {
-                return (int) $item;
-            },
-            explode(',', $request->all()['filmstatus'] ?? '')
-        );
-
         return Inertia::render('Program', [
             'films' => $allFilms,
             'programmetas' => $metas,
@@ -46,8 +39,10 @@ class ProgramblocksController extends Controller {
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             '_token' => csrf_token(),
             'filter' => [
-                //'filmstatus' => Filmstatus::query()->whereIn('id', $selectedIds)->get(),
-                'filmstatus' => array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                'filmstatus' =>
+                    ($request->all()['filmstatus'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
                 'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
             ]
         ]);
