@@ -29,10 +29,5 @@ class DatabaseSeeder extends Seeder
             ProgramsSeeder::class,
             LocationsSeeder::class,
         ]);
-
-        // \App\Models\Users::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

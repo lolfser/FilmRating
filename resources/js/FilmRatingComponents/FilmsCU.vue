@@ -1,11 +1,11 @@
 <script setup>
-import TextInput from './TextInput.vue';
+import TextInput from '../Components/TextInput.vue';
 import InputNumber from 'primevue/inputnumber';
-import PrimaryButton from './PrimaryButton.vue';
+import PrimaryButton from '../Components/PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
-import InputError from './InputError.vue';
-import { translate } from './../trans';
+import InputError from '../Components/InputError.vue';
+import { translate } from '../trans.js';
 
 </script>
 <template>

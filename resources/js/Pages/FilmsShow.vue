@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompFilmsShow from '@/Components/FilmsShow.vue';
+import CompFilmsShow from '@/FilmRatingComponents/FilmsShow.vue';
 </script>
 
 <template>

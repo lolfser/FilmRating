@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CompRatingEdit from '@/Components/RatingEdit.vue';
+import CompRatingEdit from '@/FilmRatingComponents/RatingEdit.vue';
 </script>
 
 <template>

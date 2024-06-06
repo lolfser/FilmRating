@@ -3,7 +3,7 @@ import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 import ProgramDragableContent from './ProgramDragableContent.vue';
 import draggable from "vuedraggable"
-import MultiSelect from "@/Components/MultiSelect.vue";
+import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
 
 </script>
 <template>
@@ -89,7 +89,7 @@ import MultiSelect from "@/Components/MultiSelect.vue";
                         >
                         &nbsp;&nbsp;&nbsp;
                         <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste neu laden" alt="Liste neu laden"
-                            v-on:click="loadProgramBlock($event, block.id);"
+                             v-on:click="loadProgramBlock($event, block.id);"
                         >
                         &nbsp;&nbsp;&nbsp;
                         <div style="display: inline-block" title="Um ein Element zu löschen, dieses per drag & drop hier drauf ziehen">

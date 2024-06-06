@@ -351,11 +351,6 @@ parameters:
 			path: ../../app/Services/HeaderLinkService.php
 
 		-
-			message: "#^Cannot access property \\$id on App\\\\Models\\\\Viewers\\|null\\.$#"
-			count: 1
-			path: ../../app/Services/ReceiveCurrentViewerIdService.php
-
-		-
 			message: "#^Method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) has parameter \\$userInputs with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../../app/Services/SaveFilmsGenresServices.php

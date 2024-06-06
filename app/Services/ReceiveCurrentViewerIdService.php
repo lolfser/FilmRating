@@ -10,7 +10,7 @@ class ReceiveCurrentViewerIdService {
 
         $userId = \Auth::id();
         $viewers = Viewers::all()->where('users_id', $userId);
-        return $viewers->first()->id;
+        return (int) $viewers->first()?->id;
 
     }
 
