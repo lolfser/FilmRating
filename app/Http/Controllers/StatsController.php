@@ -12,8 +12,15 @@ class StatsController extends Controller {
         $allUsedGrades = [];
         $globalRating = $this->receiveStatsGlobalRatingCount();
 
-        $filmsCount = (array_sum(array_column($globalRating, "c"))); // todo if empty?
-        $filmsDuration = (array_sum(array_column($globalRating, "d"))); // todo if empty?
+		$globalCount = array_column($globalRating, "c");
+		$filmsCountFirst = array_shift($globalCount);
+        $filmsCount = (array_sum($globalCount)); // todo if empty?
+		array_unshift($globalCount, $filmsCountFirst);
+
+		$globalDuration = array_column($globalRating, "d");
+		$filmsDurationFirst = array_shift($globalDuration);
+        $filmsDuration = (array_sum($globalDuration)); // todo if empty?
+		array_unshift($globalDuration, $filmsDurationFirst);
 
         $films = DB::select(
            "SELECT
@@ -105,10 +112,10 @@ class StatsController extends Controller {
                 COUNT(1) AS c,
                 (SUM(Y) / 60 / 60) AS d
                 FROM (
-                    SELECT COUNT(1) AS c_inner, any_value(films.duration) AS Y
+                    SELECT COUNT(1) AS c_inner, films.duration AS Y
                     FROM films
                     JOIN ratings ON ratings.films_id = films.id
-                    GROUP BY ratings.films_id
+                    GROUP BY ratings.films_id, Y
                 ) AS s
                 GROUP BY r
             )
