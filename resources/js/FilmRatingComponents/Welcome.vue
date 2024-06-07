@@ -9,6 +9,8 @@
             </h1>
             <p class="mt-6 text-gray-500 leading-relaxed">
                 Vielen Dank, dass du uns bei der Sichtung von Filmen bewerten möchtest. Für die Sichtung hast du verschiedene Möglichkeiten.
+                <br>
+                <a href="/program" style="color: blue">Zur Programmplanung</a>
             </p>
         </div>
         <Footer :footerLinks="footerLinks" />

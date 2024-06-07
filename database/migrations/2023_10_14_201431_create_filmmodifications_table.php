@@ -11,9 +11,10 @@ class CreateFilmmodificationsTable extends Migration {
     public function up(): void {
         Schema::create('filmmodifications', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('key', 50)->default('');
             $table->string('name', 50)->default('');
 
-            $table->unique(["name"]); // isUnique => name
+            $table->unique(['key']); // isUnique => name
         });
     }
 }
