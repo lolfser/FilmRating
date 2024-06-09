@@ -23,9 +23,7 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                   <th>Nr.</th>
                   <th>Name</th>
                   <th>Globale Einstellungen</th>
-                  <th>Wertungen von anderen</th>
-                  <th>deine Wertung</th>
-                  <th>dein Kommentar</th>
+                  <th>Wertungen & dein Kommentar</th>
                   <th>Actions</th>
                 </tr>
                 <FilmRow v-for="film in films" :film="film"
@@ -36,6 +34,7 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                     :filmstatus="filmstatus"
                     :viewerId="viewerId"
                     :film-modifications="filmModifications"
+                    :viewers="viewers"
                     :keywords="keywords"
                     :user="user"
                     :_token="_token" />
@@ -60,6 +59,7 @@ export default {
         'footerLinks',
         'filmModifications',
         'keywords',
+        'viewers',
         'user',
         '_token'
     ],
