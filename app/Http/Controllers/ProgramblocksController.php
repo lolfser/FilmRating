@@ -26,6 +26,9 @@ class ProgramblocksController extends Controller {
 
         foreach ($metas as $meta) {
             $meta->location;
+            if ($meta->day !== null) {
+                $meta->day->dateString = (new \DateTime($meta->day->date))->format('d.m.Y');
+            }
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
                 if ($block->film === null) continue;
