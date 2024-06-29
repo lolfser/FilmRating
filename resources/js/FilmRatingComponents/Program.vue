@@ -75,7 +75,6 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
                 >
                     <div>
-
                         Start: {{ block.day?.dateString }} {{ block.start }} ({{ block.location.name }})
                         Länge: <span v-html="receiveBlockLength(block.id, block.puffer_per_item, block.total_length)"></span>
                     </div>
@@ -92,6 +91,9 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                         <img src="/svgs/rotate.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste neu laden" alt="Liste neu laden"
                              v-on:click="loadProgramBlock($event, block.id);"
                         >
+                        &nbsp;&nbsp;&nbsp;
+
+                        <span v-html="generatePrintLink(block.day?.id)" />&nbsp;
                         &nbsp;&nbsp;&nbsp;
                         <div style="display: inline-block" title="Um ein Element zu löschen, dieses per drag & drop hier drauf ziehen">
                             <draggable
@@ -154,6 +156,11 @@ export default {
         };
     },
     methods: {
+        generatePrintLink(id) {
+            return '<a href="/print/' + id + '" target="blank">' +
+                '<img src="/svgs/print.svg" style="height: 15px; cursor: pointer; display: inline;" title="Druckansicht" alt="Druckansicht" />'+
+                '</a>';
+        },
         prepareAvailableFilms(films) {
             for (const film of films) {
                 film.filmstatusName = this.receiveFilmStatusName(film.filmstatus.id)
