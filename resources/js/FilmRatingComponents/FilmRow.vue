@@ -21,30 +21,21 @@
 <template>
     <tr>
         <td>{{ film.film_identifier }}</td>
-        <td style="max-width: 380px">
+        <td style="max-width: 550px">
             {{ film.name }}
             <span>
                 <br><br>
                 Beschreibung:
-                <textarea cols="30" rows="3" name="description" v-model="film.description"></textarea>
+                <textarea cols="45" rows="3" name="description" v-model="film.description"></textarea>
             </span>
             <span>
                 <br><br>
                 Stichworte:
-                <textarea cols="30" rows="2" name="keywords" :value="keywordsConcat(film.keywords)"></textarea>
+                <textarea cols="45" rows="2" name="keywords" :value="keywordsConcat(film.keywords)"></textarea>
             </span>
         </td>
         <td>
             <table>
-                <tr>
-                    <td class="td_filmstatus" colspan="2" v-if="user.statuschange">
-                        <MultiSelect :options="filmstatus" :optionLabel="filmstatusLabels" :optionValue="filmstatusValues"
-                             placeholder="Filmstatus wählen"
-                             name="filmstatus"
-                             :selectionLimit="1"
-                             :autoFilterFocus="true" v-model="selectedFilmstatus" />
-                    </td>
-                </tr>
                 <tr v-for="(language, type) in languages">
                   <td>{{ type }}</td>
                   <td>
@@ -75,21 +66,38 @@
                 <tr>
                     <td class="td_genres" colspan="2">
                         <b>Genre:</b>
-                        <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
+                        <MultiSelect :options="genres" :optionLabel="elementName" :optionValue="elementId"
                                      placeholder="Genre wählen"
                                      name="genres"
                                      :autoFilterFocus="true" v-model="selectedGenres"
                         />
                     </td>
                 </tr>
+                <tr>
+                    <td class="td_filmstatus" colspan="2">
+                        <b>Status:</b>
+                        <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
+                                     placeholder="Status wählen"
+                                     name="filmstatus"
+                                     :selectionLimit="1"
+                                     :autoFilterFocus="true" v-model="selectedFilmstatus"
+                        />
+                    </td>
+                </tr>
             </table>
         </td>
-        <td>{{ otherGrade(film) }}</td>
-        <td class="td_grades">
-            <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
-        </td>
-        <td class="td_comment">
-            <textarea name="viewerComment" rows="4">{{ viewerComment(film) }}</textarea>
+        <td>
+            Noten anderer:
+            <div v-html="otherGrade(film)"></div>
+            <br><br>
+            Deine Note<br>
+            <div class="td_grades">
+                <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
+            </div>
+            <br><br>
+            <div class="td_comment">
+                <textarea name="viewerComment" rows="4" placeholder="Dein persönlicher Kommentar">{{ viewerComment(film) }}</textarea>
+            </div>
         </td>
         <td>
             <form method="post" action="/rating/update/" submit="false">
@@ -128,6 +136,8 @@ export default {
         'grades',
         'genres',
         'filmModifications',
+        'keywords',
+        'viewers',
         'user',
         '_token'
     ],
@@ -203,17 +213,11 @@ export default {
             if (typeof this.film.id === "undefined") return 0;
             return result;
         },
-        genreValues: function (genre) {
-            return genre.id;
+        elementId: function (element) {
+            return element.id;
         },
-        genreLabels: function (genre) {
+        elementName: function (genre) {
             return genre.name;
-        },
-        filmstatusLabels: function (filmstatus) {
-            return filmstatus.name;
-        },
-        filmstatusValues: function (filmstatus) {
-            return filmstatus.id;
         },
         loadFilm: function (event, film, grades) {
             let data = new FormData();
@@ -397,21 +401,26 @@ export default {
             const viewerId = this.viewerId;
             const grades = this.grades;
             let returnValue = "";
-            this.ratings.every(function (rating) {
+            let viewersInit = [];
+            for (const viewer of this.viewers) {
+                viewersInit[viewer.id] = viewer.initials;
+            }
+            for (const rating of this.ratings) {
                 if (rating.viewers_id == viewerId) {
-                    return true; // continue;
+                    continue;
                 }
                 const gradeId = rating.grades_id;
-                grades.every(function (gradeFromList) {
+                const init = viewersInit[rating.viewers_id];
+                for (let gradeFromList of grades) {
                     if (gradeId == gradeFromList.id) {
-                        if (returnValue !== "") returnValue = returnValue + " / ";
-                        returnValue += gradeFromList.value + "" + gradeFromList.trend;
-                        return false; // break;
+                        if (returnValue !== "") {
+                            returnValue = returnValue + " / ";
+                        }
+                        returnValue += '<span title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
+                        break;
                     }
-                    return true; // break;
-                });
-                return true; // continue;
-            });
+                }
+            }
             return returnValue;
         },
     }

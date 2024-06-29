@@ -11,6 +11,7 @@ use App\Models\Ratings;
 use App\Models\Languages;
 use App\Models\Grades;
 use App\Models\Genres;
+use App\Models\Viewers;
 use App\Services\HasPermissionService;
 use App\Services\SaveFilmModificationService;
 use App\Services\SaveFilmsKeywordsServices;
@@ -48,6 +49,7 @@ class RatingsController extends Controller {
             'active_filter' => 'all',
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
+            'viewers' => Viewers::all(),
             'user' => [
                 'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
             ],
@@ -118,6 +120,7 @@ class RatingsController extends Controller {
         }
 
         $film->description = $request->all()['description'] ?? '';
+        $film->filmstatus_id = $request->all()['filmstatus'] ?? '';
         $film->save();
 
         $ratings = Ratings::where('films_id', $film->id)->where('viewers_id', $viewersId);

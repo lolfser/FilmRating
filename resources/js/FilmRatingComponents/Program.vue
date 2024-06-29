@@ -71,11 +71,12 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                     display:flex;
                     flex-direction: column;
                     border:1px solid black;
-                    min-width: 400px;
+                    min-width: 500px;
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
                 >
                     <div>
-                        Start: {{ block.start }} ({{ block.location.name }})
+
+                        Start: {{ block.day?.dateString }} {{ block.start }} ({{ block.location.name }})
                         Länge: <span v-html="receiveBlockLength(block.id, block.puffer_per_item, block.total_length)"></span>
                     </div>
                     <div v-if="block.puffer_per_item">

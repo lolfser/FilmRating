@@ -24,6 +24,7 @@ import CompFilmViewer from '@/FilmRatingComponents/FilmViewer.vue';
                         :active_filter="active_filter"
                         :filmModifications="filmModifications"
                         :keywords="keywords"
+                        :viewers="viewers"
                         :user="user"
                         :_token="_token"
                         :footerLinks="footerLinks" />
@@ -35,7 +36,7 @@ import CompFilmViewer from '@/FilmRatingComponents/FilmViewer.vue';
 <script>
 export default {
   props: [
-      'films', 'grades', 'viewerId', 'footerLinks', 'user',
+      'films', 'grades', 'viewerId', 'footerLinks', 'user', 'viewers',
       'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filmModifications', 'keywords'
   ],
   computed: {
