@@ -75,13 +75,13 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                     padding: 5px;" v-for="block in programmetas" :key="block.id"
                 >
                     <div>
-                        Start: {{ block.day?.dateString }} {{ block.start }} ({{ block.location.name }})
-                        Länge: <span v-html="receiveBlockLength(block.id, block.puffer_per_item, block.total_length)"></span>
+                        Start: {{ block.day?.dateString }} ({{ block.location.name }})
                     </div>
                     <div v-if="block.puffer_per_item">
                         Puffer pro Film: {{ block.puffer_per_item }}
-                        <span v-if="block.puffer_per_item === 1"> Minute</span>
-                        <span v-else> Minuten</span>
+                        <span v-if="block.puffer_per_item === 1"> Minute;</span>
+                        <span v-else> Minuten;</span>
+                        Länge: <span v-html="receiveBlockLength(block.id, block.puffer_per_item, block.total_length)"></span>
                     </div>
                     <div>
                         <img src="/svgs/floppy-disk.svg" style="height: 15px; cursor: pointer; display: inline;" title="Liste speichern" alt="Liste speichern"

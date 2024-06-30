@@ -26,7 +26,13 @@ class ProgramblocksController extends Controller {
         foreach ($metas as $meta) {
             $meta->location;
             if ($meta->day !== null) {
-                $meta->day->dateString = (new \DateTime($meta->day->date))->format('d.m.Y');
+                $meta->day->dateString = (new \DateTime($meta->day->date))->format('l, d.m.Y');
+                $meta->day->dateString .= ', ';
+                $meta->day->dateString .= $meta->start;
+                $meta->day->dateString .= ' - ';
+                $dateTime = new \DateTime($meta->start);
+                $dateTime->add(new \DateInterval('PT' . ($meta->total_length ?? 0) . 'M'));
+                $meta->day->dateString .= $dateTime->format('H:i');
             }
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
