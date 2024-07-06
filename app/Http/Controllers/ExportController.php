@@ -10,9 +10,9 @@ use App\Models\Programblocks;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PrintController extends Controller {
+class ExportController extends Controller {
 
-    public function index(Request $request, int $dayId): \Inertia\Response {
+    public function print(Request $request, int $dayId): \Inertia\Response {
 
         $day = Days::where('id', $dayId)->first();
         $metas = Programblockmetas::where('days_id', $dayId)->get();
@@ -80,6 +80,70 @@ class PrintController extends Controller {
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
         ]);
     }
+
+    public function csv(Request $request, int $dayId): \Inertia\Response {
+
+        $day = Days::where('id', $dayId)->first();
+        $metas = Programblockmetas::where('days_id', $dayId)->get();
+        $startTime = $day->date->timestamp;
+        $output = '';
+        $output .= 'Tag;' . (new \DateTime($day->date->toString()))->format('l, d.m.Y');
+        $output .= PHP_EOL;
+        foreach ($metas as $meta) {
+            $timestampNext = (new \DateTime($meta->start))->setDate(1970, 1 ,1)->getTimestamp() + $startTime;
+            $output .= substr($meta->start, 0, -3) . ';' . $meta->location->name . ';Puffer pro Film;' . $meta->puffer_per_item . PHP_EOL;
+            $output .= PHP_EOL;
+            $output .= '"Start";"Dauer";"Film-Nr";"Titel";"Genre";"Keywords";"Beschreibung"' . PHP_EOL;
+            foreach (
+                Programblocks::where('programblockmetas_id', $meta->id)
+                    ->orderBy('programblockmetas_id')->orderBy('id')
+                    ->get() as $block
+            ) {
+
+                $film = Films::where('id', $block->films_id)->limit(1)->get()->first();
+
+                $timestampNow = $timestampNext;
+                $timestampNext = (int)($timestampNow + $film->duration + ($meta->puffer_per_item * 60.0));
+
+                $output .= (new \DateTime())->setTimestamp($timestampNow)->format('H:i')
+                    . ';' . '"' . round($film->duration / 60, 2) . '"'
+                    . ';' . '"' . $film->film_identifier . '"'
+                    . ';' . '"' . $film->name . '"'
+                    . ';';
+
+                $genres = [];
+                foreach ($film->genres ?? [] as $genre) {
+                    $genres[] = $genre->name;
+                }
+                $output .= '"' . implode(', ', $genres) . '"';
+                $output .= ';';
+
+                $keywords = [];
+                foreach ($film->keywords ?? [] as $keyword) {
+                    $keywords[] = $keyword->name;
+                }
+                $output .= '"' . implode(', ', $keywords) . '"';
+                $output .= ';';
+
+                $output .= '"' . ($film->description ?? '') . '"';
+                $output .= ';';
+
+                $output .= PHP_EOL;
+            }
+        }
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . (new \DateTime($day->date->toString()))->format('l, d.m.Y') . '.csv');
+        header('Content-Type: text/x-csv; charset=ISO-8859-1');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Description: File Transfer');
+
+        echo mb_convert_encoding( $output, 'Windows-1252', 'UTF-8');
+
+        exit;
+
+    }
+
 
     /**
      * @return Genres|mixed

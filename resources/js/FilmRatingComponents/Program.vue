@@ -92,8 +92,9 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                              v-on:click="loadProgramBlock($event, block.id);"
                         >
                         &nbsp;&nbsp;&nbsp;
-
                         <span v-html="generatePrintLink(block.day?.id)" />&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        <span v-html="generateCsvLink(block.day?.id)" />&nbsp;
                         &nbsp;&nbsp;&nbsp;
                         <div style="display: inline-block" title="Um ein Element zu löschen, dieses per drag & drop hier drauf ziehen">
                             <draggable
@@ -159,6 +160,11 @@ export default {
         generatePrintLink(id) {
             return '<a href="/print/' + id + '" target="blank">' +
                 '<img src="/svgs/print.svg" style="height: 15px; cursor: pointer; display: inline;" title="Druckansicht" alt="Druckansicht" />'+
+                '</a>';
+        },
+        generateCsvLink(id) {
+            return '<a href="/csv/' + id + '" target="blank">' +
+                '<img src="/svgs/csv.svg" style="height: 15px; cursor: pointer; display: inline;" title="CSV-Export" alt="CSV-Export" />'+
                 '</a>';
         },
         prepareAvailableFilms(films) {
