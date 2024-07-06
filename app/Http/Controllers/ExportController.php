@@ -149,13 +149,13 @@ class ExportController extends Controller {
         header('Content-Transfer-Encoding: binary');
         header('Content-Description: File Transfer');
 
-        echo mb_convert_encoding( $output, 'Windows-1252', 'UTF-8');
+        echo chr(255) . chr(254).mb_convert_encoding($output, 'UTF-16LE', 'UTF-8');
 
         exit;
 
     }
 
-    public function printStyle(string $media): void
+    private function printStyle(string $media): void
     {
         echo "<style> " . $media . " {
                     body {
@@ -188,7 +188,7 @@ class ExportController extends Controller {
             }
         }
         echo "}
-                </style>";
+            </style>";
     }
 
 }
