@@ -2,10 +2,10 @@ export const translate = (key) => {
     let translation, translationNotFound = true
 
     try {
-        translation = key.split('.').reduce((t, i) => t[i] || null, window._translations[window._locale].php)
+        translation = key.split('.').reduce((t, i) => t[i] || null, window._translations[window._locale].php);
 
         if (translation) {
-            translationNotFound = false
+            translationNotFound = false;
         }
     } catch (e) {
         translation = key
@@ -14,9 +14,9 @@ export const translate = (key) => {
     if (translationNotFound) {
         translation = window._translations[window._locale]['json'][key]
             ? window._translations[window._locale]['json'][key]
-            : key
+            : key;
     }
 
-    return translation
+    return translation;
 }
 

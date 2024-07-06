@@ -15,8 +15,14 @@ class ExportController extends Controller {
     public function print(Request $request, int $dayId): \Inertia\Response {
 
         $day = Days::where('id', $dayId)->first();
+
+        if ($day === null) {
+            echo "Tag ist unbekannt";
+            exit;
+        }
+
         $metas = Programblockmetas::where('days_id', $dayId)->get();
-        $startTime = $day->date->timestamp;
+        $startTime = (int) $day->date->timestamp;
         $this->printStyle('@media screen');
         $this->printStyle('@media print');
         echo "<table>";
@@ -24,7 +30,7 @@ class ExportController extends Controller {
         foreach ($metas as $meta) {
             $timestampNext = (new \DateTime($meta->start))->setDate(1970, 1 ,1)->getTimestamp() + $startTime;
             echo '<tr>
-                      <td>' . substr($meta->start, 0, -3) . ' ' . $meta->location->name . '</td>
+                      <td>' . substr($meta->start ?? '', 0, -3) . ' ' . $meta->location->name . '</td>
                       <td colspan="2">Puffer pro Film: ' . $meta->puffer_per_item . ' Minuten</td>
                   </tr>';
             foreach (
@@ -34,6 +40,10 @@ class ExportController extends Controller {
             ) {
 
                 $film = Films::where('id', $block->films_id)->limit(1)->get()->first();
+
+                if ($film === null) {
+                    continue;
+                }
 
                 $timestampNow = $timestampNext;
                 $timestampNext = (int)($timestampNow + $film->duration + ($meta->puffer_per_item * 60.0));
@@ -70,28 +80,25 @@ class ExportController extends Controller {
 
         exit;
 
-        return Inertia::render('Stats', [
-            'stats' => $arr,
-            'statsGlobalRatingCount' => $globalRating,
-            'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
-            'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
-            'noDurationStats' => $this->receiveFilmsWithoutDuration(),
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-        ]);
     }
 
     public function csv(Request $request, int $dayId): \Inertia\Response {
 
         $day = Days::where('id', $dayId)->first();
+
+        if ($day === null) {
+            echo "Tag ist unbekannt";
+            exit;
+        }
+
         $metas = Programblockmetas::where('days_id', $dayId)->get();
-        $startTime = $day->date->timestamp;
+        $startTime = (int) $day->date->timestamp;
         $output = '';
         $output .= 'Tag;' . (new \DateTime($day->date->toString()))->format('l, d.m.Y');
         $output .= PHP_EOL;
         foreach ($metas as $meta) {
             $timestampNext = (new \DateTime($meta->start))->setDate(1970, 1 ,1)->getTimestamp() + $startTime;
-            $output .= substr($meta->start, 0, -3) . ';' . $meta->location->name . ';Puffer pro Film;' . $meta->puffer_per_item . PHP_EOL;
+            $output .= substr($meta->start ?? '', 0, -3) . ';' . $meta->location->name . ';Puffer pro Film;' . $meta->puffer_per_item . PHP_EOL;
             $output .= PHP_EOL;
             $output .= '"Start";"Dauer";"Film-Nr";"Titel";"Genre";"Keywords";"Beschreibung"' . PHP_EOL;
             foreach (
@@ -101,6 +108,10 @@ class ExportController extends Controller {
             ) {
 
                 $film = Films::where('id', $block->films_id)->limit(1)->get()->first();
+
+                if ($film === null) {
+                    continue;
+                }
 
                 $timestampNow = $timestampNext;
                 $timestampNext = (int)($timestampNow + $film->duration + ($meta->puffer_per_item * 60.0));
@@ -119,7 +130,7 @@ class ExportController extends Controller {
                 $output .= ';';
 
                 $keywords = [];
-                foreach ($film->keywords ?? [] as $keyword) {
+                foreach ($film->keyword ?? [] as $keyword) {
                     $keywords[] = $keyword->name;
                 }
                 $output .= '"' . implode(', ', $keywords) . '"';
@@ -144,10 +155,6 @@ class ExportController extends Controller {
 
     }
 
-
-    /**
-     * @return Genres|mixed
-     */
     public function printStyle(string $media): void
     {
         echo "<style> " . $media . " {

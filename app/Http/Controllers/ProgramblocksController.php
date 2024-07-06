@@ -30,7 +30,7 @@ class ProgramblocksController extends Controller {
                 $meta->day->dateString .= ', ';
                 $meta->day->dateString .= $meta->start;
                 $meta->day->dateString .= ' - ';
-                $dateTime = new \DateTime($meta->start);
+                $dateTime = new \DateTime($meta->start ?? '');
                 $dateTime->add(new \DateInterval('PT' . ($meta->total_length ?? 0) . 'M'));
                 $meta->day->dateString .= $dateTime->format('H:i');
             }

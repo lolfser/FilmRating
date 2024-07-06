@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,4 +17,6 @@ class Days extends Model {
     protected $fillable = ['date'];
     protected $casts    = ['id' => 'int', 'date' => 'datetime'];
     public $timestamps = false;
+
+    public string $dateString = '';
 }

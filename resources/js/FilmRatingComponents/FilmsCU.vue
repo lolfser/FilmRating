@@ -6,7 +6,6 @@ import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 import InputError from '../Components/InputError.vue';
 import { translate } from '../trans.js';
-
 </script>
 <template>
 <Headline :headline="headline" />
@@ -70,6 +69,7 @@ import { translate } from '../trans.js';
                     <InputError class="mt-2" :message="errors.duration" />
                   </td>
                 </tr>
+                <tr><td>&nbsp;</td></tr>
                 <tr>
                   <td>{{ translate('attributes.filmstatus_id') }}</td>
                   <td>
@@ -77,7 +77,16 @@ import { translate } from '../trans.js';
                         <label><input :checked="isSelectedStatus(filmstatus.id, film.filmstatus_id)" type="radio" name="filmstatus_id" :value="filmstatus.id" /> {{filmstatus.name}}</label>
                         &nbsp;&nbsp;&nbsp;
                     </span>
-
+                  </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                  <td>{{ translate('attributes.genre') }}</td>
+                  <td>
+                    <span v-for="genre in genres">
+                        <label><input :checked="isSelectedGenre(genre.id, film.genres)" type="checkbox" name="genres[]" :value="genre.id" /> {{genre.name}}</label>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
                   </td>
                 </tr>
             </table>
@@ -92,7 +101,7 @@ import { translate } from '../trans.js';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', 'languages', 'filmstatus', '_token', 'headline', 'errors'],
+  props: ['film', 'filmsources', 'genres', 'languages', 'filmstatus', '_token', 'headline', 'errors'],
   methods: {
     isSelected: function (filmLanguages, currentLanguage) {
         let result = false;
@@ -109,6 +118,17 @@ export default {
     isSelectedStatus: function (filmLanguages, currentLanguage) {
         return filmLanguages === currentLanguage;
     },
+    isSelectedGenre: function (genreId, filmGenres) {
+        let result = false;
+        filmGenres.every(function (genre) {
+            if (genre.id === genreId) {
+                result = true;
+                return false; // break
+            }
+            return true; // continue;
+        });
+        return result;
+    }
   },
   computed: {
     token: function () {
