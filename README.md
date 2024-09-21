@@ -50,6 +50,9 @@ Einmal alles wie oben beschrieben einrichten, und dann bei jedem Start:
 * ./vendor/bin/sail up
 * ./vendor/bin/sail npm run dev
 
+## Cache leeren nach bspw. Änderung der translations
+* php artisan cache:clear
+
 ## Todos
 * Keywords: -> 'filmsources.name' - kollation - utf8mb4_bin
 * change in table keywords the COLLATE to 'utf8mb4_bin'

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int|null $locations_id
  * @property int|null $days_id
- * @property time|null $start
+ * @property string|null $start
  * @property float|null $total_length
  * @property float|null $puffer_per_item
  * @property Collection $films

@@ -21,6 +21,36 @@ parameters:
 			path: ../../app/Actions/Fortify/UpdateUserProfileInformation.php
 
 		-
+			message: "#^Argument of an invalid type App\\\\Models\\\\Genres supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
+			message: "#^Argument of an invalid type App\\\\Models\\\\Genres\\|array supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
+			message: "#^Argument of an invalid type App\\\\Models\\\\Keywords supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
+			message: "#^Called 'first' on Laravel collection, but could have been retrieved as a query\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
+			message: "#^Empty array passed to foreach\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
+			message: "#^Parameter \\#1 \\$datetime of class DateTime constructor expects string, string\\|null given\\.$#"
+			count: 2
+			path: ../../app/Http/Controllers/ExportController.php
+
+		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:create\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
@@ -117,6 +147,11 @@ parameters:
 
 		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:update\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ../../app/Http/Controllers/FilmsController.php
+
+		-
+			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\> given\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 

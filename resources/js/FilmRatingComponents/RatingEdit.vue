@@ -3,7 +3,6 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 import { translate } from '../trans.js';
-
 import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
 </script>
 <template>

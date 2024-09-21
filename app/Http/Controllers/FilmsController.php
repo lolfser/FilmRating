@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Films;
 use App\Models\Filmsources;
 use App\Models\Filmstatus;
+use App\Models\Genres;
 use App\Models\Languages;
+use App\Services\SaveFilmsGenresServices;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -94,6 +96,7 @@ class FilmsController extends Controller {
         return Inertia::render('FilmsCU', [
             'film' => $film,
             'filmsources' => Filmsources::all(),
+            'genres' => Genres::all(),
             'languages' => Languages::all()->groupBy('type'),
             'filmstatus' => Filmstatus::all(),
             '_token' => csrf_token(),
@@ -123,7 +126,8 @@ class FilmsController extends Controller {
         $film->fill($newData); // @todo unique check of film identifier
         $film->save();
 
-         (new SaveFilmsLanguagesServices())->save($film, $request->all());
+        (new SaveFilmsGenresServices())->save($film, $request->all());
+        (new SaveFilmsLanguagesServices())->save($film, $request->all());
 
         return redirect(route("films.show", [$film->id]));
     }

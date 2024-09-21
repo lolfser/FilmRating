@@ -55,4 +55,6 @@ Route::middleware([
     Route::post('/program/save', [\App\Http\Controllers\ProgramblocksController::class, 'save']);
     Route::post('/program/load', [\App\Http\Controllers\ProgramblocksController::class, 'load']);
     Route::post('/program/filter', [\App\Http\Controllers\ProgramblocksController::class, 'filter']);
+    Route::get('print/{metaId}', [\App\Http\Controllers\ExportController::class, 'print'])->name('export.print');
+    Route::get('csv/{metaId}', [\App\Http\Controllers\ExportController::class, 'csv'])->name('export.csv');
 });

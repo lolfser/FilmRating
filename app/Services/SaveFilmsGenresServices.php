@@ -9,7 +9,7 @@ class SaveFilmsGenresServices {
     public function save(Films $film, array $userInputs): void {
 
         $genres = $userInputs['genres'] ?? [];
-        $genres !== []
+        is_string($genres)
             ? $film->genres()->sync(explode(',', $genres))
             : $film->genres()->sync($genres);
 
