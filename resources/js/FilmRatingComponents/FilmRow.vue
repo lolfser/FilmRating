@@ -31,6 +31,8 @@
         <td>{{ film.film_identifier }}</td>
         <td style="max-width: 550px">
             {{ film.name }}
+            <br>
+            Dauer: {{ parseInt(film.duration / 60) }} min.
             <span>
                 <br><br>
                 Beschreibung:
