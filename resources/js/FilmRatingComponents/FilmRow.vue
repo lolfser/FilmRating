@@ -17,6 +17,14 @@
     .p-highlight .p-checkbox-box {
         background-color: #797;
     }
+    .td_filmstatus {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .td_genres > div,
+    .td_filmstatus > div {
+        display: inline-block;
+    }
 </style>
 <template>
     <tr>

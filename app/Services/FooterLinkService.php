@@ -18,7 +18,7 @@ class FooterLinkService {
 
         $links = [];
         $links[] = $this->build('/films', 'Liste aller Filme', $currentPath === 'films');
-        $links[] = $this->build('/rating', ' Filmbewertungen', $currentPath === 'rating');
+        $links[] = $this->build('/rating/list/1', ' Filmbewertungen', $currentPath === 'rating');
 
         if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)) {
             $links[] = $this->build('/films/0/cu', ' Film erstellen', $currentPath === 'films/0/cu');

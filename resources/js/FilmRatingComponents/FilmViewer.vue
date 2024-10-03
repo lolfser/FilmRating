@@ -7,12 +7,13 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
 </script>
 <template>
     <Headline :headline="headline" />
-    <form method="post">
+    <form method="post" action="/rating/filter">
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <input type="hidden" name="_token" :value="_token" />
             <label><input type="radio" name="filter" value="all" v-model="filter"> ohne Einschränkung</label>&nbsp;&nbsp;&nbsp;
-            <label><input type="radio" name="filter" value="open" v-model="filter"> nur offene</label>&nbsp;&nbsp;&nbsp;
-            <label><input type="radio" name="filter" value="rated" v-model="filter"> nur bewertete</label>&nbsp;&nbsp;&nbsp;
+            <label><input type="radio" name="filter" value="open" v-model="filter"> ich habe noch nicht bewertet</label>&nbsp;&nbsp;&nbsp;
+            <label><input type="radio" name="filter" value="rated" v-model="filter"> ich habe bereits bewertet</label>&nbsp;&nbsp;&nbsp;
+            Seite: <input type="number" name="page" :value="currentPage" placeholder="Seite" style="max-width: 90px"> von {{ totalPages }}
             <PrimaryButton>Filtern</PrimaryButton>
         </div>
     </form>
@@ -65,7 +66,9 @@ export default {
         'keywords',
         'viewers',
         'user',
-        '_token'
+        '_token',
+        'totalPages',
+        'currentPage'
     ],
     data() {
         return {
