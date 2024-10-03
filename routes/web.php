@@ -43,11 +43,13 @@ Route::middleware([
         'can:' . \App\Models\Permissions::PERMISSION_ADD_FILMS . ',App\Models\Films'
     );
     Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
-    Route::get('rating', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
-    Route::post('rating', [\App\Http\Controllers\RatingsController::class, 'filter'])->name('rating.filter');
+
+    Route::get('/rating/list/{page}', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
+    Route::post('/rating/filter', [\App\Http\Controllers\RatingsController::class, 'filter'])->name('rating.filter');
     Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\RatingsController::class, 'rate']);
     Route::post('/rating/update', [\App\Http\Controllers\RatingsController::class, 'update']);
     Route::post('/rating/load', [\App\Http\Controllers\RatingsController::class, 'load']);
+
     Route::get('/import/', [\App\Http\Controllers\ImportController::class, 'index']);
     Route::post('/import/', [\App\Http\Controllers\ImportController::class, 'import']);
     Route::get('/stats/', [\App\Http\Controllers\StatsController::class, 'index']);

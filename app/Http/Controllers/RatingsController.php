@@ -22,11 +22,19 @@ use Inertia\Inertia;
 
 class RatingsController extends Controller {
 
-    public function index(): \Inertia\Response {
+    private const ITEMS_PER_PAGE = 100;
 
-        $films = Films::all();
-        // $films = Films::query()
-        //         ->limit(10)->get();
+    public function index(int $page = 0): \Inertia\Response {
+
+        if ($page < 1) {
+            return $this->index(1);
+        }
+
+        $pageCount = ((int) (count(Films::all()) / self::ITEMS_PER_PAGE)) + 1;
+        $films = Films::query()
+             ->limit(self::ITEMS_PER_PAGE)
+             ->offset(($page - 1) * self::ITEMS_PER_PAGE)
+             ->get();
 
         foreach ($films as $film) {
             // Loading pivots
@@ -53,6 +61,8 @@ class RatingsController extends Controller {
             'user' => [
                 'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
             ],
+            'totalPages' => $pageCount,
+            'currentPage' => $page,
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -62,23 +72,50 @@ class RatingsController extends Controller {
     public function filter(Request $request): \Inertia\Response {
 
         $filter = $request->all()['filter'];
+        $page = max(1, (int) $request->all()['page']);
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         if ($filter === 'rated') {
-            $films = Films::query()
+
+            $pageCount = ((int) (count(Films::query()
                 ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
                 ->where('viewers.id', $viewerId)
-                ->get('films.*');
-        } elseif ($filter === 'open') {
+                ->get('films.*')) / self::ITEMS_PER_PAGE)) + 1;
+
             $films = Films::query()
+                ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
+                ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
+                ->limit(self::ITEMS_PER_PAGE)
+                ->offset(($page - 1) * self::ITEMS_PER_PAGE)
+                ->where('viewers.id', $viewerId)
+                ->get('films.*');
+
+        } elseif ($filter === 'open') {
+
+            $pageCount = ((int) (count(Films::query()
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
                 ->where('viewers.id', null)
+                ->get('films.*')) / self::ITEMS_PER_PAGE)) + 1;
+
+            $films = Films::query()
+                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
+                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
+                ->limit(self::ITEMS_PER_PAGE)
+                ->offset(($page - 1) * self::ITEMS_PER_PAGE)
+                ->where('viewers.id', null)
                 ->get('films.*');
+
         } else {
-            $films = Films::all();
+
+            $pageCount = ((int) (count(Films::all()) / self::ITEMS_PER_PAGE)) + 1;
+            $films = Films::query()
+                 ->limit(self::ITEMS_PER_PAGE)
+                 ->offset(($page - 1) * self::ITEMS_PER_PAGE)
+                 ->get();
+
         }
 
         foreach ($films as $film) {
@@ -100,9 +137,12 @@ class RatingsController extends Controller {
             'active_filter' => $filter,
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
+            'viewers' => Viewers::all(),
             'user' => [
                 'statuschange' => (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
             ],
+            'totalPages' => $pageCount,
+            'currentPage' => $page,
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -116,7 +156,7 @@ class RatingsController extends Controller {
 
         if ($film === null) {
             // Todo: Error handling
-            return redirect(route("rating.index"));
+            return redirect(route("rating.index") . '/1');
         }
 
         $film->description = $request->all()['description'] ?? '';
@@ -154,7 +194,7 @@ class RatingsController extends Controller {
             return true;
         }
 
-        return redirect(route("rating.index"));
+        return redirect(route("rating.index") . '/1');
 
     }
 

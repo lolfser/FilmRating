@@ -17,6 +17,7 @@ class FilmmodificationsSeeder extends Seeder {
             Filmmodifications::create(['key' => 'child13', 'name' => 'bis 13']);
             Filmmodifications::create(['key' => 'child17', 'name' => 'bis 17']);
             Filmmodifications::create(['key' => 'queer', 'name' => '⚥']);
+            Filmmodifications::create(['key' => 'super8', 'name' => 'S8']);
 
             DB::commit();
         } catch(\Throwable $t) {

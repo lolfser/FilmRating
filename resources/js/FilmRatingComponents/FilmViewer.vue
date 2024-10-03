@@ -7,18 +7,20 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
 </script>
 <template>
     <Headline :headline="headline" />
-    <form method="post">
+    <form method="post" action="/rating/filter">
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <input type="hidden" name="_token" :value="_token" />
             <label><input type="radio" name="filter" value="all" v-model="filter"> ohne Einschränkung</label>&nbsp;&nbsp;&nbsp;
-            <label><input type="radio" name="filter" value="open" v-model="filter"> nur offene</label>&nbsp;&nbsp;&nbsp;
-            <label><input type="radio" name="filter" value="rated" v-model="filter"> nur bewertete</label>&nbsp;&nbsp;&nbsp;
+            <label><input type="radio" name="filter" value="open" v-model="filter"> ich habe noch nicht bewertet</label>&nbsp;&nbsp;&nbsp;
+            <label><input type="radio" name="filter" value="rated" v-model="filter"> ich habe bereits bewertet</label>&nbsp;&nbsp;&nbsp;
+            Seite: <input type="number" name="page" :value="currentPage" placeholder="Seite" style="max-width: 90px"> von {{ totalPages }}
             <PrimaryButton>Filtern</PrimaryButton>
         </div>
     </form>
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <table class="table">
+              <thead>
                 <tr>
                   <th>Nr.</th>
                   <th>Name</th>
@@ -26,6 +28,8 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                   <th>Wertungen & dein Kommentar</th>
                   <th>Actions</th>
                 </tr>
+              </thead>
+              <tbody>
                 <FilmRow v-for="film in films" :film="film"
                     :ratings="film.ratings"
                     :grades="grades"
@@ -38,6 +42,7 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                     :keywords="keywords"
                     :user="user"
                     :_token="_token" />
+              </tbody>
             </table>
 
         </div>
@@ -61,7 +66,9 @@ export default {
         'keywords',
         'viewers',
         'user',
-        '_token'
+        '_token',
+        'totalPages',
+        'currentPage'
     ],
     data() {
         return {

@@ -346,7 +346,12 @@ parameters:
 			path: ../../app/Http/Middleware/HandleInertiaRequests.php
 
 		-
-			message: "#^Parameter \\#1 \\$ability of static method Illuminate\\\\Support\\\\Facades\\\\Gate\\:\\:define\\(\\) expects string, int given\\.$#"
+			message: "#^Class App\\\\Models\\\\Users uses generic trait Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\HasFactory but does not specify its types\\: TFactory$#"
+			count: 1
+			path: ../../app/Models/Users.php
+
+		-
+			message: "#^Parameter \\#1 \\$ability of static method Illuminate\\\\Support\\\\Facades\\\\Gate\\:\\:define\\(\\) expects BackedEnum\\|string, int given\\.$#"
 			count: 1
 			path: ../../app/Providers/AuthServiceProvider.php
 

@@ -26,6 +26,8 @@ import CompFilmViewer from '@/FilmRatingComponents/FilmViewer.vue';
                         :keywords="keywords"
                         :viewers="viewers"
                         :user="user"
+                        :currentPage="currentPage"
+                        :totalPages="totalPages"
                         :_token="_token"
                         :footerLinks="footerLinks" />
                 </div>
@@ -37,7 +39,8 @@ import CompFilmViewer from '@/FilmRatingComponents/FilmViewer.vue';
 export default {
   props: [
       'films', 'grades', 'viewerId', 'footerLinks', 'user', 'viewers',
-      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filmModifications', 'keywords'
+      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filmModifications', 'keywords',
+      'totalPages', 'currentPage'
   ],
   computed: {
     headline: function () {return "Deine Bewertungen";},

@@ -6,14 +6,17 @@ import Footer from './Footer.vue';
     <Headline :headline="headline" />
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-            <p class="mt-6 text-gray-500 leading-relaxed">
+            <div class="mt-6 text-gray-500 leading-relaxed">
                 <table class="table">
+                  <thead>
                     <tr>
                       <th>Film-Identifikator</th>
                       <th>Name</th>
                       <th>Genre</th>
                       <th>Actions</th>
                     </tr>
+                  </thead>
+                  <tbody>
                     <tr v-for="film in films">
                         <td>{{film.film_identifier}}</td>
                         <td>
@@ -29,8 +32,9 @@ import Footer from './Footer.vue';
                             </span>
                         </td>
                     </tr>
+                  </tbody>
                 </table>
-            </p>
+            </div>
         </div>
         <Footer :footerLinks="footerLinks" />
     </div>
