@@ -19,6 +19,7 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
     <div>
         <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
             <table class="table">
+              <thead>
                 <tr>
                   <th>Nr.</th>
                   <th>Name</th>
@@ -26,6 +27,8 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                   <th>Wertungen & dein Kommentar</th>
                   <th>Actions</th>
                 </tr>
+              </thead>
+              <tbody>
                 <FilmRow v-for="film in films" :film="film"
                     :ratings="film.ratings"
                     :grades="grades"
@@ -38,6 +41,7 @@ import PrimaryButton from '../Components/PrimaryButton.vue';
                     :keywords="keywords"
                     :user="user"
                     :_token="_token" />
+              </tbody>
             </table>
 
         </div>

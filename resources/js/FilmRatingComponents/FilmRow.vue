@@ -36,6 +36,7 @@
         </td>
         <td>
             <table>
+              <tbody>
                 <tr v-for="(language, type) in languages">
                   <td>{{ type }}</td>
                   <td>
@@ -84,6 +85,7 @@
                         />
                     </td>
                 </tr>
+              </tbody>
             </table>
         </td>
         <td>
