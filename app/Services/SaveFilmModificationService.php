@@ -13,15 +13,22 @@ class SaveFilmModificationService {
     public function save(Films $film, array $userInputs): void {
 
         $sync = [];
+        $shouldUpdated = false;
 
         foreach (Filmmodifications::all() as $mod) {
-            if (($userInputs['filmModification_' . $mod->id] ?? null ) !== null) {
+            if (!isset($userInputs['filmModification_' . $mod->id])) {
+                continue;
+            }
+            $shouldUpdated = true;
+            if ($userInputs['filmModification_' . $mod->id] === 'true') {
                 $sync[] = $mod->id;
             }
         }
 
-        $film->filmmodifications()->sync($sync);
-        $film->save();
+        if ($shouldUpdated) {
+            $film->filmmodifications()->sync($sync);
+            $film->save();
+        }
 
     }
 

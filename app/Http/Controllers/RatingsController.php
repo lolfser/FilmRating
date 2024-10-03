@@ -159,38 +159,64 @@ class RatingsController extends Controller {
             return redirect(route("rating.index") . '/1');
         }
 
-        $film->description = $request->all()['description'] ?? '';
-        $film->filmstatus_id = $request->all()['filmstatus'] ?? '';
-        $film->save();
+        $isModified = false;
+        $requestData = $request->all();
 
+        if (array_key_exists('description', $requestData)) {
+            $film->description = $requestData['description'] ?? '';
+            $isModified = true;
+        }
+
+        if (
+            array_key_exists('filmstatus', $requestData)
+            && ($requestData['filmstatus'] ?? 0) > 0
+            && (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
+        ) {
+            // TODO: on default first DB-table item, not 1
+            $film->filmstatus_id = (int) ($requestData['filmstatus'] ?? 1);
+            $isModified = true;
+        }
+
+        if ($isModified) {
+            $film->save();
+        }
+
+        $isModified = false;
         $ratings = Ratings::where('films_id', $film->id)->where('viewers_id', $viewersId);
 
         if ($ratings->count() === 0) {
             $rating = new Ratings();
             $rating->viewers_id = $viewersId;
             $rating->films_id = $film->id;
+            $isModified = true;
         } else {
             $rating = $ratings->first();
         }
 
-        $rating->grades_id = $request->all()['grades_id'] ?? 0;
-        $rating->comment = $request->all()['comment'] ?? '';
-        $rating->save();
-
-        if (
-            ($request->all()['filmstatus'] ?? 0) > 0
-            && (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS)
-        ) {
-            $film->filmstatus_id = $request->all()['filmstatus'];
-            $film->save();
+        if (array_key_exists('grades_id', $requestData)) {
+            // TODO: on default first DB-table item, not 1
+            $rating->grades_id = $requestData['grades_id'] ?? 0;
+            $isModified = true;
         }
 
-        (new SaveFilmsLanguagesServices())->save($film, $request->all());
-        (new SaveFilmsGenresServices())->save($film, $request->all());
-        (new SaveFilmModificationService())->save($film, $request->all());
-        (new SaveFilmsKeywordsServices())->save($film, explode(',', $request->all()['keywords'] ?? ''));
+        if (array_key_exists('comment', $requestData)) {
+            $rating->comment = $requestData['comment'] ?? '';
+            $isModified = true;
+        }
 
-        if ($request->all()['isAjax'] ?? false) {
+        if ($isModified) {
+            $rating->save();
+        }
+
+        (new SaveFilmsLanguagesServices())->save($film, $requestData);
+        (new SaveFilmsGenresServices())->save($film, $requestData);
+        (new SaveFilmModificationService())->save($film, $requestData);
+
+        if (array_key_exists('keywords', $requestData)) {
+            (new SaveFilmsKeywordsServices())->save($film, explode(',', $requestData['keywords'] ?? ''));
+        }
+
+        if ($requestData['isAjax'] ?? false) {
             return true;
         }
 

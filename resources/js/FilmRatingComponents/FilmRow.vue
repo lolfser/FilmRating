@@ -27,7 +27,7 @@
     }
 </style>
 <template>
-    <tr>
+    <tr :class="'film-row film-row-' + film.id">
         <td>{{ film.film_identifier }}</td>
         <td style="max-width: 550px">
             {{ film.name }}
@@ -56,6 +56,7 @@
                                type="radio"
                                :name="film.id + '_language_' + type"
                                :value="lang.id"
+                               @click="triggerSave()"
                             />&nbsp;{{lang.language}}
                         </label>
                         &nbsp;&nbsp;&nbsp;
@@ -69,6 +70,7 @@
                             <Checkbox v-model="selectedModifications"
                                   :name="'filmModification_' + fmod.id"
                                   :value="fmod.id"
+                                  @click="triggerSave()"
                             />
                             {{ fmod.name }}
                         </label>
@@ -78,9 +80,9 @@
                     <td class="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="elementName" :optionValue="elementId"
-                                     placeholder="Genre wählen"
-                                     name="genres"
-                                     :autoFilterFocus="true" v-model="selectedGenres"
+                                 placeholder="Genre wählen"
+                                 name="genres"
+                                 :autoFilterFocus="true" v-model="selectedGenres"
                         />
                     </td>
                 </tr>
@@ -88,10 +90,10 @@
                     <td class="td_filmstatus" colspan="2">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
-                                     placeholder="Status wählen"
-                                     name="filmstatus"
-                                     :selectionLimit="1"
-                                     :autoFilterFocus="true" v-model="selectedFilmstatus"
+                                    placeholder="Status wählen"
+                                    name="filmstatus"
+                                    :selectionLimit="1"
+                                    :autoFilterFocus="true" v-model="selectedFilmstatus"
                         />
                     </td>
                 </tr>
@@ -122,7 +124,7 @@
                 <input  v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
                 <img src="/svgs/floppy-disk.svg"
                      style="height: 20px; cursor: pointer; display: inline"
-                     v-on:click="loadQuickSaveUrl($event, film, grades);"
+                     v-on:click="loadQuickSaveUrl($event, film, grades, 'all');"
                      title="Schnellspeichern"
                 />
                 <br><br>
@@ -183,7 +185,6 @@ export default {
             return true;
         });
         this.selectedModifications = modifications;
-
     },
     methods: {
         callbackUpdateGenres: function(genres) {
@@ -287,48 +288,78 @@ export default {
 
             return event;
         },
-        loadQuickSaveUrl: function (event, film, grades) {
+        loadQuickSaveUrl: function (event, film, grades, autoSaveColumn) {
+
+            if (typeof autoSaveColumn === "undefined") {
+                autoSaveColumn = "all";
+            }
+
             let tr = event.target.parentNode.parentNode.parentNode;
-            let viewerComment = tr.querySelector('.td_comment textarea').value;
-            tr.querySelector('[name="comment"]').value = viewerComment;
-            let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
-            grades.every(function(grade) {
-                if (grade.value + grade.trend == gradeInput) {
-                    tr.querySelector('[name="grades_id"]').value = grade.id;
-                    return false;
-                }
-                return true;
-            });
-
-            let genresInput = tr.querySelector('.td_genres [name="genres"]').value;
-            tr.querySelector('form [name="genres"]').value = genresInput;
-
-            let filmstatusInput = tr.querySelector('.td_filmstatus [name="filmstatus"]')?.value;
-            tr.querySelector('form [name="filmstatus"]').value = filmstatusInput;
-
-            let languages = tr.querySelectorAll('[name^="' + film.id + '_language"]:checked');
-            languages.forEach(function(element) {
-                let element2 = tr.querySelector('[name="' + element.name.split(film.id + '_')[1] + '"]');
-                element2.value = element.value;
-            });
-
             let form = event.target.parentNode;
             let data = new FormData();
+
             data.append('isAjax', true);
+            data.append('id', film.film_identifier);
 
-            let filmNotifications = tr.querySelectorAll('.td_filmnotifications :checked');
-            filmNotifications.forEach(function(element) {
-                data.append(element.name, true);
-            });
+            let token = (form.querySelectorAll('[name="_token"]'))[0];
+            data.append(token.name, token.value);
 
-            let textArea = tr.querySelectorAll('[name="description"], [name="keywords"]');
-            textArea.forEach(function(element) {
+            if (autoSaveColumn === "all" || autoSaveColumn === 'modifications') {
+
+                let filmNotifications = tr.querySelectorAll('.td_filmnotifications input');
+                filmNotifications.forEach(function (element) {
+                    data.append(element.name, element.checked ? 'true' : 'false');
+                });
+
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'description') {
+                let element = tr.querySelectorAll('[name="description"]')[0];
                 data.append(element.name, element.value);
-            });
+            }
 
-            (form.querySelectorAll('input')).forEach(function(input) {
-                data.append(input.getAttribute('name'), input.value);
-            });
+            if (autoSaveColumn === "all" || autoSaveColumn === 'keywords') {
+                let element = tr.querySelectorAll('[name="keywords"]')[0];
+                data.append(element.name, element.value);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'genres') {
+                let element = tr.querySelectorAll('.td_genres [name="genres"]')[0];
+                data.append(element.name, element.value);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'filmstatus') {
+                let filmstatusInput = tr.querySelector('.td_filmstatus [name="filmstatus"]')?.value;
+                data.append('filmstatus', filmstatusInput);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'languages') {
+
+                let languages = tr.querySelectorAll('[name^="' + film.id + '_language"]:checked');
+                languages.forEach(function(element) {
+                    let language = tr.querySelector('[name="' + element.name.split(film.id + '_')[1] + '"]');
+                    data.append(language.name, element.value);
+                });
+
+            }
+
+            // personal attributes
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'comment') {
+                let viewerComment = tr.querySelector('.td_comment textarea').value;
+                data.append('comment', viewerComment);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'grade') {
+                let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
+                grades.every(function(grade) {
+                    if (grade.value + grade.trend == gradeInput) {
+                        data.append('grades_id', grade.id);
+                        return false; // break
+                    }
+                    return true; // continue
+                });
+            }
 
             function update(url, xFunction, eventTarget) {
                 const xhttp=new XMLHttpRequest();
