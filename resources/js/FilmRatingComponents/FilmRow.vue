@@ -46,22 +46,30 @@
         </td>
         <td>
             <table>
-              <tbody>
-                <tr v-for="(language, type) in languages">
-                  <td>{{ type }}</td>
-                  <td>
-                    <span v-for="lang in language">
-                        <label style="white-space:nowrap">
-                            <input :checked="isSelected(film.languages, lang.id)"
-                               type="radio"
-                               :name="film.id + '_language_' + type"
-                               :value="lang.id"
-                               @click="triggerSave()"
-                            />&nbsp;{{lang.language}}
-                        </label>
-                        &nbsp;&nbsp;&nbsp;
-                    </span>
-                  </td>
+            <tbody>
+                <tr>
+                    <td style="padding: 0 0 0 0; border: none;">
+                        <table style="width: 100%; margin-bottom: 10px;" class="tb_languages" >
+                            <tbody>
+                                <tr v-for="(language, type) in languages">
+                                    <td>{{ type }}</td>
+                                    <td>
+                                        <span v-for="lang in language">
+                                            <label style="white-space:nowrap">
+                                                <input :checked="isSelected(film.languages, lang.id)"
+                                                   type="radio"
+                                                   :name="film.id + '_language_' + type"
+                                                   :value="lang.id"
+                                                   v-on:click="triggerSave('languages', film.id, film.film_identifier)"
+                                                />&nbsp;{{lang.language}}
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <td class="td_filmnotifications" colspan="2">
@@ -70,7 +78,6 @@
                             <Checkbox v-model="selectedModifications"
                                   :name="'filmModification_' + fmod.id"
                                   :value="fmod.id"
-                                  @click="triggerSave()"
                             />
                             {{ fmod.name }}
                         </label>
@@ -80,9 +87,9 @@
                     <td class="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="elementName" :optionValue="elementId"
-                                 placeholder="Genre wählen"
-                                 name="genres"
-                                 :autoFilterFocus="true" v-model="selectedGenres"
+                                placeholder="Genre wählen"
+                                name="genres"
+                                :autoFilterFocus="true" v-model="selectedGenres"
                         />
                     </td>
                 </tr>
@@ -90,14 +97,14 @@
                     <td class="td_filmstatus" colspan="2">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
-                                    placeholder="Status wählen"
-                                    name="filmstatus"
-                                    :selectionLimit="1"
-                                    :autoFilterFocus="true" v-model="selectedFilmstatus"
+                                placeholder="Status wählen"
+                                name="filmstatus"
+                                :selectionLimit="1"
+                                :autoFilterFocus="true" v-model="selectedFilmstatus"
                         />
                     </td>
                 </tr>
-              </tbody>
+            </tbody>
             </table>
         </td>
         <td>
@@ -121,10 +128,11 @@
                 <input type="hidden" name="filmstatus" />
                 <input type="hidden" name="comment" />
                 <input type="hidden" name="grades_id" />
-                <input  v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
+                <input v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
                 <img src="/svgs/floppy-disk.svg"
+                     class="save"
                      style="height: 20px; cursor: pointer; display: inline"
-                     v-on:click="loadQuickSaveUrl($event, film, grades, 'all');"
+                     v-on:click="loadQuickSaveUrl($event, film, 'all');"
                      title="Schnellspeichern"
                 />
                 <br><br>
@@ -159,7 +167,8 @@ export default {
         return {
             'selectedGenres': [],
             'selectedModifications': [],
-            'selectedFilmstatus': []
+            'selectedFilmstatus': [],
+            'cacheAutoSave': false
         }
     },
     computed: {
@@ -187,6 +196,25 @@ export default {
         this.selectedModifications = modifications;
     },
     methods: {
+        triggerSave: function (autoSaveColumn, filmId, filmIdentifier) {
+            let tr = document.getElementsByClassName('film-row-' + filmId)[0];
+            if (typeof tr === "undefined") {
+                return 1;
+            }
+            let form = tr.querySelectorAll('.save')[0].parentNode;
+            if (typeof tr !== "undefined") {
+                this.save(
+                    filmIdentifier,
+                    filmId,
+                    tr,
+                    form,
+                    autoSaveColumn,
+                    this.saveCallBackStartPartial,
+                    this.saveCallBackSuccessPartial,
+                    this.saveCallBackFailPartial
+                )
+            }
+        },
         callbackUpdateGenres: function(genres) {
             let genresResult = [];
             this.film.genres.every(function(genre) {
@@ -274,7 +302,6 @@ export default {
 
                 event.target.style.backgroundColor = "";
             }
-
             event.target.style.backgroundColor = "yellow";
             load(
                 '/rating/load',
@@ -288,18 +315,74 @@ export default {
 
             return event;
         },
-        loadQuickSaveUrl: function (event, film, grades, autoSaveColumn) {
-
+        receiveTarget(filmId, autoSaveColumn) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            let cssClass = '.save';
+            switch (autoSaveColumn) {
+                case 'languages':
+                    cssClass = '.tb_languages';
+                    break;
+            }
+            return x.querySelectorAll(cssClass)[0];
+        },
+        saveCallBackStartPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "yellow";
+        },
+        saveCallBackSuccessPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "";
+        },
+        saveCallBackFailPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "red";
+        },
+        saveCallBackStart: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "yellow";
+        },
+        saveCallBackSuccess: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "";
+        },
+        saveCallBackFail: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "red";
+        },
+        loadQuickSaveUrl: function (event, film, autoSaveColumn) {
+            this.save(
+                film.film_identifier,
+                film.id,
+                event.target.parentNode.parentNode.parentNode,
+                event.target.parentNode,
+                autoSaveColumn,
+                this.saveCallBackStart,
+                this.saveCallBackSuccess,
+                this.saveCallBackFail
+            )
+            return event;
+        },
+        save: function (
+            film_identifier,
+            film_id,
+            tr,
+            form,
+            autoSaveColumn,
+            saveCallBackStart,
+            saveCallBackSuccess,
+            saveCallBackFail
+        ) {
             if (typeof autoSaveColumn === "undefined") {
                 autoSaveColumn = "all";
             }
 
-            let tr = event.target.parentNode.parentNode.parentNode;
-            let form = event.target.parentNode;
             let data = new FormData();
 
             data.append('isAjax', true);
-            data.append('id', film.film_identifier);
+            data.append('id', film_identifier);
 
             let token = (form.querySelectorAll('[name="_token"]'))[0];
             data.append(token.name, token.value);
@@ -335,9 +418,9 @@ export default {
 
             if (autoSaveColumn === "all" || autoSaveColumn === 'languages') {
 
-                let languages = tr.querySelectorAll('[name^="' + film.id + '_language"]:checked');
+                let languages = tr.querySelectorAll('[name^="' + film_id + '_language"]:checked');
                 languages.forEach(function(element) {
-                    let language = tr.querySelector('[name="' + element.name.split(film.id + '_')[1] + '"]');
+                    let language = tr.querySelector('[name="' + element.name.split(film_id + '_')[1] + '"]');
                     data.append(language.name, element.value);
                 });
 
@@ -352,7 +435,7 @@ export default {
 
             if (autoSaveColumn === "all" || autoSaveColumn === 'grade') {
                 let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
-                grades.every(function(grade) {
+                this.grades.every(function(grade) {
                     if (grade.value + grade.trend == gradeInput) {
                         data.append('grades_id', grade.id);
                         return false; // break
@@ -361,28 +444,26 @@ export default {
                 });
             }
 
-            function update(url, xFunction, eventTarget) {
-                const xhttp=new XMLHttpRequest();
+            function update(url, xFunction, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn) {
+                const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    xFunction(this, eventTarget);
+                    xFunction(this, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
             }
 
-            function myFunction(xhttp, eventTarget) {
+            function myFunction(xhttp, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn) {
                 if (xhttp.response != "1") {
-                    event.target.style.backgroundColor = "red";
+                    saveCallBackFail(film_id, autoSaveColumn);
                 } else {
-                    event.target.style.backgroundColor = "";
+                    saveCallBackSuccess(film_id, autoSaveColumn);
                 }
             }
 
             let url = tr.querySelector('form').getAttribute('action');
-            event.target.style.backgroundColor = "yellow";
-            update(url, myFunction, event.target);
-
-            return event;
+            saveCallBackStart(film_id, autoSaveColumn);
+            update(url, myFunction, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn);
         },
         viewerComment: function (film) {
             const viewerId = this.viewerId
