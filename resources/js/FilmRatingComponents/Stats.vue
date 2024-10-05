@@ -16,12 +16,10 @@ import Footer from './Footer.vue';
 </style>
 <template>
 <Headline headline="Statistiken" />
-<div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-    <pre>$('.stats').innerHTML </pre>
-</div>
 <div class="p-6 lg:p-8 bg-white border-b border-gray-200 stats">
     Angaben in Laufzeit in Stunden (Anzahl der Filme)<br><br>
     <table class="table">
+        <tbody>
         <tr v-for="(stat, key) in stats">
             <td>
                {{ key }}
@@ -30,39 +28,50 @@ import Footer from './Footer.vue';
                 {{ grade[1] }} <span v-if="grade[0] !==''">({{ grade[0] }})</span>
             </td>
         </tr>
+        </tbody>
     </table>
     <br><br>
     Anzahl der bewerteten Filme<br><br>
     <table class="table">
+        <tbody>
         <tr v-for="(stat, key) in statsGlobalRatingCount">
             <td>{{ stat.r }}</td>
             <td>{{ stat.c }}</td>
             <td>{{ stat.d }}</td>
         </tr>
+        </tbody>
     </table>
     <br><br>
     Genres<br><br>
     <table class="table">
+        <thead>
         <tr>
             <td>Genre</td>
             <td>Anzahl</td>
         </tr>
+        </thead>
+        <tbody>
         <tr v-for="(stat, key) in genreStats">
             <td>{{ stat.name }}</td>
             <td>{{ stat.counter }}</td>
         </tr>
+        </tbody>
     </table>
     <br><br>
     Keywords<br><br>
     <table class="table">
+      <thead>
         <tr>
             <td>Stichwort</td>
             <td>Anzahl</td>
         </tr>
+      </thead>
+      <tbody>
         <tr v-for="(stat, key) in keywordStats">
             <td>{{ stat.name }}</td>
             <td>{{ stat.counter }}</td>
         </tr>
+      </tbody>
     </table>
     <br><br>
     Keine Laufzeit<br><br>

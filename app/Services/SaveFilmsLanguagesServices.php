@@ -10,13 +10,24 @@ class SaveFilmsLanguagesServices {
     public function save(Films $film, array $inputLanguages): void {
 
         $languages = Languages::all()->groupBy('type');
-        $film->languages()->sync([]);
+
+        $shouldUpdated = false;
+        $idsToAttach = [];
 
         foreach ($languages as $type => $language) {
+            if (!isset($inputLanguages['language_' . $type])) {
+                continue;
+            }
+            $shouldUpdated = true;
             $id = $inputLanguages['language_' . $type] ?? null;
             if ($id !== null) {
-                $film->languages()->attach($id);
+                $idsToAttach[] = (int) $id;
             }
+        }
+
+        if ($shouldUpdated) {
+            $film->languages()->sync([]);
+            $film->languages()->sync($idsToAttach);
         }
 
     }

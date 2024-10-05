@@ -27,40 +27,53 @@
     }
 </style>
 <template>
-    <tr>
+    <tr :class="'film-row film-row-' + film.id">
         <td>{{ film.film_identifier }}</td>
         <td style="max-width: 550px">
             {{ film.name }}
             <br>
             Dauer: {{ parseInt(film.duration / 60) }} min.
-            <span>
+            <span class="span_description">
                 <br><br>
                 Beschreibung:
-                <textarea cols="45" rows="3" name="description" v-model="film.description"></textarea>
+                <textarea name="description" v-model="film.description"
+                    cols="45" rows="3"
+                    v-on:change="triggerSave('description', film.id, film.film_identifier)"></textarea>
             </span>
-            <span>
+            <span class="span_keywords">
                 <br><br>
                 Stichworte:
-                <textarea cols="45" rows="2" name="keywords" :value="keywordsConcat(film.keywords)"></textarea>
+                <textarea name="keywords" :value="keywordsConcat(film.keywords)"
+                    cols="45" rows="2"
+                    v-on:change="triggerSave('keywords', film.id, film.film_identifier)"></textarea>
             </span>
         </td>
         <td>
             <table>
-              <tbody>
-                <tr v-for="(language, type) in languages">
-                  <td>{{ type }}</td>
-                  <td>
-                    <span v-for="lang in language">
-                        <label style="white-space:nowrap">
-                            <input :checked="isSelected(film.languages, lang.id)"
-                               type="radio"
-                               :name="film.id + '_language_' + type"
-                               :value="lang.id"
-                            />&nbsp;{{lang.language}}
-                        </label>
-                        &nbsp;&nbsp;&nbsp;
-                    </span>
-                  </td>
+            <tbody>
+                <tr>
+                    <td style="padding: 0 0 0 0; border: none;">
+                        <table style="width: 100%; margin-bottom: 10px;" class="tb_languages" >
+                            <tbody>
+                                <tr v-for="(language, type) in languages">
+                                    <td>{{ type }}</td>
+                                    <td>
+                                        <span v-for="lang in language">
+                                            <label style="white-space:nowrap">
+                                                <input :checked="isSelected(film.languages, lang.id)"
+                                                   type="radio"
+                                                   :name="film.id + '_language_' + type"
+                                                   :value="lang.id"
+                                                   v-on:click="triggerSave('languages', film.id, film.film_identifier)"
+                                                />&nbsp;{{lang.language}}
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <td class="td_filmnotifications" colspan="2">
@@ -69,6 +82,7 @@
                             <Checkbox v-model="selectedModifications"
                                   :name="'filmModification_' + fmod.id"
                                   :value="fmod.id"
+                                  v-on:change="triggerSave('modifications', film.id, film.film_identifier)"
                             />
                             {{ fmod.name }}
                         </label>
@@ -78,9 +92,10 @@
                     <td class="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="elementName" :optionValue="elementId"
-                                     placeholder="Genre wählen"
-                                     name="genres"
-                                     :autoFilterFocus="true" v-model="selectedGenres"
+                            placeholder="Genre wählen"
+                            name="genres"
+                            :autoFilterFocus="true" v-model="selectedGenres"
+                            v-on:focusout="triggerSave('genres', film.id, film.film_identifier)"
                         />
                     </td>
                 </tr>
@@ -88,27 +103,37 @@
                     <td class="td_filmstatus" colspan="2">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
-                                     placeholder="Status wählen"
-                                     name="filmstatus"
-                                     :selectionLimit="1"
-                                     :autoFilterFocus="true" v-model="selectedFilmstatus"
+                            placeholder="Status wählen"
+                            name="filmstatus"
+                            :selectionLimit="1"
+                            :autoFilterFocus="true" v-model="selectedFilmstatus"
+                            v-on:focusout="triggerSave('filmstatus', film.id, film.film_identifier)"
                         />
                     </td>
                 </tr>
-              </tbody>
+            </tbody>
             </table>
         </td>
         <td>
             Noten anderer:
             <div v-html="otherGrade(film)"></div>
-            <br><br>
-            Deine Note<br>
-            <div class="td_grades">
-                <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
+            <br>
+            <div class="div_grades">
+                Deine Note
+                <div class="td_grades">
+                    <AutoComplete
+                        :grades="grades"
+                        :selectedValue="selectedGrade"
+                        v-on:change="triggerSave('grade', film.id, film.film_identifier)"
+                    />
+                </div>
             </div>
-            <br><br>
             <div class="td_comment">
-                <textarea name="viewerComment" rows="4" placeholder="Dein persönlicher Kommentar">{{ viewerComment(film) }}</textarea>
+                <br>
+                <textarea name="viewerComment"
+                    rows="4"
+                    placeholder="Dein persönlicher Kommentar"
+                    v-on:change="triggerSave('comment', film.id, film.film_identifier)">{{ viewerComment(film) }}</textarea>
             </div>
         </td>
         <td>
@@ -119,10 +144,11 @@
                 <input type="hidden" name="filmstatus" />
                 <input type="hidden" name="comment" />
                 <input type="hidden" name="grades_id" />
-                <input  v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
+                <input v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
                 <img src="/svgs/floppy-disk.svg"
+                     class="save"
                      style="height: 20px; cursor: pointer; display: inline"
-                     v-on:click="loadQuickSaveUrl($event, film, grades);"
+                     v-on:click="loadQuickSaveUrl($event, film, 'all');"
                      title="Schnellspeichern"
                 />
                 <br><br>
@@ -183,9 +209,27 @@ export default {
             return true;
         });
         this.selectedModifications = modifications;
-
     },
     methods: {
+        triggerSave: function (autoSaveColumn, filmId, filmIdentifier) {
+            let tr = document.getElementsByClassName('film-row-' + filmId)[0];
+            if (typeof tr === "undefined") {
+                return 1;
+            }
+            let form = tr.querySelectorAll('.save')[0].parentNode;
+            if (typeof tr !== "undefined") {
+                this.save(
+                    filmIdentifier,
+                    filmId,
+                    tr,
+                    form,
+                    autoSaveColumn,
+                    this.saveCallBackStartPartial,
+                    this.saveCallBackSuccessPartial,
+                    this.saveCallBackFailPartial
+                )
+            }
+        },
         callbackUpdateGenres: function(genres) {
             let genresResult = [];
             this.film.genres.every(function(genre) {
@@ -273,7 +317,6 @@ export default {
 
                 event.target.style.backgroundColor = "";
             }
-
             event.target.style.backgroundColor = "yellow";
             load(
                 '/rating/load',
@@ -287,71 +330,176 @@ export default {
 
             return event;
         },
-        loadQuickSaveUrl: function (event, film, grades) {
-            let tr = event.target.parentNode.parentNode.parentNode;
-            let viewerComment = tr.querySelector('.td_comment textarea').value;
-            tr.querySelector('[name="comment"]').value = viewerComment;
-            let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
-            grades.every(function(grade) {
-                if (grade.value + grade.trend == gradeInput) {
-                    tr.querySelector('[name="grades_id"]').value = grade.id;
-                    return false;
-                }
-                return true;
-            });
+        receiveTarget(filmId, autoSaveColumn) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            let cssClass = '.save';
+            switch (autoSaveColumn) {
+                case 'languages':
+                    cssClass = '.tb_languages';
+                    break;
+                case 'description':
+                    cssClass = '.span_description';
+                    break;
+                case 'keywords':
+                    cssClass = '.span_keywords';
+                    break;
+                case 'modifications':
+                    cssClass = '.td_filmnotifications';
+                    break;
+                case 'genres':
+                    cssClass = '.td_genres';
+                    break;
+                case 'filmstatus':
+                    cssClass = '.td_filmstatus';
+                    break;
+                case 'grade':
+                    cssClass = '.div_grades';
+                    break;
+                case 'comment':
+                    cssClass = '.td_comment';
+                    break;
+            }
+            return x.querySelectorAll(cssClass)[0];
+        },
+        saveCallBackStartPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "yellow";
+        },
+        saveCallBackSuccessPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "";
+        },
+        saveCallBackFailPartial: function(filmId, autoSaveColumn) {
+            let x = this.receiveTarget(filmId, autoSaveColumn);
+            x.style.backgroundColor = "red";
+        },
+        saveCallBackStart: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "yellow";
+        },
+        saveCallBackSuccess: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "";
+        },
+        saveCallBackFail: function(filmId) {
+            let x = document.getElementsByClassName('film-row-' + filmId)[0];
+            x = x.querySelectorAll('.save')[0];
+            x.style.backgroundColor = "red";
+        },
+        loadQuickSaveUrl: function (event, film, autoSaveColumn) {
+            this.save(
+                film.film_identifier,
+                film.id,
+                event.target.parentNode.parentNode.parentNode,
+                event.target.parentNode,
+                autoSaveColumn,
+                this.saveCallBackStart,
+                this.saveCallBackSuccess,
+                this.saveCallBackFail
+            )
+            return event;
+        },
+        save: function (
+            film_identifier,
+            film_id,
+            tr,
+            form,
+            autoSaveColumn,
+            saveCallBackStart,
+            saveCallBackSuccess,
+            saveCallBackFail
+        ) {
+            if (typeof autoSaveColumn === "undefined") {
+                autoSaveColumn = "all";
+            }
 
-            let genresInput = tr.querySelector('.td_genres [name="genres"]').value;
-            tr.querySelector('form [name="genres"]').value = genresInput;
-
-            let filmstatusInput = tr.querySelector('.td_filmstatus [name="filmstatus"]')?.value;
-            tr.querySelector('form [name="filmstatus"]').value = filmstatusInput;
-
-            let languages = tr.querySelectorAll('[name^="' + film.id + '_language"]:checked');
-            languages.forEach(function(element) {
-                let element2 = tr.querySelector('[name="' + element.name.split(film.id + '_')[1] + '"]');
-                element2.value = element.value;
-            });
-
-            let form = event.target.parentNode;
             let data = new FormData();
+
             data.append('isAjax', true);
+            data.append('id', film_identifier);
 
-            let filmNotifications = tr.querySelectorAll('.td_filmnotifications :checked');
-            filmNotifications.forEach(function(element) {
-                data.append(element.name, true);
-            });
+            let token = (form.querySelectorAll('[name="_token"]'))[0];
+            data.append(token.name, token.value);
 
-            let textArea = tr.querySelectorAll('[name="description"], [name="keywords"]');
-            textArea.forEach(function(element) {
+            if (autoSaveColumn === "all" || autoSaveColumn === 'modifications') {
+
+                let filmNotifications = tr.querySelectorAll('.td_filmnotifications input');
+                filmNotifications.forEach(function (element) {
+                    data.append(element.name, element.checked ? 'true' : 'false');
+                });
+
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'description') {
+                let element = tr.querySelectorAll('[name="description"]')[0];
                 data.append(element.name, element.value);
-            });
+            }
 
-            (form.querySelectorAll('input')).forEach(function(input) {
-                data.append(input.getAttribute('name'), input.value);
-            });
+            if (autoSaveColumn === "all" || autoSaveColumn === 'keywords') {
+                let element = tr.querySelectorAll('[name="keywords"]')[0];
+                data.append(element.name, element.value);
+            }
 
-            function update(url, xFunction, eventTarget) {
-                const xhttp=new XMLHttpRequest();
+            if (autoSaveColumn === "all" || autoSaveColumn === 'genres') {
+                let element = tr.querySelectorAll('.td_genres [name="genres"]')[0];
+                data.append(element.name, element.value);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'filmstatus') {
+                let filmstatusInput = tr.querySelector('.td_filmstatus [name="filmstatus"]')?.value;
+                data.append('filmstatus', filmstatusInput);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'languages') {
+
+                let languages = tr.querySelectorAll('[name^="' + film_id + '_language"]:checked');
+                languages.forEach(function(element) {
+                    let language = tr.querySelector('[name="' + element.name.split(film_id + '_')[1] + '"]');
+                    data.append(language.name, element.value);
+                });
+
+            }
+
+            // personal attributes
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'comment') {
+                let viewerComment = tr.querySelector('.td_comment textarea').value;
+                data.append('comment', viewerComment);
+            }
+
+            if (autoSaveColumn === "all" || autoSaveColumn === 'grade') {
+                let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
+                this.grades.every(function(grade) {
+                    if (grade.value + grade.trend == gradeInput) {
+                        data.append('grades_id', grade.id);
+                        return false; // break
+                    }
+                    return true; // continue
+                });
+            }
+
+            function update(url, xFunction, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn) {
+                const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    xFunction(this, eventTarget);
+                    xFunction(this, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn);
                 }
                 xhttp.open("POST", url);
                 xhttp.send(data);
             }
 
-            function myFunction(xhttp, eventTarget) {
+            function myFunction(xhttp, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn) {
                 if (xhttp.response != "1") {
-                    event.target.style.backgroundColor = "red";
+                    saveCallBackFail(film_id, autoSaveColumn);
                 } else {
-                    event.target.style.backgroundColor = "";
+                    saveCallBackSuccess(film_id, autoSaveColumn);
                 }
             }
 
             let url = tr.querySelector('form').getAttribute('action');
-            event.target.style.backgroundColor = "yellow";
-            update(url, myFunction, event.target);
-
-            return event;
+            saveCallBackStart(film_id, autoSaveColumn);
+            update(url, myFunction, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn);
         },
         viewerComment: function (film) {
             const viewerId = this.viewerId

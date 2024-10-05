@@ -8,6 +8,10 @@ class SaveFilmsGenresServices {
 
     public function save(Films $film, array $userInputs): void {
 
+        if (!array_key_exists('genres', $userInputs)) {
+            return;
+        }
+
         $genres = $userInputs['genres'] ?? [];
         is_string($genres)
             ? $film->genres()->sync(explode(',', $genres))
