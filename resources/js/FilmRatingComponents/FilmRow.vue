@@ -33,15 +33,19 @@
             {{ film.name }}
             <br>
             Dauer: {{ parseInt(film.duration / 60) }} min.
-            <span>
+            <span class="span_description">
                 <br><br>
                 Beschreibung:
-                <textarea cols="45" rows="3" name="description" v-model="film.description"></textarea>
+                <textarea name="description" v-model="film.description"
+                    cols="45" rows="3"
+                    v-on:change="triggerSave('description', film.id, film.film_identifier)"></textarea>
             </span>
-            <span>
+            <span class="span_keywords">
                 <br><br>
                 Stichworte:
-                <textarea cols="45" rows="2" name="keywords" :value="keywordsConcat(film.keywords)"></textarea>
+                <textarea name="keywords" :value="keywordsConcat(film.keywords)"
+                    cols="45" rows="2"
+                    v-on:change="triggerSave('keywords', film.id, film.film_identifier)"></textarea>
             </span>
         </td>
         <td>
@@ -78,6 +82,7 @@
                             <Checkbox v-model="selectedModifications"
                                   :name="'filmModification_' + fmod.id"
                                   :value="fmod.id"
+                                  v-on:change="triggerSave('modifications', film.id, film.film_identifier)"
                             />
                             {{ fmod.name }}
                         </label>
@@ -87,9 +92,10 @@
                     <td class="td_genres" colspan="2">
                         <b>Genre:</b>
                         <MultiSelect :options="genres" :optionLabel="elementName" :optionValue="elementId"
-                                placeholder="Genre wählen"
-                                name="genres"
-                                :autoFilterFocus="true" v-model="selectedGenres"
+                            placeholder="Genre wählen"
+                            name="genres"
+                            :autoFilterFocus="true" v-model="selectedGenres"
+                            v-on:focusout="triggerSave('genres', film.id, film.film_identifier)"
                         />
                     </td>
                 </tr>
@@ -97,10 +103,11 @@
                     <td class="td_filmstatus" colspan="2">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
-                                placeholder="Status wählen"
-                                name="filmstatus"
-                                :selectionLimit="1"
-                                :autoFilterFocus="true" v-model="selectedFilmstatus"
+                            placeholder="Status wählen"
+                            name="filmstatus"
+                            :selectionLimit="1"
+                            :autoFilterFocus="true" v-model="selectedFilmstatus"
+                            v-on:focusout="triggerSave('filmstatus', film.id, film.film_identifier)"
                         />
                     </td>
                 </tr>
@@ -110,14 +117,23 @@
         <td>
             Noten anderer:
             <div v-html="otherGrade(film)"></div>
-            <br><br>
-            Deine Note<br>
-            <div class="td_grades">
-                <AutoComplete :grades="grades" :selectedValue="selectedGrade" />
+            <br>
+            <div class="div_grades">
+                Deine Note
+                <div class="td_grades">
+                    <AutoComplete
+                        :grades="grades"
+                        :selectedValue="selectedGrade"
+                        v-on:change="triggerSave('grade', film.id, film.film_identifier)"
+                    />
+                </div>
             </div>
-            <br><br>
             <div class="td_comment">
-                <textarea name="viewerComment" rows="4" placeholder="Dein persönlicher Kommentar">{{ viewerComment(film) }}</textarea>
+                <br>
+                <textarea name="viewerComment"
+                    rows="4"
+                    placeholder="Dein persönlicher Kommentar"
+                    v-on:change="triggerSave('comment', film.id, film.film_identifier)">{{ viewerComment(film) }}</textarea>
             </div>
         </td>
         <td>
@@ -167,8 +183,7 @@ export default {
         return {
             'selectedGenres': [],
             'selectedModifications': [],
-            'selectedFilmstatus': [],
-            'cacheAutoSave': false
+            'selectedFilmstatus': []
         }
     },
     computed: {
@@ -321,6 +336,27 @@ export default {
             switch (autoSaveColumn) {
                 case 'languages':
                     cssClass = '.tb_languages';
+                    break;
+                case 'description':
+                    cssClass = '.span_description';
+                    break;
+                case 'keywords':
+                    cssClass = '.span_keywords';
+                    break;
+                case 'modifications':
+                    cssClass = '.td_filmnotifications';
+                    break;
+                case 'genres':
+                    cssClass = '.td_genres';
+                    break;
+                case 'filmstatus':
+                    cssClass = '.td_filmstatus';
+                    break;
+                case 'grade':
+                    cssClass = '.div_grades';
+                    break;
+                case 'comment':
+                    cssClass = '.td_comment';
                     break;
             }
             return x.querySelectorAll(cssClass)[0];
