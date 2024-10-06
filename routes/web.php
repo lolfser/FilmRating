@@ -44,8 +44,7 @@ Route::middleware([
     );
     Route::post('/films/update', [\App\Http\Controllers\FilmsController::class, 'update'])->name('films.update');
 
-    Route::get('/rating/list/{page}', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
-    Route::post('/rating/filter', [\App\Http\Controllers\RatingsController::class, 'filter'])->name('rating.filter');
+    Route::get('/rating/list/', [\App\Http\Controllers\RatingsController::class, 'index'])->name('rating.index');
     Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\RatingsController::class, 'rate']);
     Route::post('/rating/update', [\App\Http\Controllers\RatingsController::class, 'update']);
     Route::post('/rating/load', [\App\Http\Controllers\RatingsController::class, 'load']);

@@ -124,7 +124,7 @@
                     <AutoComplete
                         :grades="grades"
                         :selectedValue="selectedGrade"
-                        v-on:change="triggerSave('grade', film.id, film.film_identifier)"
+                        v-on:focusout="triggerSave('grade', film.id, film.film_identifier)"
                     />
                 </div>
             </div>
@@ -188,7 +188,8 @@ export default {
     },
     computed: {
         selectedGrade: function (grade) {
-            return this.viewerGrade()
+            let result = this.viewerGrade();
+            return result;
         },
     },
     mounted() {

@@ -31,7 +31,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
             v-model="selectedFilmModifications"
             style="display: inline"
         />
-        <label><input type="text" name="title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitelDescription"/></label>
+        <label><input type="text" name="title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
         &nbsp;&nbsp;&nbsp;
         <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
     </div>
@@ -152,7 +152,7 @@ export default {
             selectedFilmStatus: this.filter.filmstatus,
             selectedKeywords: this.filter.keywords,
             selectedFilmModifications: this.filter.filmmodifications,
-            selectedTitelDescription: this.filter.title_description,
+            selectedTitleDescription: this.filter.title_description,
             onlyNotSet: this.filter.only_not_set
         };
     },
@@ -349,8 +349,8 @@ export default {
             if (typeof this.selectedFilmModifications !== "undefined")
             data.append('filmmodifications', this.selectedFilmModifications);
             data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked);
-            this.selectedTitelDescription = document.getElementsByName('title_description')[0].value;
-            data.append('title_description', this.selectedTitelDescription);
+            this.selectedTitleDescription = document.getElementsByName('title_description')[0].value;
+            data.append('title_description', this.selectedTitleDescription);
 
             function filterRequest(url, callBack, eventTarget, data, event, _token) {
                 let tokenData = new FormData();
