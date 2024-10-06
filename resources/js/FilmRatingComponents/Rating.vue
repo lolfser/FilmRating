@@ -1,7 +1,7 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
-import FilmRow from "@/FilmRatingComponents/FilmRow.vue";
+import FilmRow from "@/FilmRatingComponents/RatingRow.vue";
 import PrimaryButton from '../Components/PrimaryButton.vue';
 
 </script>
