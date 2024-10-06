@@ -60,7 +60,8 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                       <MultiSelect :options="genres" :optionLabel="genreLabels" :optionValue="genreValues"
                          placeholder="Genre wählen"
                          name="genres"
-                         autoFilterFocus v-model="selectedGenres"
+                         autoFilterFocus
+                         v-model="selectedGenres"
                         />
                   </td>
                 </tr>

@@ -8,9 +8,9 @@ use App\Models\Filmstatus;
 use App\Models\Keywords;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
+use App\Services\FilmsQueryBuilderService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProgramblocksController extends Controller {
@@ -165,38 +165,19 @@ class ProgramblocksController extends Controller {
         $filmStatus = $requestParam['filmstatus'] ?? '';
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
-        $titleDescription = $requestParam['title_description'] ?? '';
+        $titleDescription = trim($requestParam['title_description'] ?? '');
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
-        $films = Films::query();
-
-        if ($filmStatus !== '') {
-            $films = $films->whereIn('filmstatus_id', explode(',', $filmStatus));
-        }
-
-        if ($keywords !== '') {
-            $films = $films->join('films_keywords', 'id', '=', 'films_id')
-                ->whereIn('keywords_id', explode(',', $keywords));
-        }
-
-        if ($filmModifications !== '') {
-            $films = $films->join('filmmodifications_films', 'id', '=', 'films_id')
-                ->whereIn('filmmodifications_id', explode(',', $filmModifications));
-        }
-
-        if ($titleDescription !== '') {
-            $films = $films->whereNested(
-                function($query) use ($titleDescription) {
-                    $query->where('name', 'like', '%' . $titleDescription . '%')
-                        ->orWhere('description', 'like', '%' . $titleDescription . '%');
-                }
-            );
-        }
-
-        if ($onlyNotSet) {
-            $filmsAlreadyUsed = DB::table('programblocks')->select('films_id')->groupBy('films_id')->pluck('films_id')->values()->toArray();
-            $films = $films->whereNotIn('id', $filmsAlreadyUsed);
-        }
+        $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
+            array_filter(explode(',', $filmStatus)),
+            array_filter(explode(',', $keywords)),
+            array_filter(explode(',', $filmModifications)),
+            [],
+            $titleDescription,
+            $onlyNotSet,
+            0,
+            0
+        );
 
         return $films;
     }
