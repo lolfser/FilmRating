@@ -8,6 +8,7 @@ use App\Models\Genres;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ExportController extends Controller {
@@ -189,6 +190,63 @@ class ExportController extends Controller {
         }
         echo "}
             </style>";
+    }
+
+    public function rating(Request $request): \Inertia\Response {
+
+        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
+        if ($viewerId === 0) {
+            die('Du musst eingeloggt sein.');
+        }
+
+        $data = DB::table('films')
+            ->selectRaw('
+                fs.name AS source,
+                films.id, film_identifier, films.name,
+                CONCAT(g.value, g.trend) AS grade,
+                duration/60 AS duration, fst.name AS status'
+            )
+            ->leftJoin(DB::raw('filmsources fs'), 'filmsources_id', '=', 'fs.id')
+             ->leftJoin(DB::raw('ratings r'),
+                     function($join) use ($viewerId)
+                         {
+                             $join->on(DB::raw('r.films_id'), '=', DB::raw("films.id"));
+                             $join->on(DB::raw('r.viewers_id'),'=', DB::raw($viewerId));
+                         })
+             ->leftJoin(DB::raw('grades g'), 'g.id', '=', 'r.grades_id')
+             ->leftJoin(DB::raw('filmstatus fst'), 'fst.id', '=', 'films.filmstatus_id')
+            ->get();
+        /*
+            SELECT fs.name AS soruce, f.id, f.film_identifier, f.name, CONCAT(g.value, g.trend) AS grade,  f.duration/60 AS duration, fst.name AS status
+            FROM films f
+            LEFT JOIN filmsources fs ON f.filmsources_id = fs.id
+            LEFT JOIN ratings r ON r.films_id = f.id AND r.viewers_id = 1
+            LEFT JOIN grades g ON g.id = r.grades_id
+            LEFT JOIN filmstatus fst ON fst.id = f.filmstatus_id
+        */
+
+        $output = 'Quelle;id;FFW-ID;name;deine Note;dauer;status;';
+        $output .= PHP_EOL;
+        foreach ($data as $dataset) {
+            $output .= '"' . $dataset->source . '"'
+                . ';' . '"' . $dataset->id . '"'
+                . ';' . '"' . $dataset->film_identifier . '"'
+                . ';' . '"' . $dataset->name . '"'
+                . ';' . '"' . $dataset->grade . '"'
+                . ';' . '"' . $dataset->duration . '"'
+                . ';' . '"' . $dataset->status . '"'
+                . ';' . PHP_EOL;
+        }
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . (new \DateTime())->format('Y-m-d-H-i-s') . '_rating_export.csv');
+        header('Content-Type: text/x-csv; charset=ISO-8859-1');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Description: File Transfer');
+
+        echo chr(255) . chr(254) . mb_convert_encoding($output, 'UTF-16LE', 'UTF-8');
+
+        exit;
     }
 
 }

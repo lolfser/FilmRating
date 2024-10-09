@@ -48,6 +48,7 @@ Route::middleware([
     Route::get('/rating/{filmIdentifier}/cu', [\App\Http\Controllers\RatingsController::class, 'rate']);
     Route::post('/rating/update', [\App\Http\Controllers\RatingsController::class, 'update']);
     Route::post('/rating/load', [\App\Http\Controllers\RatingsController::class, 'load']);
+    Route::get('/rating/export', [\App\Http\Controllers\ExportController::class, 'rating']);
 
     Route::get('/import/', [\App\Http\Controllers\ImportController::class, 'index']);
     Route::post('/import/', [\App\Http\Controllers\ImportController::class, 'import']);
