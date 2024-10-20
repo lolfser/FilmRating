@@ -220,7 +220,7 @@ class ExportController extends Controller {
             ->leftJoin(DB::raw('filmstatus fst'), 'fst.id', '=', 'films.filmstatus_id')
             ->leftJoin(DB::raw('ratings rating_count'), 'rating_count.films_id', '=', 'films.id')
             ->leftJoin(DB::raw('viewers'), 'rating_count.viewers_id', '=', 'viewers.id')
-            ->groupBy("source", "id", "name","grade","duration","status",)
+            ->groupBy("source", "id", "film_identifier", "name","grade","duration","status",)
             ->get();
 
         /*
