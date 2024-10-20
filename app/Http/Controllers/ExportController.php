@@ -204,28 +204,44 @@ class ExportController extends Controller {
                 fs.name AS source,
                 films.id, film_identifier, films.name,
                 CONCAT(g.value, g.trend) AS grade,
-                duration/60 AS duration, fst.name AS status'
-            )
+                duration/60 AS duration,
+                fst.name AS status,
+                count(rating_count.id) as rating_count,
+                GROUP_CONCAT(viewers.initials SEPARATOR ", ") as rating_initials
+            ')
             ->leftJoin(DB::raw('filmsources fs'), 'filmsources_id', '=', 'fs.id')
-             ->leftJoin(DB::raw('ratings r'),
-                     function($join) use ($viewerId)
-                         {
-                             $join->on(DB::raw('r.films_id'), '=', DB::raw("films.id"));
-                             $join->on(DB::raw('r.viewers_id'),'=', DB::raw($viewerId));
-                         })
-             ->leftJoin(DB::raw('grades g'), 'g.id', '=', 'r.grades_id')
-             ->leftJoin(DB::raw('filmstatus fst'), 'fst.id', '=', 'films.filmstatus_id')
+            ->leftJoin(
+                DB::raw('ratings r'),
+                 function($join) use ($viewerId) {
+                     $join->on(DB::raw('r.films_id'), '=', DB::raw("films.id"));
+                     $join->on(DB::raw('r.viewers_id'),'=', DB::raw($viewerId));
+                 })
+            ->leftJoin(DB::raw('grades g'), 'g.id', '=', 'r.grades_id')
+            ->leftJoin(DB::raw('filmstatus fst'), 'fst.id', '=', 'films.filmstatus_id')
+            ->leftJoin(DB::raw('ratings rating_count'), 'rating_count.films_id', '=', 'films.id')
+            ->leftJoin(DB::raw('viewers'), 'rating_count.viewers_id', '=', 'viewers.id')
+            ->groupBy("source", "id", "name","grade","duration","status",)
             ->get();
+
         /*
-            SELECT fs.name AS soruce, f.id, f.film_identifier, f.name, CONCAT(g.value, g.trend) AS grade,  f.duration/60 AS duration, fst.name AS status
+            SELECT
+                fs.name AS soruce, f.id, f.film_identifier, f.name,
+                CONCAT(g.value, g.trend) AS grade,
+                f.duration/60 AS duration,
+                fst.name AS status
+                count(rating_count.id) as rating_count,
+                GROUP_CONCAT(viewers.initials SEPARATOR ", ") as rating_initials
             FROM films f
             LEFT JOIN filmsources fs ON f.filmsources_id = fs.id
             LEFT JOIN ratings r ON r.films_id = f.id AND r.viewers_id = 1
             LEFT JOIN grades g ON g.id = r.grades_id
             LEFT JOIN filmstatus fst ON fst.id = f.filmstatus_id
+            LEFT JOIN ratings rating_count ON rating_count.films_id = f.id
+            LEFT JOIN viewers ON rating_count.viewers_id = viewers.id
+            GROUP BY source, id, film_identifier, name, grade, duration, status
         */
 
-        $output = 'Quelle;id;FFW-ID;name;deine Note;dauer;status;';
+        $output = 'Quelle;id;FFW-ID;name;deine Note;dauer;status;Anzahl Bewertungen;Bewertung von';
         $output .= PHP_EOL;
         foreach ($data as $dataset) {
             $output .= '"' . $dataset->source . '"'
@@ -233,8 +249,10 @@ class ExportController extends Controller {
                 . ';' . '"' . $dataset->film_identifier . '"'
                 . ';' . '"' . $dataset->name . '"'
                 . ';' . '"' . $dataset->grade . '"'
-                . ';' . '"' . $dataset->duration . '"'
+                . ';' . '"' . round((float) $dataset->duration, 1) . '"'
                 . ';' . '"' . $dataset->status . '"'
+                . ';' . '"' . $dataset->rating_count . '"'
+                . ';' . '"' . $dataset->rating_initials . '"'
                 . ';' . PHP_EOL;
         }
 
