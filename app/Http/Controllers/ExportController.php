@@ -202,12 +202,14 @@ class ExportController extends Controller {
         $data = DB::table('films')
             ->selectRaw('
                 fs.name AS source,
-                films.id, film_identifier, films.name,
+                films.id, film_identifier, films.name, films.description,
                 CONCAT(g.value, g.trend) AS grade,
                 duration/60 AS duration,
                 fst.name AS status,
+                GROUP_CONCAT(DISTINCT fm.name SEPARATOR ", ") as modifications,
+                GROUP_CONCAT(DISTINCT gr.name SEPARATOR ", ") as genres,
                 count(rating_count.id) as rating_count,
-                GROUP_CONCAT(viewers.initials SEPARATOR ", ") as rating_initials
+                GROUP_CONCAT(CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", ") as rating_initials
             ')
             ->leftJoin(DB::raw('filmsources fs'), 'filmsources_id', '=', 'fs.id')
             ->leftJoin(
@@ -218,39 +220,54 @@ class ExportController extends Controller {
                  })
             ->leftJoin(DB::raw('grades g'), 'g.id', '=', 'r.grades_id')
             ->leftJoin(DB::raw('filmstatus fst'), 'fst.id', '=', 'films.filmstatus_id')
+            ->leftJoin(DB::raw('filmmodifications_films fmm'), 'fmm.films_id', '=', 'films.id')
+            ->leftJoin(DB::raw('filmmodifications fm'), 'fm.id', '=', 'fmm.filmmodifications_id')
+            ->leftJoin(DB::raw('films_genres fg'), 'fg.films_id', '=', 'films.id')
+            ->leftJoin(DB::raw('genres gr'), 'gr.id', '=', 'fg.genres_id')
             ->leftJoin(DB::raw('ratings rating_count'), 'rating_count.films_id', '=', 'films.id')
             ->leftJoin(DB::raw('viewers'), 'rating_count.viewers_id', '=', 'viewers.id')
-            ->groupBy("source", "id", "film_identifier", "name","grade","duration","status",)
+            ->leftJoin(DB::raw('grades vg'),  'vg.id', '=', 'rating_count.grades_id')
+            ->groupBy("source", "id", "film_identifier", "name", "description", "grade", "duration", "status", "fm.name")
             ->get();
 
         /*
             SELECT
-                fs.name AS soruce, f.id, f.film_identifier, f.name,
+                fs.name AS source, films.id, film_identifier, films.name, films.description,
                 CONCAT(g.value, g.trend) AS grade,
-                f.duration/60 AS duration,
-                fst.name AS status
+                duration/60 AS duration,
+                fst.name AS status,
+                GROUP_CONCAT(DISTINCT fm.name SEPARATOR ", ") as modifications,
+                GROUP_CONCAT(DISTINCT gr.name SEPARATOR ", ") as genres,
                 count(rating_count.id) as rating_count,
-                GROUP_CONCAT(viewers.initials SEPARATOR ", ") as rating_initials
+                GROUP_CONCAT(CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", ") as rating_initials
             FROM films f
             LEFT JOIN filmsources fs ON f.filmsources_id = fs.id
             LEFT JOIN ratings r ON r.films_id = f.id AND r.viewers_id = 1
             LEFT JOIN grades g ON g.id = r.grades_id
             LEFT JOIN filmstatus fst ON fst.id = f.filmstatus_id
+            LEFT JOIN filmmodifications_films fmm ON fmm.films_id = films.id
+            LEFT JOIN filmmodifications fm ON fm.id = fmm.filmmodifications_id
+            LEFT JOIN films_genres fg ON fg.films_id = films.id
+            LEFT JOIN genres gr ON gr.id = fg.genres_id
             LEFT JOIN ratings rating_count ON rating_count.films_id = f.id
             LEFT JOIN viewers ON rating_count.viewers_id = viewers.id
-            GROUP BY source, id, film_identifier, name, grade, duration, status
+            LEFT JOIN grades vg ON vg.id = rating_count.grades_id
+            GROUP BY source, id, film_identifier, name, description, grade, duration, status, fm.name
         */
 
-        $output = 'Quelle;id;FFW-ID;name;deine Note;dauer;status;Anzahl Bewertungen;Bewertung von';
+        $output = 'Quelle;id;FFW-ID;name;Beschreibung;deine Note;dauer;status;Modifikationen;Genres;Anzahl Bewertungen;Bewertung von';
         $output .= PHP_EOL;
         foreach ($data as $dataset) {
             $output .= '"' . $dataset->source . '"'
                 . ';' . '"' . $dataset->id . '"'
                 . ';' . '"' . $dataset->film_identifier . '"'
                 . ';' . '"' . $dataset->name . '"'
+                . ';' . '"' . $dataset->description . '"'
                 . ';' . '"' . $dataset->grade . '"'
                 . ';' . '"' . round((float) $dataset->duration, 1) . '"'
                 . ';' . '"' . $dataset->status . '"'
+                . ';' . '"' . $dataset->modifications . '"'
+                . ';' . '"' . $dataset->genres . '"'
                 . ';' . '"' . $dataset->rating_count . '"'
                 . ';' . '"' . $dataset->rating_initials . '"'
                 . ';' . PHP_EOL;
