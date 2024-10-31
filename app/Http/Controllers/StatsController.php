@@ -7,7 +7,11 @@ use Inertia\Inertia;
 
 class StatsController extends Controller {
 
-    public function index(): \Inertia\Response {
+    public function index(): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_STATICS)) {
+            return redirect(route('rating.index'));
+        }
 
         $allUsedGrades = [];
         $globalRating = $this->receiveStatsGlobalRatingCount();

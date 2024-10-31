@@ -28,6 +28,11 @@ class Permissions extends Model {
     public const PERMISSION_IMPORT = 8;
     public const PERMISSION_CHANGE_FILMSTATUS = 9;
 
+    public const PERMISSION_SEE_OTHER_VIEWERS_GRADES = 10;
+
+    public const PERMISSION_SEE_PAGE_STATICS = 11;
+    public const PERMISSION_SEE_PAGE_PROGRAM = 12;
+
     protected $table    = 'permissions';
     protected $fillable = ['viewers_id','permission'];
     protected $casts    = ['id' => 'int', 'viewers_id' => 'int', 'permission' => 'int'];

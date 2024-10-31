@@ -28,7 +28,9 @@ class FooterLinkService {
             $links[] = $this->build('/import', ' IMPORT', $currentPath === 'import');
         }
 
-        $links[] = $this->build('/stats', ' Statistiken', $currentPath === 'stats');
+        if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_STATICS)) {
+            $links[] = $this->build('/stats', ' Statistiken', $currentPath === 'stats');
+        }
 
         return $links;
 
