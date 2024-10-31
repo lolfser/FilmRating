@@ -270,12 +270,40 @@ class RatingsController extends Controller {
             return redirect(route("rating.index"));
         }
 
+        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
+
+        $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
+        $hasPermSetFilmStatus = (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS);
+
         // Loading pivots
+
+        $film->ratings;
+
+        if (!$hasPermSeeGrades) {
+            $viewerRating = [];
+            foreach ($film->ratings as $rating) {
+                if ($rating->viewers_id === $viewerId) {
+                    unset($film->ratings);
+                    $film->ratings = [$rating];
+                    break;
+                }
+            }
+        }
+
+
         $film->genres;
         $film->languages;
-        $film->ratings;
         $film->keywords;
         $film->filmmodifications;
+
+        $film->filmstatus;
+        if ($hasPermSetFilmStatus) {
+            // $film->filmstatus;
+        } else {
+            $film->filmstatus_id = 0;
+            $film->filmstatus = ['id' => 0, 'name' => 'keine Rechte'];
+        }
+
         return $film;
 
     }
