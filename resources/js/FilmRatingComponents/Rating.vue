@@ -8,7 +8,6 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
 </script>
 <template>
     <Headline :headline="headline" />
-    <a target="_blank" href="/rating/export/">Export</a>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
         <form method="post" action="/rating/filter">
             <input type="hidden" name="_token" :value="_token" />

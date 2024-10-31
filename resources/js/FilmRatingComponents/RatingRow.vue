@@ -30,7 +30,7 @@
     <tr :class="'film-row film-row-' + film.id">
         <td>{{ film.film_identifier }}</td>
         <td style="max-width: 550px">
-            {{ film.name }}
+            <strong>{{ film.name }}</strong>
             <br>
             Dauer: {{ parseInt(film.duration / 60) }} min.
             <span class="span_description">
