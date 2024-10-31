@@ -100,7 +100,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="td_filmstatus" colspan="2">
+                    <td class="td_filmstatus" colspan="2" v-if="film.filmstatus_id !== 0">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
                             placeholder="Status wählen"

@@ -61,14 +61,37 @@ class RatingsController extends Controller {
             ->offset(($page - 1) * self::ITEMS_PER_PAGE)
             ->get();
 
+        $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
+        $hasPermSetFilmStatus = (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS);
+
         foreach ($films as $film) {
             // Loading pivots
             $film->ratings;
+
+            if (!$hasPermSeeGrades) {
+                $viewerRating = [];
+                foreach ($film->ratings as $rating) {
+                    if ($rating->viewers_id === $viewerId) {
+                        unset($film->ratings);
+                        $film->ratings = [$rating];
+                        break;
+                    }
+                }
+            }
+
             $film->genres;
             $film->languages;
             $film->filmmodifications;
             $film->keywords;
+
             $film->filmstatus;
+            if ($hasPermSetFilmStatus) {
+                // $film->filmstatus;
+            } else {
+                $film->filmstatus_id = 0;
+                $film->filmstatus = ['id' => 0, 'name' => 'keine Rechte'];
+            }
+
         }
 
         $filter = [
@@ -86,7 +109,9 @@ class RatingsController extends Controller {
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
-            'filmstatus' => Filmstatus::all(),
+            'filmstatus' => $hasPermSetFilmStatus
+                ? Filmstatus::all()
+                : [['id' => 0, 'name' => 'keine Rechte']],
             'genres' => Genres::all(),
             'active_filter' => $filter,
             'filterRateOptions' => [
