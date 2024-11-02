@@ -115,19 +115,28 @@
             </table>
         </td>
         <td>
-            Noten anderer:
-            <div v-html="otherGrade(film)"></div>
-            <br>
-            <div class="div_grades">
-                Deine Note
-                <div class="td_grades">
-                    <AutoComplete
-                        :grades="grades"
-                        :selectedValue="selectedGrade"
-                        v-on:focusout="triggerSave('grade', film.id, film.film_identifier)"
-                    />
-                </div>
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="div_grades">
+                                Deine Note
+                                <div class="td_grades">
+                                    <AutoComplete
+                                        :grades="grades"
+                                        :selectedValue="selectedGrade"
+                                        v-on:focusout="triggerSave('grade', film.id, film.film_identifier)"
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            Noten anderer:
+                            <div v-html="otherGrade(film)"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="td_comment">
                 <br>
                 <textarea name="viewerComment"
@@ -577,7 +586,25 @@ export default {
                         if (returnValue !== "") {
                             returnValue = returnValue + " / ";
                         }
-                        returnValue += '<span title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
+                        let color = '#fff';
+                        let fontColor = '#000';
+                        if (gradeFromList.value === 1) {
+                            color = '#151';
+                            fontColor = '#fff';
+                        }
+                        if (gradeFromList.value === 2) {
+                            color = '#aca';
+                        }
+                        if (gradeFromList.value === 4) {
+                            color = '#caa';
+                        }
+                        if (gradeFromList.value === 5) {
+                            color = '#711';
+                            fontColor = '#fff';
+                        }
+                        returnValue += '<span' +
+                            ' style="background-color: '+ color +'; color: '+ fontColor +'; padding: 5px"' +
+                            ' title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
                         break;
                     }
                 }
