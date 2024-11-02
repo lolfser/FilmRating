@@ -30,7 +30,8 @@ class RatingsController extends Controller {
 
         $page = (int) ($request->all()['page'] ?? '1');
         if ($page < 1) {
-            return $this->index(1);
+            $request->merge(['page' => 1]);
+            return $this->index($request);
         }
 
         $requestParam = $request->all();

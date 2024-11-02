@@ -27,6 +27,9 @@ defineProps({
                     <div class="flex items-center gap-4">
                         Willkommen
                     </div>
+                    <div class="flex items-center gap-4">
+                        Klick oben rechts auf Log in / Register / Dashboard
+                    </div>
                 </div>
             </div>
         </div>

@@ -142,9 +142,9 @@ class ProgramblocksController extends Controller {
     }
 
     /**
-     * @return Collection<int, Films>
+     * @return Collection<int, Films>|\Illuminate\Http\RedirectResponse
      */
-    public function filter(Request $request): Collection {
+    public function filter(Request $request): Collection|\Illuminate\Http\RedirectResponse {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
             return redirect(route('rating.index'));
@@ -175,9 +175,9 @@ class ProgramblocksController extends Controller {
 
     /**
      * @param array<string, string> $requestParam
-     * @return \Illuminate\Database\Eloquent\Builder<Films>
+     * @return \Illuminate\Database\Eloquent\Builder<Films>|\Illuminate\Http\RedirectResponse
      */
-    private function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder {
+    private function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder|\Illuminate\Http\RedirectResponse {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
             return redirect(route('rating.index'));

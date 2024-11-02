@@ -15,9 +15,9 @@ class FilmsQueryBuilderService {
      * @param int[] $filmStatusIds
      * @param int[] $keywordIds
      * @param int[] $filmModificationIds
-     * @param int[] $filmStatusIds
+     * @param int[] filmSourceIds
      * @param string $titleDescription
-     * @param bool onlyNotSetInProgram
+     * @param bool $onlyNotSetInProgram
      *
      * @return \Illuminate\Database\Eloquent\Builder<Films>
      */
