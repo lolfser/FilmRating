@@ -38,7 +38,7 @@ class ImportController extends Controller {
 
         $data = $request->all();
 
-        $year = $data['year'] ?? 48;
+        $year = $data['year'] ?? 49;
         $importdata = $data['importdata'] ?? '';
 
         if ($importdata === '') {

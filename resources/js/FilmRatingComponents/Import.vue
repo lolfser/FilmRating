@@ -13,14 +13,14 @@ import Footer from './Footer.vue';
             <input type="hidden" name="_token" v-model="token" />
             <table>
                 <tbody>
-                    <tr><td>Jahr:</td><td><input type="text" name="year" value="48" /></td></tr>
+                    <tr><td>Jahr:</td><td><input type="text" name="year" value="49" /></td></tr>
                     <tr><td>Title-Header:</td><td><input type="text" name="title" value="Originalfilmtitel" /></td></tr>
                     <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Schlüssel Nr." /></td></tr>
                     <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Laufzeit" /></td></tr>
                     <tr><td>Daten:</td><td><textarea name="importdata" /></td></tr>
                 </tbody>
             </table>
-            In "Daten" müssen die zu importierenden Daten im CSV-Format sein: UTF-8, Komma als Separator und &quot um den Inhalt zu umschließen
+            In "Daten" müssen die zu importierenden Daten im CSV-Format sein: UTF-8, Komma als Separator und &quot als Texttrenner.
             <br>Bpsw.:
             <pre style="border: 1px solid black; padding: 10px; background-color: #eee">
 Schlüssel Nr.,Originalfilmtitel,Laufzeit
