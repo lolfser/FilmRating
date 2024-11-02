@@ -1,32 +1,21 @@
-<script setup>
-  import Footer from './Footer.vue';
-</script>
+<style scoped>
+    a {color: white; padding: 10px; background-color: darkgoldenrod}
+    a:hover {color: white; background-color: chocolate}
+</style>
 <template>
-    <div>
-        <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-            <h1 class="mt-8 text-2xl font-medium text-gray-900">
-                Willkommen!
-            </h1>
-            <p class="mt-6 text-gray-500 leading-relaxed">
-                Vielen Dank, dass du uns bei der Sichtung von Filmen bewerten möchtest. Für die Sichtung hast du verschiedene Möglichkeiten.
-            </p>
-            <ul>
-                <li>
-                    <a href="/rating/list" style="color: blue">Zu den Filmbewertungen</a>
-                </li>
-                <li>
-                    <a href="/rating/export" style="color: blue">Deine Filmbewertungen exportieren</a>
-                </li>
-                <li>
-                    <a href="/program" style="color: blue">Zur Programmplanung</a>
-                </li>
-            </ul>
+    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        <div class="max-w-7xl mx-auto p-6 lg:p-8">
+            <div class="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
+                <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
+                    <div class="flex items-center gap-4">
+                        Willkommen
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <a :href="route('login')">Login</a>
+                        <a :href="route('register')">Registrieren</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <Footer :footerLinks="footerLinks" />
     </div>
 </template>
-<script>
-export default {
-  props: ['footerLinks']
-}
-</script>

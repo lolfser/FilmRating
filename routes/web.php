@@ -15,29 +15,13 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('home');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render(
-            'Dashboard',
-            [
-                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-            ]
-        );
-    })->name('dashboard');
-
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
     Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate'])->middleware(
         'can:' . \App\Models\Permissions::PERMISSION_ADD_FILMS . ',App\Models\Films'
