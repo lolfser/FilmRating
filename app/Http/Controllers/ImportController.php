@@ -53,7 +53,9 @@ class ImportController extends Controller {
             return;
         }
 
-        $header = fgetcsv($stream);
+        $separator = ';';
+
+        $header = fgetcsv($stream, null, $separator);
 
         if ($header === false) {
             return;
@@ -70,7 +72,7 @@ class ImportController extends Controller {
             exit('Film-ID, Titel oder Dauer-Spalte nicht gefunden.');
         }
 
-        while (($data = fgetcsv($stream)) !== false) {
+        while (($data = fgetcsv($stream, null, $separator)) !== false) {
 
             $films = Films::where('film_identifier', $data[$filmIdIndex])->first();
 

@@ -17,15 +17,14 @@ import Footer from './Footer.vue';
                     <tr><td>Title-Header:</td><td><input type="text" name="title" value="Originalfilmtitel" /></td></tr>
                     <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Schlüssel Nr." /></td></tr>
                     <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Laufzeit" /></td></tr>
-                    <tr><td>Daten:</td><td><textarea name="importdata" /></td></tr>
+                    <tr><td>Daten:</td><td><textarea name="importdata" style="width: 800px" /></td></tr>
                 </tbody>
             </table>
-            In "Daten" müssen die zu importierenden Daten im CSV-Format sein: UTF-8, Komma als Separator und &quot als Texttrenner.
+            In "Daten" müssen die zu importierenden Daten im CSV-Format sein: UTF-8, Semikolon (;) als Separator und &quot als Texttrenner.
             <br>Bpsw.:
             <pre style="border: 1px solid black; padding: 10px; background-color: #eee">
-Schlüssel Nr.,Originalfilmtitel,Laufzeit
-1,RONCAMOR (DAYS AND NIGHTS),00:10:003017;
-Şöyle Anlatayım;00:19:32
+Schlüssel Nr.;Originalfilmtitel;Laufzeit
+3017;Şöyle Anlatayım;00:19:32
 3022;"""Bears - Quiet Breaks The Dawn""";00:59:27
 </pre>
             Existiert bereits eine Filmnummer, wird dieser Film beim Importieren übersprungen.
