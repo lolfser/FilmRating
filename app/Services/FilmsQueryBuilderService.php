@@ -15,7 +15,7 @@ class FilmsQueryBuilderService {
      * @param int[] $filmStatusIds
      * @param int[] $keywordIds
      * @param int[] $filmModificationIds
-     * @param int[] filmSourceIds
+     * @param int[] $filmSourceIds
      * @param string $titleDescription
      * @param bool $onlyNotSetInProgram
      *

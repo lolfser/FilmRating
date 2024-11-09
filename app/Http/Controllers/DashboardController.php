@@ -8,8 +8,6 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller {
 
-    private const ITEMS_PER_PAGE = 100;
-
     public function index(Request $request): \Inertia\Response {
 
         return Inertia::render(
