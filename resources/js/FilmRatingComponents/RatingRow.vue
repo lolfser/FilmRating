@@ -228,6 +228,7 @@ export default {
             }
             let form = tr.querySelectorAll('.save')[0].parentNode;
             if (typeof tr !== "undefined") {
+                this.film.keywords = tr.querySelectorAll('[name="keywords"]')[0].value;
                 this.save(
                     filmIdentifier,
                     filmId,
@@ -261,6 +262,9 @@ export default {
         },
         keywordsConcat: function(keywords) {
             let result = '';
+            if (typeof keywords === "string") {
+                return keywords;
+            }
             keywords.every(function(keyw) {
                 result += ', ' + keyw.name;
                 return true;

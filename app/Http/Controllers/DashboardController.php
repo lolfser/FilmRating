@@ -15,7 +15,8 @@ class DashboardController extends Controller {
         return Inertia::render(
             'Dashboard',
             [
-                'isLoggedIn' => Auth::check()
+                'isLoggedIn' => Auth::check(),
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             ]
         );
     }
