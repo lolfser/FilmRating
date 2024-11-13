@@ -55,6 +55,7 @@ class ImportController extends Controller {
 
         $separator = $data['separator'] ?? ',';
         $enclosure = $data['enclosure'] ?? '"';
+        $identifierIntCast = ($data['identifierIntCast'] ?? 'true') === 'true';
 
         $header = fgetcsv($stream, null, $separator, $enclosure);
 
@@ -75,7 +76,13 @@ class ImportController extends Controller {
 
         while (($data = fgetcsv($stream, null, $separator, $enclosure)) !== false) {
 
-            $films = Films::where('film_identifier', $data[$filmIdIndex])->first();
+            $film_identifier = $data[$filmIdIndex];
+
+            if ($identifierIntCast) {
+                $film_identifier = (string)((int)$data[$filmIdIndex]);
+            }
+
+            $films = Films::where('film_identifier', $film_identifier)->first();
 
             if ($films !== null) {
                 continue;
@@ -98,7 +105,7 @@ class ImportController extends Controller {
                 );
             $films->duration = $this->receiveDuration($data[$durationIndex]);
 
-            $films->film_identifier = $data[$filmIdIndex];
+            $films->film_identifier = $film_identifier;
             $films->year = $year;
             $films->filmstatus_id = 1;
             $films->save();
