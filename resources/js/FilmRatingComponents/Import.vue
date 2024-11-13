@@ -17,6 +17,8 @@ import Footer from './Footer.vue';
                     <tr><td>Title-Header:</td><td><input type="text" name="title" value="Originalfilmtitel" /></td></tr>
                     <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Schlüssel Nr." /></td></tr>
                     <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Laufzeit" /></td></tr>
+                    <tr><td>Separator:</td><td><input type="text" name="separator" value="," /></td></tr>
+                    <tr><td>Wert-Abgrenzung:</td><td><input type="text" name="enclosure" value='"' /></td></tr>
                     <tr><td>Daten:</td><td><textarea name="importdata" style="width: 800px" /></td></tr>
                 </tbody>
             </table>

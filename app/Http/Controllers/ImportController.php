@@ -53,9 +53,10 @@ class ImportController extends Controller {
             return;
         }
 
-        $separator = ';';
+        $separator = $data['separator'] ?? ',';
+        $enclosure = $data['enclosure'] ?? '"';
 
-        $header = fgetcsv($stream, null, $separator);
+        $header = fgetcsv($stream, null, $separator, $enclosure);
 
         if ($header === false) {
             return;
@@ -72,7 +73,7 @@ class ImportController extends Controller {
             exit('Film-ID, Titel oder Dauer-Spalte nicht gefunden.');
         }
 
-        while (($data = fgetcsv($stream, null, $separator)) !== false) {
+        while (($data = fgetcsv($stream, null, $separator, $enclosure)) !== false) {
 
             $films = Films::where('film_identifier', $data[$filmIdIndex])->first();
 
