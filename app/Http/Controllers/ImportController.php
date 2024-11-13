@@ -99,6 +99,7 @@ class ImportController extends Controller {
 
             $films->film_identifier = $data[$filmIdIndex];
             $films->year = $year;
+            $films->filmstatus_id = 1;
             $films->save();
 
         }
