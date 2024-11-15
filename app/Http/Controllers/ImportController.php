@@ -39,33 +39,55 @@ class ImportController extends Controller {
         $data = $request->all();
 
         $year = $data['year'] ?? 49;
-        $importdata = $data['importdata'] ?? '';
+        /** @var \Illuminate\Http\UploadedFile|null $importdata */
+        $importdata = $data['importdata'] ?? null;
 
-        if ($importdata === '') {
+        if ($importdata === null) {
             $errors[] = 'nix zu importieren';
             var_dump($errors);
             exit;
         }
 
-        $stream = fopen('data://text/plain,' . $importdata, 'r');
+        $importdata = $importdata->get();
 
-        if ($stream === false) {
-            return;
+        if ($importdata === false) {
+            $errors[] = 'nix zu importieren - import data get is false';
+            var_dump($errors);
+            exit;
         }
 
         $separator = $data['separator'] ?? ',';
         $enclosure = $data['enclosure'] ?? '"';
         $identifierIntCast = ($data['identifierIntCast'] ?? 'true') === 'true';
 
-        $header = fgetcsv($stream, null, $separator, $enclosure);
+        $allImportData = explode("\r", $importdata);
+        $header = $allImportData[0] ?? false;
 
         if ($header === false) {
-            return;
+            $errors[] = 'nix zu importieren - kein header';
+            var_dump($errors);
+            exit;
         }
 
-        $titleIndex = array_search($data['title'], $header, true);
-        $durationIndex = array_search($data['duration'], $header, true);
-        $filmIdIndex = array_search($data['film-id'], $header, true);
+        $stream = fopen('data://text/plain,' . $header, 'r');
+
+        if ($stream === false) {
+            $errors[] = 'nix zu importieren - stream is false';
+            var_dump($errors);
+            exit;
+        }
+
+        $headerData = fgetcsv($stream, null, $separator, $enclosure);
+
+        if ($headerData === false) {
+            $errors[] = 'no csv';
+            var_dump($errors);
+            exit;
+        }
+
+        $titleIndex = array_search($data['title'], $headerData, true);
+        $durationIndex = array_search($data['duration'], $headerData, true);
+        $filmIdIndex = array_search($data['film-id'], $headerData, true);
 
         if ($titleIndex === false
             || $durationIndex === false
@@ -74,8 +96,19 @@ class ImportController extends Controller {
             exit('Film-ID, Titel oder Dauer-Spalte nicht gefunden.');
         }
 
-        while (($data = fgetcsv($stream, null, $separator, $enclosure)) !== false) {
+        for ($i = 1; $i < count($allImportData); $i++) {
 
+            $stream = fopen('data://text/plain,' . $allImportData[$i], 'r');
+
+            if ($stream === false) {
+                continue;
+            }
+
+            $data = fgetcsv($stream, null, $separator, $enclosure);
+
+            if ($data === false) {
+                continue;
+            }
             $film_identifier = $data[$filmIdIndex];
 
             if ($identifierIntCast) {
