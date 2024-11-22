@@ -27,8 +27,8 @@ import Footer from './Footer.vue';
                             <br>Bpsw.:
                             <pre style="border: 1px solid black; padding: 10px; background-color: #eee">
 Schlüssel Nr.,Originalfilmtitel,Laufzeit
-3017;Şöyle Anlatayım;00:19:32
-3022;"""Bears - Quiet Breaks The Dawn""";00:59:27</pre>
+3017,"Şöyle Anlatayım","00:19:32"
+3022,"""Bears - Quiet Breaks The Dawn""","59:27Min"</pre>
                             <br>
                             <input type="file" name="importdata" accept=".csv" />
                             <br>

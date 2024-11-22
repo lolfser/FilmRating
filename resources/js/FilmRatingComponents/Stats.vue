@@ -58,7 +58,7 @@ import Footer from './Footer.vue';
         </tbody>
     </table>
     <br><br>
-    Keywords<br><br>
+    Stichwort-Analyse<br><br>
     <table class="table">
       <thead>
         <tr>

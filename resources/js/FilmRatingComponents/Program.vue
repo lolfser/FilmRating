@@ -18,7 +18,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
             style="display: inline"
         />
         <MultiSelect :options="keywords" :optionLabel="getElementName" :optionValue="getElementId"
-            placeholder="Nach Schlüsselwörtern filtern"
+            placeholder="Nach Stichwörtern filtern"
             name="keywords"
             autoFilterFocus
             v-model="selectedKeywords"
