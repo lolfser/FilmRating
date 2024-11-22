@@ -32,6 +32,7 @@ class Permissions extends Model {
 
     public const PERMISSION_SEE_PAGE_STATICS = 11;
     public const PERMISSION_SEE_PAGE_PROGRAM = 12;
+    public const PERMISSION_SEE_PAGE_RATING = 13;
 
     protected $table    = 'permissions';
     protected $fillable = ['viewers_id','permission'];

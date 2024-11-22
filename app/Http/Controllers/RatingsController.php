@@ -26,7 +26,11 @@ class RatingsController extends Controller {
 
     private const ITEMS_PER_PAGE = 100;
 
-    public function index(Request $request): \Inertia\Response {
+    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
 
         $page = (int) ($request->all()['page'] ?? '1');
         if ($page < 1) {
@@ -150,6 +154,10 @@ class RatingsController extends Controller {
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse|bool {
 
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
+
         $film = Films::where('film_identifier', $request->all()['id'])->first();
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
@@ -224,6 +232,11 @@ class RatingsController extends Controller {
     }
 
     public function rate(string $filmIdentifier): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
+
         /** @var Films|null $film */
         $film = Films::where('film_identifier', $filmIdentifier)->first();
         if ($film === null) {
@@ -263,6 +276,10 @@ class RatingsController extends Controller {
     }
 
     public function load(Request $request): Films|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
 
         /** @var Films|null $film */
         $film = Films::where('id', $request->all()['filmId'])->first();
