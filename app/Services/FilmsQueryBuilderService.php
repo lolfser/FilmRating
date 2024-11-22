@@ -70,7 +70,6 @@ class FilmsQueryBuilderService {
             $films = $films
                 ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
-                ->orderBy('films.id')
                 ->where('viewers.id', $viewerId)
                 ->where('ratings.grades_id', '>', 0);
 
@@ -83,7 +82,6 @@ class FilmsQueryBuilderService {
             $films = $films
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
-                ->orderBy('films.id')
                 ->whereNested(
                     function($query) use ($viewerId) {
                         $query->whereNested(
@@ -103,6 +101,13 @@ class FilmsQueryBuilderService {
                     }
                 );
         }
+
+        // @TODO: new feature: dynamic via config in DB table filmsources
+        $films = $films
+            ->orderBy(DB::raw("filmsources_id = 3"))
+            ->orderBy(DB::raw("filmsources_id = 1"))
+            ->orderBy(DB::raw("filmsources_id = 2"))
+            ->orderBy("id");
 
         return $films;
     }
