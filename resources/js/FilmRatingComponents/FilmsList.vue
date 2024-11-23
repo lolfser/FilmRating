@@ -20,7 +20,7 @@ import Footer from './Footer.vue';
                     <tr v-for="film in films">
                         <td>{{film.film_identifier}}</td>
                         <td>
-                            {{film.name}}
+                            <strong>{{film.name}}</strong>
                             <br>{{film.description}}
                         </td>
                         <td>{{calculateGenres(film)}}</td>
@@ -39,6 +39,13 @@ import Footer from './Footer.vue';
         <Footer :footerLinks="footerLinks" />
     </div>
 </template>
+<style scoped>
+    td, th {
+        vertical-align: baseline;
+        border: 1px black solid;
+        padding: 5px;
+    }
+</style>
 <script>
 export default {
   props: [

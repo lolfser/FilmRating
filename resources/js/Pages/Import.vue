@@ -23,7 +23,7 @@ import CompImport from '@/FilmRatingComponents/Import.vue';
 export default {
   props: ['films', 'footerLinks', 'PERMISSION_IMPORT', '_token', 'filmsources'],
   computed: {
-    headline: function () {return "Filmeimport";},
+    headline: function () {return "Filmimport";},
   }
 }
 </script>

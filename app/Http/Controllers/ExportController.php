@@ -199,6 +199,12 @@ class ExportController extends Controller {
             die('Du musst eingeloggt sein.');
         }
 
+        $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
+
+        if (!$hasPermSeeGrades) {
+            die('Sry, dir fehlt das entsprechende Recht für diese Funktionalität.');
+        }
+
         $data = DB::table('films')
             ->selectRaw('
                 fs.name AS source,

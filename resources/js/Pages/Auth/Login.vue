@@ -24,7 +24,17 @@ const submit = () => {
         ...data,
         remember: form.remember ? 'on' : '',
     })).post(route('login'), {
-        onFinish: () => form.reset('password'),
+        onFinish: function (data) {
+            if (document.getElementsByTagName('iFrame').length > 0) {
+                window.location.href = data.url.origin;
+                document.getElementsByTagName('iFrame')[0].parentElement.innerHTML =
+                   "<div style='width: 500px; height: 250px; margin: auto; padding: 10px; background-color: #eee'>" +
+                    "Erfolgreich eingeloggt, sie werden weitergeleitet" +
+                   "</div>";
+                return
+            }
+            form.reset('password');
+        }
     });
 };
 </script>
@@ -77,13 +87,9 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Not registered?
-                </Link>
-                &nbsp;&nbsp;&nbsp;
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
+                <a href="/register" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Noch nicht registiert?
+                </a>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in

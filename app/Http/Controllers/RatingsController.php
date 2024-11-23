@@ -26,11 +26,16 @@ class RatingsController extends Controller {
 
     private const ITEMS_PER_PAGE = 100;
 
-    public function index(Request $request): \Inertia\Response {
+    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
 
         $page = (int) ($request->all()['page'] ?? '1');
         if ($page < 1) {
-            return $this->index(1);
+            $request->merge(['page' => 1]);
+            return $this->index($request);
         }
 
         $requestParam = $request->all();
@@ -61,14 +66,37 @@ class RatingsController extends Controller {
             ->offset(($page - 1) * self::ITEMS_PER_PAGE)
             ->get();
 
+        $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
+        $hasPermSetFilmStatus = (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS);
+
         foreach ($films as $film) {
             // Loading pivots
             $film->ratings;
+
+            if (!$hasPermSeeGrades) {
+                $viewerRating = [];
+                foreach ($film->ratings as $rating) {
+                    if ($rating->viewers_id === $viewerId) {
+                        unset($film->ratings);
+                        $film->ratings = [$rating];
+                        break;
+                    }
+                }
+            }
+
             $film->genres;
             $film->languages;
             $film->filmmodifications;
             $film->keywords;
+
             $film->filmstatus;
+            if ($hasPermSetFilmStatus) {
+                // $film->filmstatus;
+            } else {
+                $film->filmstatus_id = 0;
+                $film->filmstatus = ['id' => 0, 'name' => 'keine Rechte'];
+            }
+
         }
 
         $filter = [
@@ -86,7 +114,9 @@ class RatingsController extends Controller {
             'grades' => Grades::all(),
             'viewerId' => $viewerId,
             'languages' => Languages::all()->groupBy('type'),
-            'filmstatus' => Filmstatus::all(),
+            'filmstatus' => $hasPermSetFilmStatus
+                ? Filmstatus::all()
+                : [['id' => 0, 'name' => 'keine Rechte']],
             'genres' => Genres::all(),
             'active_filter' => $filter,
             'filterRateOptions' => [
@@ -123,6 +153,10 @@ class RatingsController extends Controller {
     }
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse|bool {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
 
         $film = Films::where('film_identifier', $request->all()['id'])->first();
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
@@ -198,6 +232,11 @@ class RatingsController extends Controller {
     }
 
     public function rate(string $filmIdentifier): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
+
         /** @var Films|null $film */
         $film = Films::where('film_identifier', $filmIdentifier)->first();
         if ($film === null) {
@@ -238,6 +277,10 @@ class RatingsController extends Controller {
 
     public function load(Request $request): Films|\Illuminate\Http\RedirectResponse {
 
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
+            return redirect(route('home'));
+        }
+
         /** @var Films|null $film */
         $film = Films::where('id', $request->all()['filmId'])->first();
 
@@ -245,12 +288,40 @@ class RatingsController extends Controller {
             return redirect(route("rating.index"));
         }
 
+        $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
+
+        $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
+        $hasPermSetFilmStatus = (new HasPermissionService())->receive(Permissions::PERMISSION_CHANGE_FILMSTATUS);
+
         // Loading pivots
+
+        $film->ratings;
+
+        if (!$hasPermSeeGrades) {
+            $viewerRating = [];
+            foreach ($film->ratings as $rating) {
+                if ($rating->viewers_id === $viewerId) {
+                    unset($film->ratings);
+                    $film->ratings = [$rating];
+                    break;
+                }
+            }
+        }
+
+
         $film->genres;
         $film->languages;
-        $film->ratings;
         $film->keywords;
         $film->filmmodifications;
+
+        $film->filmstatus;
+        if ($hasPermSetFilmStatus) {
+            // $film->filmstatus;
+        } else {
+            $film->filmstatus_id = 0;
+            $film->filmstatus = ['id' => 0, 'name' => 'keine Rechte'];
+        }
+
         return $film;
 
     }

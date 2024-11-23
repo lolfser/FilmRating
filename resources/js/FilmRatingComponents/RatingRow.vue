@@ -100,7 +100,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="td_filmstatus" colspan="2">
+                    <td class="td_filmstatus" colspan="2" v-if="film.filmstatus_id !== 0">
                         <b>Status:</b>
                         <MultiSelect :options="filmstatus" :optionLabel="elementName" :optionValue="elementId"
                             placeholder="Status wählen"
@@ -115,19 +115,28 @@
             </table>
         </td>
         <td>
-            Noten anderer:
-            <div v-html="otherGrade(film)"></div>
-            <br>
-            <div class="div_grades">
-                Deine Note
-                <div class="td_grades">
-                    <AutoComplete
-                        :grades="grades"
-                        :selectedValue="selectedGrade"
-                        v-on:focusout="triggerSave('grade', film.id, film.film_identifier)"
-                    />
-                </div>
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="div_grades">
+                                Deine Note
+                                <div class="td_grades">
+                                    <AutoComplete
+                                        :grades="grades"
+                                        :selectedValue="selectedGrade"
+                                        v-on:focusout="triggerSave('grade', film.id, film.film_identifier)"
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            Noten anderer:
+                            <div v-html="otherGrade(film)"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="td_comment">
                 <br>
                 <textarea name="viewerComment"
@@ -219,6 +228,7 @@ export default {
             }
             let form = tr.querySelectorAll('.save')[0].parentNode;
             if (typeof tr !== "undefined") {
+                this.film.keywords = tr.querySelectorAll('[name="keywords"]')[0].value;
                 this.save(
                     filmIdentifier,
                     filmId,
@@ -252,6 +262,9 @@ export default {
         },
         keywordsConcat: function(keywords) {
             let result = '';
+            if (typeof keywords === "string") {
+                return keywords;
+            }
             keywords.every(function(keyw) {
                 result += ', ' + keyw.name;
                 return true;
@@ -577,7 +590,25 @@ export default {
                         if (returnValue !== "") {
                             returnValue = returnValue + " / ";
                         }
-                        returnValue += '<span title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
+                        let color = '#fff';
+                        let fontColor = '#000';
+                        if (gradeFromList.value === 1) {
+                            color = '#151';
+                            fontColor = '#fff';
+                        }
+                        if (gradeFromList.value === 2) {
+                            color = '#aca';
+                        }
+                        if (gradeFromList.value === 4) {
+                            color = '#caa';
+                        }
+                        if (gradeFromList.value === 5) {
+                            color = '#711';
+                            fontColor = '#fff';
+                        }
+                        returnValue += '<span' +
+                            ' style="background-color: '+ color +'; color: '+ fontColor +'; padding: 5px"' +
+                            ' title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
                         break;
                     }
                 }

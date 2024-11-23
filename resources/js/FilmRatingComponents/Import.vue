@@ -8,29 +8,36 @@ import Footer from './Footer.vue';
 <Headline :headline="headline" />
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <br>TODO: Ist ziemlich customized, generalisieren<br><br><br>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" v-model="token" />
             <table>
-                <tr><td>Jahr:</td><td><input type="text" name="year" value="48" /></td></tr>
-                <tr><td>Film-Source:</td><td>
-                    <span v-for="filmsource in filmsources">
-                        <label><input type="radio" name="filmsources_id" :value="filmsource.id" /> {{filmsource.name}}</label>
-                        &nbsp;&nbsp;&nbsp;
-                    </span>
-                </td></tr>
-                <tr><td>Title-Header:</td><td><input type="text" name="title" value="Titel" /></td></tr>
-                <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Film-Nr." /></td></tr>
-                <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Dauer" /></td></tr>
-                <tr><td>Genre-Header:</td><td><input type="text" name="info-col" value="Infos" /></td></tr>
-                <tr><td>Sprache-Header:</td><td><input type="text" name="language-col" value="Sprache Untertitel" /></td></tr>
-                <tr><td>Modifikation-Queer-Header:</td><td><input type="text" name="queer-col" value="⚥" /></td></tr>
-                <tr><td>Modifikation-Jugend (9)-Header:</td><td><input type="text" name="child9-col" value="K (9)" /></td></tr>
-                <tr><td>Modifikation-Jugend (13)-Header:</td><td><input type="text" name="child13-col" value="P (13)" /></td></tr>
-                <tr><td>Modifikation-Jugend (17)-Header:</td><td><input type="text" name="child17-col" value="J (17)" /></td></tr>
-                <tr><td>Daten:</td><td><textarea name="importdata" /></td></tr>
+                <tbody>
+                    <tr><td>Jahr:</td><td><input type="text" name="year" value="49" /></td></tr>
+                    <tr><td>Title-Header:</td><td><input type="text" name="title" value="Originalfilmtitel" /></td></tr>
+                    <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Schlüssel Nr." /></td></tr>
+                    <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Laufzeit" /></td></tr>
+                    <tr><td>Separator:</td><td><input type="text" name="separator" value="," /></td></tr>
+                    <tr><td>Wert-Abgrenzung:</td><td><input type="text" name="enclosure" value='"' /></td></tr>
+                    <tr><td>int-cast auf Film-Identifier:</td><td><input type="text" name="identifierIntCast" value="true" /></td></tr>
+                    <tr>
+                        <td style="vertical-align: top;">Daten:</td>
+                        <td>
+                            Die Datei muss im CSV-Format sein und den Zeichensatz UTF-8 haben. Der Separator und Texttrenner müssen
+                            den Felder oben entsprechen.
+                            <br>Bpsw.:
+                            <pre style="border: 1px solid black; padding: 10px; background-color: #eee">
+Schlüssel Nr.,Originalfilmtitel,Laufzeit
+3017,"Şöyle Anlatayım","00:19:32"
+3022,"""Bears - Quiet Breaks The Dawn""","59:27Min"</pre>
+                            <br>
+                            <input type="file" name="importdata" accept=".csv" />
+                            <br>
+                            Existiert bereits eine Filmnummer, wird dieser Film beim Importieren übersprungen.
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-            <br><br><PrimaryButton>Speichern</PrimaryButton>
+            <br><br><PrimaryButton>Importieren</PrimaryButton>
         </form>
     </div>
 </div>
@@ -38,7 +45,7 @@ import Footer from './Footer.vue';
 </template>
 <script>
 export default {
-  props: ['film', 'filmsources', 'languages', '_token', 'headline', 'errors', 'footerLinks'],
+  props: ['_token', 'headline', 'errors', 'footerLinks'],
   methods: {
   },
   computed: {

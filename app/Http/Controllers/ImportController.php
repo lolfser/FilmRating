@@ -2,16 +2,8 @@
 declare(strict_types=1);
 namespace App\Http\Controllers;
 
-use App\Models\Filmmodifications;
 use App\Models\Films;
 use App\Models\Filmsources;
-use App\Models\Ratings;
-use App\Models\Languages;
-use App\Models\Viewers;
-use App\Models\Genres;
-use App\Models\Grades;
-use App\Services\SaveFilmsLanguagesServices;
-use App\Services\SaveFilmsKeywordsServices;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -34,8 +26,8 @@ class ImportController extends Controller {
             TRUNCATE keywords;
             TRUNCATE films_languages;
             TRUNCATE films_genres;
-            TRUNCATE films;
             TRUNCATE filmmodifications_films;
+            TRUNCATE films;
          */
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_IMPORT)) {
@@ -46,117 +38,110 @@ class ImportController extends Controller {
 
         $data = $request->all();
 
-        $year = $data['year'];
-        $filmsource = $data['filmsources_id'];
-        $importdata = $data['importdata'];
+        $year = $data['year'] ?? 49;
+        /** @var \Illuminate\Http\UploadedFile|null $importdata */
+        $importdata = $data['importdata'] ?? null;
 
-        $gradeMap = $this->getGradesMap();
-
-        $stream = fopen('data://text/plain,' . $importdata, 'r');
-
-        if ($stream === false) {
-            return;
+        if ($importdata === null) {
+            $errors[] = 'nix zu importieren';
+            var_dump($errors);
+            exit;
         }
 
-        $header = fgetcsv($stream);
+        $importdata = $importdata->get();
+
+        if ($importdata === false) {
+            $errors[] = 'nix zu importieren - import data get is false';
+            var_dump($errors);
+            exit;
+        }
+
+        $separator = $data['separator'] ?? ',';
+        $enclosure = $data['enclosure'] ?? '"';
+        $identifierIntCast = ($data['identifierIntCast'] ?? 'true') === 'true';
+
+        $allImportData = explode("\r", $importdata);
+        $header = $allImportData[0] ?? false;
 
         if ($header === false) {
-            return;
+            $errors[] = 'nix zu importieren - kein header';
+            var_dump($errors);
+            exit;
         }
 
-        $titleIndex = array_search($data['title'], $header, true);
-        $durationIndex = array_search($data['duration'], $header, true);
-        $filmIdIndex = array_search($data['film-id'], $header, true);
-        $genresIndex = array_search($data['info-col'], $header, true);
-        $languageIndex = array_search($data['language-col'], $header, true);
-        $queerIndex = array_search($data['queer-col'], $header, true);
-        $child9Index = array_search($data['child9-col'], $header, true);
-        $child13Index = array_search($data['child13-col'], $header, true);
-        $child17Index = array_search($data['child17-col'], $header, true);
+        $stream = fopen('data://text/plain,' . $header, 'r');
+
+        if ($stream === false) {
+            $errors[] = 'nix zu importieren - stream is false';
+            var_dump($errors);
+            exit;
+        }
+
+        $headerData = fgetcsv($stream, null, $separator, $enclosure);
+
+        if ($headerData === false) {
+            $errors[] = 'no csv';
+            var_dump($errors);
+            exit;
+        }
+
+        $titleIndex = array_search($data['title'], $headerData, true);
+        $durationIndex = array_search($data['duration'], $headerData, true);
+        $filmIdIndex = array_search($data['film-id'], $headerData, true);
 
         if ($titleIndex === false
             || $durationIndex === false
             || $filmIdIndex === false
-            || $genresIndex === false
         ) {
-            exit('Film-ID, Titel, Genre-Index oder Dauer-Spalte nicht gefunden.');
+            exit('Film-ID, Titel oder Dauer-Spalte nicht gefunden.');
         }
 
-        $viewerMap = [];
-        $viewers = Viewers::all();
+        for ($i = 1; $i < count($allImportData); $i++) {
 
-        foreach ($viewers as $viewer) {
-            $index = array_search($viewer->initials, $header, true);
-            if ($index === false) {
+            $stream = fopen('data://text/plain,' . $allImportData[$i], 'r');
+
+            if ($stream === false) {
                 continue;
             }
-            $viewerMap[$viewer->initials] = $viewer;
-        }
 
-        $initIndexMap = [];
+            $data = fgetcsv($stream, null, $separator, $enclosure);
 
-        foreach ($header as $index => $head) {
-            foreach ($viewerMap as $initials => $viewerObject) {
-                if ($head === $initials) {
-                    $initIndexMap[$initials] = $index;
-                }
+            if ($data === false) {
+                continue;
             }
-        }
+            $film_identifier = $data[$filmIdIndex];
 
-        $saveFilmsLanguagesServices = new SaveFilmsLanguagesServices();
-        $saveFilmsKeywordsServices = new SaveFilmsKeywordsServices();
-        $allMods = $this->receiveAllModifications();
-        $allGenres = Genres::all();
+            if ($identifierIntCast) {
+                $film_identifier = (string)((int)$data[$filmIdIndex]);
+            }
 
-        while (($data = fgetcsv($stream)) !== false) {
+            $films = Films::where('film_identifier', $film_identifier)->first();
 
-            $films = Films::where('film_identifier', $data[$filmIdIndex])
-                ->where('year', $year)
-                ->where('filmsources_id', $filmsource)
-                ->first() ?? new Films();
+            if ($films !== null) {
+                continue;
+            }
+
+            $films = new Films();
 
             $films->name = $data[$titleIndex];
 
             if ($films->name === '') {
-                break;
+                continue;
             }
 
+            $filmId = (int) $data[$filmIdIndex];
+
+            $films->filmsources_id = $filmId < 1000
+                ? 2
+                : (
+                    $filmId < 3000 ? 1 : 3
+                );
             $films->duration = $this->receiveDuration($data[$durationIndex]);
 
-            $films->film_identifier = $data[$filmIdIndex];
-            $films->filmsources_id = $filmsource;
+            $films->film_identifier = $film_identifier;
             $films->year = $year;
+            $films->filmstatus_id = 1;
             $films->save();
-
-            $this->handlingFilmModifications(
-                $films,
-                $allMods,
-                strtoupper($data[$queerIndex]) === 'TRUE',
-                strtoupper($data[$child9Index]) === 'TRUE',
-                strtoupper($data[$child13Index]) === 'TRUE',
-                strtoupper($data[$child17Index]) === 'TRUE'
-            );
-
-            $this->handlingInfoSpalte(
-                $films,
-                $saveFilmsKeywordsServices,
-                $allGenres,
-                explode(',', $data[$genresIndex])
-            );
-
-            $this->handlingLanguages(
-                $saveFilmsLanguagesServices,
-                $films,
-                explode('_', $data[$languageIndex])
-            );
-
-            $this->handlingRatings(
-                $viewerMap,
-                $films,
-                $data,
-                $gradeMap,
-                $initIndexMap
-            );
 
         }
 
@@ -164,252 +149,26 @@ class ImportController extends Controller {
 
     }
 
-    /**
-     * @return array<mixed>
-     */
-    private function getGradesMap(): array {
-        $map = [];
-        foreach (Grades::all() as $grade) {
-            $map[$grade->id] = $grade->value . $grade->trend;
-        }
-        return $map;
-    }
-
     private function receiveDuration(string $durationString): int {
+
         $durationParts = explode(':', $durationString);
 
-        if (count($durationParts) === 1)
+        if (count($durationParts) === 1) {
             return ((int) ($durationParts[0] ?: 0)) * 60;
+        }
 
-        if (count($durationParts) === 2)
+        if (count($durationParts) === 2) {
             return ((int) $durationParts[0]) * 60 + ((int) $durationParts[1]);
+        }
+
+        if (count($durationParts) === 3) {
+            return
+                ((int) $durationParts[0]) * 60 * 60
+                + ((int) $durationParts[1]) * 60
+                + ((int) $durationParts[2]);
+        }
 
         return 0;
-    }
-
-    private function handlingInfoSpalte(
-        Films $film,
-        SaveFilmsKeywordsServices $saveFilmsKeywordsServices,
-        Collection $allGenres,
-        array $genresInput
-    ): void {
-
-        $usedGenres = [];
-        $usedKeywords = [];
-        $usedDescriptions = [];
-        $allGenresArray = [];
-        $status = 1;
-
-        foreach ($allGenres as $genre) {
-            $allGenresArray[$genre->name] = $genre;
-        }
-
-        foreach ($genresInput as $key => $input) {
-
-            $input = \trim($input);
-            $input = $input === 'Doku' ? 'Dokumentation' : $input;
-
-            if (isset($allGenresArray[$input])) {
-                $usedGenres = $allGenresArray[$input];
-                continue;
-            }
-
-            if (\in_array(
-                    $input,
-                    [
-                        'raus: weil Einreichung aus letzten Jahren',
-                        'raus: Complettion Date vor 2022',
-                        'raus: weil Bewertungen'
-                    ],
-                    true
-                )
-            ) {
-                $status = 3;
-                continue;
-            }
-
-            if (count(explode(' ', $input)) > 2) {
-                $usedDescriptions[] = $input;
-                continue;
-            }
-
-            $usedKeywords[] = $input;
-
-        }
-
-        $film->filmstatus_id = $status;
-        $film->description = implode(', ', $usedDescriptions);
-        $saveFilmsKeywordsServices->save($film, $usedKeywords);
-
-        $film->genres()->sync([]);
-        $film->genres()->attach($usedGenres);
-
-        $film->save();
-    }
-
-    private function handlingLanguages(
-        SaveFilmsLanguagesServices $saveFilmsLanguagesServices,
-        Films $film,
-        array $languagesInput
-    ): void {
-
-        if ($languagesInput === []) {
-            return;
-        }
-
-        $map = [];
-        foreach (Languages::all() as $lang) {
-            $map[$lang->type][$lang->language] = $lang->id;
-        }
-
-        $idAudio    = $map['audio'][strtolower($languagesInput[0])] ?? false;
-        $idSubtitle = $map['subtitle'][strtolower($languagesInput[1] ?? '')] ?? false;
-
-        if ($idAudio === false && $idSubtitle === false) {
-            return;
-        }
-
-        if ($idAudio !== false && $idSubtitle !== false) {
-            $saveFilmsLanguagesServices->save($film, [
-                'language_audio' => $idAudio,
-                'language_subtitle' => $idSubtitle
-            ]);
-            return;
-        }
-
-        if ($idAudio !== false) {
-            $saveFilmsLanguagesServices->save($film, [
-                'language_audio' => $idAudio,
-            ]);
-            return;
-        }
-
-        $saveFilmsLanguagesServices->save($film, [
-            'language_subtitle' => $idSubtitle
-        ]);
-
-    }
-
-    private function handlingRatings(
-        array $viewerMap,
-        Films $film,
-        array $data,
-        array $gradeMap,
-        array $initIndexMap
-    ): void {
-
-        $viewerRatingNotFound = array_keys($viewerMap);
-
-        foreach ($film->ratings as $rating) {
-
-            $viewer = $rating->viewer()->first();
-            $viewerObject = $viewerMap[$viewer->initials] ?? null;
-
-            if ($viewerObject === null) {
-                continue;
-            }
-
-            unset($viewerRatingNotFound[array_search($viewer->initials, $viewerRatingNotFound, true)]);
-
-            $viewerGrade = $data[$initIndexMap[$viewer->initials]] ?? '';
-
-            if ($viewerGrade === '') {
-                continue;
-            }
-
-            $viewerGrade = str_replace(' ', '+', $viewerGrade);
-            $gradeId = array_search($viewerGrade, $gradeMap, true);
-            if ($gradeId === false) {
-                continue;
-            }
-
-            $rating->grades_id = $gradeId;
-            $rating->save();
-
-        }
-
-        foreach ($viewerRatingNotFound as $init) {
-
-            $viewer = Viewers::where('initials', $init)->first() ?? null;
-
-            if ($viewer === null) {
-                continue;
-            }
-
-            $rating = new Ratings();
-            $rating->viewers_id = $viewer->id;
-            $rating->films_id = $film->id;
-            $rating->comment = '';
-
-            $viewerGrade = $data[$initIndexMap[$viewer->initials]] ?? '';
-
-            if ($viewerGrade === '') {
-                continue;
-            }
-
-            $viewerGrade = str_replace(' ', '+', $viewerGrade);
-            $gradeId = array_search($viewerGrade, $gradeMap, true);
-
-            if ($gradeId === false) {
-                continue;
-            }
-
-            $rating->grades_id = $gradeId;
-            $rating->save();
-
-        }
-
-    }
-
-    private function handlingFilmModifications(
-        Films $films,
-        array $allMods,
-        bool  $isQueer,
-        bool  $isChild9,
-        bool  $isChild13,
-        bool  $isChild17
-    ): void {
-        $films->filmmodifications()->sync([]);
-        $mods = [];
-
-        if ($isQueer)
-            $mods[] = $allMods['queer'];
-        if ($isChild9)
-            $mods[] = $allMods['child9'];
-        if ($isChild13)
-            $mods[] = $allMods['child13'];
-        if ($isChild17)
-            $mods[] = $allMods['child17'];
-
-        $films->filmmodifications()->attach($mods);
-        $films->save();
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function receiveAllModifications(): array
-    {
-        $allMods = [];
-        foreach (Filmmodifications::all() as $mod) {
-            if ($mod->key === 'child9') {
-                $allMods['child9'] = $mod->id;
-                continue;
-            }
-            if ($mod->key === 'child13') {
-                $allMods['child13'] = $mod->id;
-                continue;
-            }
-            if ($mod->key === 'child17') {
-                $allMods['child17'] = $mod->id;
-                continue;
-            }
-            if ($mod->key === 'queer') {
-                $allMods['queer'] = $mod->id;
-                continue;
-            }
-        }
-        return $allMods;
     }
 
 }

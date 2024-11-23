@@ -15,7 +15,11 @@ use Inertia\Inertia;
 
 class ProgramblocksController extends Controller {
 
-    public function index(Request $request): \Inertia\Response {
+    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
+            return redirect(route('rating.index'));
+        }
 
         $films = $this->buildFilmsQuery($request->all());
         $allFilms = $films/*->limit(10)*/->get();
@@ -76,6 +80,10 @@ class ProgramblocksController extends Controller {
      */
     public function save(Request $request): array|\Illuminate\Http\RedirectResponse {
 
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
+            return redirect(route('rating.index'));
+        }
+
         $meta = Programblockmetas::where('id', $request->all()['programmblockId'])->first();
 
         if ($meta === null) {
@@ -102,6 +110,11 @@ class ProgramblocksController extends Controller {
      * @return array<int, mixed>|\Illuminate\Http\RedirectResponse
      */
     public function load(Request $request): array|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
+            return redirect(route('rating.index'));
+        }
+
         $meta = Programblockmetas::where('id', $request->all()['programmblockId'])->first();
         if ($meta === null) {
             return [];
@@ -129,9 +142,13 @@ class ProgramblocksController extends Controller {
     }
 
     /**
-     * @return Collection<int, Films>
+     * @return Collection<int, Films>|\Illuminate\Http\RedirectResponse
      */
-    public function filter(Request $request): Collection {
+    public function filter(Request $request): Collection|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
+            return redirect(route('rating.index'));
+        }
 
         $films = $this->buildFilmsQuery($request->all());
         $films = $films/*->limit(10)*/->get();
@@ -144,8 +161,8 @@ class ProgramblocksController extends Controller {
      * @param \Illuminate\Database\Eloquent\Collection<int, Films> $allFilms
      * @return void
      */
-    public function loadPivots(\Illuminate\Database\Eloquent\Collection $allFilms): void
-    {
+    private function loadPivots(\Illuminate\Database\Eloquent\Collection $allFilms): void {
+
         foreach ($allFilms as $film) {
             // Loading pivots
             $film->languages;
@@ -158,10 +175,14 @@ class ProgramblocksController extends Controller {
 
     /**
      * @param array<string, string> $requestParam
-     * @return \Illuminate\Database\Eloquent\Builder<Films>
+     * @return \Illuminate\Database\Eloquent\Builder<Films>|\Illuminate\Http\RedirectResponse
      */
-    public function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder
-    {
+    private function buildFilmsQuery(array $requestParam): \Illuminate\Database\Eloquent\Builder|\Illuminate\Http\RedirectResponse {
+
+        if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_PROGRAM)) {
+            return redirect(route('rating.index'));
+        }
+
         $filmStatus = $requestParam['filmstatus'] ?? '';
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
