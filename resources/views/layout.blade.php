@@ -54,21 +54,24 @@
                     </a>
                 </span>
     <?php } ?>
-            <span></span><span></span>
-            <span>
-                <a href="/user/profile/">
-                    <?php echo Auth::user()->name; ?>
-                </a>
-                <br>
-                <form id="logout-form" action="/logout" method="POST" style="display: none">
-                    {{ csrf_field() }}
-                </form>
-                <span style="font-size: 9px">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
+                <?php if (Auth::user()) { ?>
+                <span></span>
+                <span></span>
+                <span>
+                    <a href="/user/profile/">
+                        <?php echo Auth::user()->name; ?>
                     </a>
+                    <br>
+                    <form id="logout-form" action="/logout" method="POST" style="display: none">
+                        {{ csrf_field() }}
+                    </form>
+                    <span style="font-size: 9px">
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                    </span>
                 </span>
-            </>
+                <?php } ?>
             </div>
         </header>
         <div class="content">

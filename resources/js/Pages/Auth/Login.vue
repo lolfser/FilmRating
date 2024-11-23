@@ -24,7 +24,17 @@ const submit = () => {
         ...data,
         remember: form.remember ? 'on' : '',
     })).post(route('login'), {
-        onFinish: () => form.reset('password'),
+        onFinish: function (data) {
+            if (document.getElementsByTagName('iFrame').length > 0) {
+                window.location.href = data.url.origin;
+                document.getElementsByTagName('iFrame')[0].parentElement.innerHTML =
+                   "<div style='width: 500px; height: 250px; margin: auto; padding: 10px; background-color: #eee'>" +
+                    "Erfolgreich eingeloggt, sie werden weitergeleitet" +
+                   "</div>";
+                return
+            }
+            form.reset('password');
+        }
     });
 };
 </script>

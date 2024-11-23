@@ -30,9 +30,9 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('home')">
+                                <a href="/">
                                     <Logo class="block h-9 w-auto" />
-                                </Link>
+                                </a>
                             </div>
 
                             <!-- Navigation Links -->
