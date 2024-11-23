@@ -16,6 +16,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('home');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::middleware([
     'auth:sanctum',

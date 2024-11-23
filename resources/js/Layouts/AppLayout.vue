@@ -78,7 +78,7 @@ const logout = () => {
                                         <div class="border-t border-gray-200" />
 
                                         <!-- Authentication -->
-                                        <form @submit.prevent="logout">
+                                        <form method="post" @submit.prevent="logout">
                                             <DropdownLink as="button">
                                                 Log Out
                                             </DropdownLink>
@@ -152,7 +152,7 @@ const logout = () => {
                             </ResponsiveNavLink>
 
                             <!-- Authentication -->
-                            <form method="POST" @submit.prevent="logout">
+                            <form method="post" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
                                     Log Out
                                 </ResponsiveNavLink>
