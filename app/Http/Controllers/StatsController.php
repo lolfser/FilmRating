@@ -3,11 +3,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Inertia\Inertia;
 
 class StatsController extends Controller {
 
-    public function index(): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+    public function index(): View|\Illuminate\Http\RedirectResponse {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_STATICS)) {
             return redirect(route('rating.index'));
@@ -88,15 +89,19 @@ class StatsController extends Controller {
         array_push($header, ['', "offen"]);
         $arr['Sichter'] = $header;
 
-        return Inertia::render('Stats', [
-            'stats' => $arr,
-            'statsGlobalRatingCount' => $globalRating,
-            'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
-            'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
-            'noDurationStats' => $this->receiveFilmsWithoutDuration(),
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-        ]);
+        return view(
+            'stats/index',
+            [
+                'stats' => $arr,
+                'statsGlobalRatingCount' => $globalRating,
+                'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
+                'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
+                'noDurationStats' => $this->receiveFilmsWithoutDuration(),
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
+                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
+                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
+            ]
+        );
     }
 
     /**
@@ -130,8 +135,6 @@ class StatsController extends Controller {
         $statsJson = $statsJson !== false ? $statsJson : '';
 
         $stats = (array) json_decode($statsJson, true);
-        $header = ['r' => 'Anzahl Bewertung', 'c' => 'Anzahl Film', 'd' => 'Laufzeit in Stunden'];
-        array_unshift($stats, $header);
         return $stats;
 
     }
