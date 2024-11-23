@@ -201,7 +201,7 @@ class ExportController extends Controller {
 
         $hasPermSeeGrades = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_OTHER_VIEWERS_GRADES);
 
-        if ($hasPermSeeGrades) {
+        if (!$hasPermSeeGrades) {
             die('Sry, dir fehlt das entsprechende Recht für diese Funktionalität.');
         }
 
