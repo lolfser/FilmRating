@@ -132,7 +132,7 @@
                         </td>
                         <td>
                             Noten anderer:
-                            <div v-html="otherGrade(film)"></div>
+                            <div style="display: flex;" v-html="otherGrade(film)"></div>
                         </td>
                     </tr>
                 </tbody>
@@ -587,9 +587,6 @@ export default {
                 const init = viewersInit[rating.viewers_id];
                 for (let gradeFromList of grades) {
                     if (gradeId == gradeFromList.id) {
-                        if (returnValue !== "") {
-                            returnValue = returnValue + " / ";
-                        }
                         let color = '#fff';
                         let fontColor = '#000';
                         if (gradeFromList.value === 1) {
@@ -607,8 +604,8 @@ export default {
                             fontColor = '#fff';
                         }
                         returnValue += '<span' +
-                            ' style="background-color: '+ color +'; color: '+ fontColor +'; padding: 5px"' +
-                            ' title="' + init + '">' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
+                            ' style="border: 1px solid black; background-color: '+ color +'; color: '+ fontColor +'; padding: 5px; margin: 5px">' +
+                            init + '<br>' + gradeFromList.value + "" + gradeFromList.trend + "</span>";
                         break;
                     }
                 }

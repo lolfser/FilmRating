@@ -27,6 +27,22 @@
                 text-decoration: underline;
                 color: blue;
             }
+            h1 {
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            thead td {
+                font-weight: bold;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 12px;
+                vertical-align: top;
+            }
             @yield('style')
         </style>
     </head>

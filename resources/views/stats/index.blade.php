@@ -4,22 +4,11 @@
 @endsection
 
 @section('style')
-    table {
-        width: 100%;
-        spacing: 0;
-        border-collapse: collapse;
-    }
-    thead td {
-        font-weight: bold;
-    }
-    th, td {
-        border: 1px solid black;
-        padding: 12px;
-    }
 @endsection
 
 @section('content')
-<div class="p-6 lg:p-8 bg-white border-b border-gray-200 stats">
+<h1>Statistiken</h1>
+<div>
     Angaben der Laufzeit in Stunden (Anzahl der Filme)<br><br>
     <?php
         $firstKey = array_key_first($stats);

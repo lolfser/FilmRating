@@ -12,6 +12,7 @@ use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class FilmsController extends Controller {
 
@@ -27,7 +28,7 @@ class FilmsController extends Controller {
         'updated' => '',
     ];
 
-    public function index(): \Inertia\Response {
+    public function index(): View {
 
         $films = Films::orderBy('film_identifier')->whereNot('film_identifier', '')->get();
 
@@ -48,11 +49,13 @@ class FilmsController extends Controller {
             }
         }
 
-        return Inertia::render('FilmsList', [
-            'films' => $films,
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-        ]);
+        return view(
+            'films/list',
+            [
+                'films' => $films,
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
+            ]
+        );
     }
 
     public function store(Request $request) {
@@ -74,13 +77,26 @@ class FilmsController extends Controller {
         return redirect(route("films.index"));
     }
 
-    public function show(Films $film): \Inertia\Response {
+    public function show(Films $film): View {
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
-        return Inertia::render('FilmsShow', [
-            'film' => $film,
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-        ]);
+        $film->userActions = [];
+        if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS)) {
+                $film->userActions = [
+                    [
+                        'icon' => '/svgs/pen.svg',
+                        'title' => 'bearbeiten',
+                        'href' => '/films/' . $film->id . '/cu',
+                    ]
+                ];
+            }
+        return view(
+            'films/show',
+            [
+                'films' => [$film],
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
+            ]
+        );
     }
 
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {

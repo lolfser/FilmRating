@@ -9,7 +9,6 @@
 
     .content a {color: white; padding: 10px; background-color: darkgoldenrod}
     .content a:hover {color: white; background-color: chocolate}
-
 @endsection
 
 @section('content')
