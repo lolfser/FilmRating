@@ -14,18 +14,15 @@ class StatsController extends Controller {
             return redirect(route('rating.index'));
         }
 
+        /** @var array<int, int> $allUsedGrades Like [3 => 3] */
         $allUsedGrades = [];
         $globalRating = $this->receiveStatsGlobalRatingCount();
 
 		$globalCount = array_column($globalRating, "c");
-		$filmsCountFirst = array_shift($globalCount);
-        $filmsCount = (array_sum($globalCount)); // todo if empty?
-		array_unshift($globalCount, $filmsCountFirst);
+		$filmsCount = (array_sum($globalCount)); // todo if empty?
 
 		$globalDuration = array_column($globalRating, "d");
-		$filmsDurationFirst = array_shift($globalDuration);
         $filmsDuration = (array_sum($globalDuration)); // todo if empty?
-		array_unshift($globalDuration, $filmsDurationFirst);
 
         $films = DB::select(
            "SELECT
@@ -69,7 +66,7 @@ class StatsController extends Controller {
             $c = $filmsCount;
             $d = $filmsDuration;
             foreach ($dataRow as $dataColum) {
-                // var_dump($dataColum);
+
                 if (isset($dataColum[0])) {
                     $c -= $dataColum[0];
                     $d -= $dataColum[1];
