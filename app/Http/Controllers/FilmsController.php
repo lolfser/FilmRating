@@ -11,6 +11,7 @@ use App\Services\SaveFilmsGenresServices;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -30,7 +31,13 @@ class FilmsController extends Controller {
 
     public function index(): View {
 
-        $films = Films::orderBy('film_identifier')->whereNot('film_identifier', '')->get();
+        // @TODO: new feature: dynamic via config in DB table filmsources
+        $films = Films::orderBy(DB::raw("filmsources_id = 3"))
+            ->orderBy(DB::raw("filmsources_id = 1"))
+            ->orderBy(DB::raw("filmsources_id = 2"))
+            ->orderBy("id")
+            ->whereNot('film_identifier', '')
+            ->get();
 
         $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
 
