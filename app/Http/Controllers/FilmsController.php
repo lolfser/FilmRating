@@ -45,6 +45,7 @@ class FilmsController extends Controller {
             // Loading pivots
             $film->languages;
             $film->genres;
+            $film->userActions = [];
             if ($editFilmsIsAllowed) {
                 $film->userActions = [
                     [
