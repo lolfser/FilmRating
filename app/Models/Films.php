@@ -36,6 +36,15 @@ class Films extends Model {
     protected $casts    = ['id' => 'int', 'filmsources_id' => 'int', 'year' => 'int', 'duration' => 'int', 'filmstatus_id' => 'int', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     /**
+     * @var array<array{
+     *     icon: string,
+     *     title: string,
+     *     href:string
+     * }>|array{}
+     */
+    public array $userActions = [];
+
+    /**
      * @return BelongsTo<Filmsources, Films>
      */
     public function filmsource(): BelongsTo {

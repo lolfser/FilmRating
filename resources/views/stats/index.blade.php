@@ -7,6 +7,11 @@
 @endsection
 
 @section('content')
+<?php
+    /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
+    /** @var \App\Services\Statistic\Model\TableResult $genreStats */
+    /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
+?>
 <h1>Statistiken</h1>
 <div>
     Angaben der Laufzeit in Stunden (Anzahl der Filme)<br><br>
@@ -69,15 +74,17 @@
     <table class="table">
         <thead>
         <tr>
-            <td>Genre</td>
-            <td>Anzahl</td>
+            <?php foreach ($genreStats->getHeader() as $column) { ?>
+            <td><?php echo $column; ?></td>
+            <?php } ?>
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($genreStats as $key => $stat) { ?>
+        <?php foreach ($genreStats->getResult() as $row) { ?>
             <tr>
-                <td><?php echo $stat['name']; ?></td>
-                <td><?php echo $stat['counter']; ?></td>
+                <?php foreach ($row as $value) { ?>
+                <td><?php echo $value; ?></td>
+                <?php } ?>
             </tr>
         <?php } ?>
         </tbody>
@@ -87,15 +94,17 @@
     <table class="table">
         <thead>
             <tr>
-                <td>Stichwort</td>
-                <td>Anzahl</td>
+                <?php foreach ($keywordStats->getHeader() as $column) { ?>
+                <td><?php echo $column; ?></td>
+                <?php } ?>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($keywordStats as $key => $stat) { ?>
+        <?php foreach ($keywordStats->getResult() as $row) { ?>
         <tr>
-            <td><?php echo $stat['name']; ?></td>
-            <td><?php echo $stat['counter']; ?></td>
+            <?php foreach ($row as $value) { ?>
+            <td><?php echo $value; ?></td>
+            <?php } ?>
         </tr>
         <?php } ?>
         </tbody>
@@ -103,12 +112,22 @@
     <br><br>
     Keine Laufzeit<br><br>
     <table class="table">
-        <?php foreach ($noDurationStats as $key => $stat) { ?>
-        <tr>
-            <td><?php echo $stat['film_identifier']; ?></td>
-            <td><?php echo $stat['name']; ?></td>
-        </tr>
+        <thead>
+            <tr>
+                <?php foreach ($noDurationStats->getHeader() as $column) { ?>
+                <td><?php echo $column; ?></td>
+                <?php } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($noDurationStats->getResult() as $row) { ?>
+            <tr>
+                <?php foreach ($row as $value) { ?>
+                <td><?php echo $value; ?></td>
+                <?php } ?>
+            </tr>
         <?php } ?>
+        </tbody>
     </table>
 
 </div>

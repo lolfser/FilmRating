@@ -29,7 +29,7 @@ const submit = () => {
                 window.location.href = data.url.origin;
                 document.getElementsByTagName('iFrame')[0].parentElement.innerHTML =
                    "<div style='width: 500px; height: 250px; margin: auto; padding: 10px; background-color: #eee'>" +
-                    "Erfolgreich eingeloggt, sie werden weitergeleitet" +
+                    "Erfolgreich eingeloggt, Sie werden weitergeleitet" +
                    "</div>";
                 return
             }

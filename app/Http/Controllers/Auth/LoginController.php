@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -20,8 +19,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
-    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -43,12 +40,11 @@ class LoginController extends Controller
     /**
      * Logout, Clear Session, and Return.
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function logout()
     {
         // $user = Auth::user();
-        // Log::info('User Logged Out. ', [$user]);
         Auth::logout();
         Session::flush();
 

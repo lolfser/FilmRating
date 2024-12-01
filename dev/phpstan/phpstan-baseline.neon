@@ -156,11 +156,6 @@ parameters:
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Access to an undefined property App\\\\Models\\\\Films\\:\\:\\$userActions\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/FilmsController.php
-
-		-
 			message: "#^Access to an undefined property App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:\\$id\\.$#"
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
@@ -441,26 +436,6 @@ parameters:
 			path: ../../app/Services/SaveFilmsLanguagesServices.php
 
 		-
-			message: "#^Method App\\\\Services\\\\Stats\\\\GenresService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/GenresService.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/GenresService.php
-
-		-
-			message: "#^Method App\\\\Services\\\\Stats\\\\KeywordsService\\:\\:receive\\(\\) should return array but returns mixed\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/KeywordsService.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
-			count: 1
-			path: ../../app/Services/Stats/KeywordsService.php
-
-		-
 			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
 			count: 1
 			path: ../../config/cache.php
@@ -484,8 +459,3 @@ parameters:
 			message: "#^Call to static method factory\\(\\) on an unknown class App\\\\Models\\\\Team\\.$#"
 			count: 1
 			path: ../../database/factories/UserFactory.php
-
-		-
-			message: "#^Undefined variable\\: \\$this$#"
-			count: 1
-			path: ../../routes/console.php

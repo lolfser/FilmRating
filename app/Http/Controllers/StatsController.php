@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Inertia\Inertia;
 
 class StatsController extends Controller {
 
@@ -91,12 +90,10 @@ class StatsController extends Controller {
             [
                 'stats' => $arr,
                 'statsGlobalRatingCount' => $globalRating,
-                'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
-                'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
-                'noDurationStats' => $this->receiveFilmsWithoutDuration(),
+                'genreStats' => (new \App\Services\Statistic\GenresService())->receive(),
+                'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),
+                'noDurationStats' => (new \App\Services\Statistic\FilmsWithoutDurationService())->receive(),
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             ]
         );
     }
@@ -135,25 +132,4 @@ class StatsController extends Controller {
         return $stats;
 
     }
-
-    /**
-     * @return array<mixed>
-     */
-    private function receiveFilmsWithoutDuration(): array {
-
-        $stats = DB::select("
-            SELECT *
-            FROM films
-            WHERE films.duration = 0
-        ");
-
-        $statsJson = json_encode($stats);
-        $statsJson = $statsJson !== false ? $statsJson : '';
-
-        $stats = (array) json_decode($statsJson, true);
-        $header = ['film_identifier' => 'Film-Identifier', 'name' => 'Film'];
-        array_unshift($stats, $header);
-        return $stats;
-    }
-
 }
