@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
 use App\Models\Users;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Fortify\Fortify;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,6 +24,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::loginView(function () {
+            return file_exists(resource_path('views/auth/login.blade.php'))
+                ? view('auth.login')
+                : view('orchid-fortify::auth.login');
+        });
+
         Gate::define(\App\Models\Permissions::PERMISSION_ADD_FILMS, function (Users $user) {
             return (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_ADD_FILMS)
                 ? Response::allow()

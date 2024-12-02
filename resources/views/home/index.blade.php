@@ -18,7 +18,7 @@
     </div>
     <div>
         <a href="/login">Login</a>
-        <a href="/login">Registrieren</a>
+        <a href="/register">Registrieren</a>
     </div>
 </div>
 @endsection
