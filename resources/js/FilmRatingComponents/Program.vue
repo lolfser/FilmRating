@@ -31,7 +31,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
             v-model="selectedFilmModifications"
             style="display: inline"
         />
-        <label><input type="text" name="title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
+        <label><input type="text" name="title_description" placeholder="Nr. / Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
         &nbsp;&nbsp;&nbsp;
         <label><input type="checkbox" :checked="onlyNotSet" name="only_not_set"> nur Filme, die noch in keinem Programm sind</label>
     </div>

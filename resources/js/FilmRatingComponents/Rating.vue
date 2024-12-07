@@ -49,7 +49,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 v-model="selectedFilmSource"
                 style="display: inline"
             />
-            <label><input type="text" name="fl_title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
+            <label><input type="text" name="fl_title_description" placeholder="Nr. / Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
         </form>
     </div>
     <div>
