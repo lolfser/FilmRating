@@ -32,7 +32,7 @@ class FilmsQueryBuilderService {
         int $viewerId
     ): \Illuminate\Database\Eloquent\Builder {
 
-        $films = Films::query()->select('films.*');
+        $films = Films::query()->select('films.*')->distinct();
 
         if ($filmStatusIds !== []) {
             $films = $films->whereIn('filmstatus_id', $filmStatusIds);
