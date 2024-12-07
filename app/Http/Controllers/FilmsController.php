@@ -142,12 +142,13 @@ class FilmsController extends Controller {
             $errors[] = 'no permission';
         }
 
+        $film->fill($newData);
+
         if ($errors !== []) {
-            $film->fill($newData);
             return $this->createAndUpdate((int) $request->all()['id'], $errors, $film);
         }
 
-        $film->fill($newData); // @todo unique check of film identifier
+        // @todo unique check of film identifier
         $film->save();
 
         (new SaveFilmsGenresServices())->save($film, $request->all());
