@@ -93,6 +93,7 @@ class StatsController extends Controller {
                 'genreStats' => (new \App\Services\Statistic\GenresService())->receive(),
                 'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),
                 'noDurationStats' => (new \App\Services\Statistic\FilmsWithoutDurationService())->receive(),
+                'notUsedKeywordsStats' => (new \App\Services\Statistic\NotUsedKeywordsService())->receive(),
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             ]
         );

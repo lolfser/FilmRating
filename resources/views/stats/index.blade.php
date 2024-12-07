@@ -11,6 +11,7 @@
     /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
     /** @var \App\Services\Statistic\Model\TableResult $genreStats */
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
+    /** @var \App\Services\Statistic\Model\TableResult $notUsedKeywordsStats */
 ?>
 <h1>Statistiken</h1>
 <div>
@@ -129,6 +130,27 @@
         <?php } ?>
         </tbody>
     </table>
+    <br><br>
+    nicht genutzte Stichworte<br><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <?php foreach ($notUsedKeywordsStats->getHeader() as $column) { ?>
+                <td><?php echo $column; ?></td>
+                <?php } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($notUsedKeywordsStats->getResult() as $row) { ?>
+            <tr>
+                <?php foreach ($row as $value) { ?>
+                <td><?php echo $value; ?></td>
+                <?php } ?>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+
 
 </div>
 @endsection
