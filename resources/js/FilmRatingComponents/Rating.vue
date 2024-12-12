@@ -19,7 +19,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 style="max-width: 90px"
                 :value="currentPage"
                 placeholder="Seite"
-                :onkeyup="filterInputs"
+                @keyup.enter="filterInputs"
             > von {{ totalPages }}
             <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
                 placeholder="Nach Status filtern"
@@ -61,7 +61,7 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 <input type="text" name="fl_title_description"
                        placeholder="Nr. / Namen / Beschreibung filtern"
                        :value="selectedTitleDescription"
-                       :onkeyup="filterInputs"
+                       @keyup.enter="filterInputs"
                 /></label>
         </form>
     </div>
