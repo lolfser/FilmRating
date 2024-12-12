@@ -12,6 +12,7 @@
     /** @var \App\Services\Statistic\Model\TableResult $genreStats */
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
     /** @var \App\Services\Statistic\Model\TableResult $notUsedKeywordsStats */
+    /** @var \App\Services\Statistic\Model\TableResult $filmCountDurationGroupStats */
 ?>
 <h1>Statistiken</h1>
 <div>
@@ -71,6 +72,7 @@
         </tbody>
     </table>
     <br><br>
+    @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
     Genres<br><br>
     <table class="table">
         <thead>
@@ -150,7 +152,5 @@
         <?php } ?>
         </tbody>
     </table>
-
-
 </div>
 @endsection

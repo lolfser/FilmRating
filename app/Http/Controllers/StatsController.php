@@ -94,6 +94,7 @@ class StatsController extends Controller {
                 'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),
                 'noDurationStats' => (new \App\Services\Statistic\FilmsWithoutDurationService())->receive(),
                 'notUsedKeywordsStats' => (new \App\Services\Statistic\NotUsedKeywordsService())->receive(),
+                'filmCountDurationGroupStats' => (new \App\Services\Statistic\FilmCountDurationGroupService())->receive(),
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             ]
         );
