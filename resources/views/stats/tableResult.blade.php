@@ -2,7 +2,9 @@
     /** @var \App\Services\Statistic\Model\TableResult $tableResult */
     /** @var string $headline */
 ?>
-<?php echo $headline; ?>
+<?php if ($tableResult->getResult() !== []) { ?>
+
+<p style="margin-top: 10px;"><?php echo $headline; ?></p>
 <table class="table">
     <thead>
         <tr>
@@ -21,3 +23,5 @@
     <?php } ?>
     </tbody>
 </table>
+
+<?php } ?>

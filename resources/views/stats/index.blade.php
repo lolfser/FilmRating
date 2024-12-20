@@ -13,6 +13,8 @@
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
     /** @var \App\Services\Statistic\Model\TableResult $notUsedKeywordsStats */
     /** @var \App\Services\Statistic\Model\TableResult $filmCountDurationGroupStats */
+    /** @var \App\Services\Statistic\Model\TableResult $possibleDuplicatesStats */
+
 ?>
 <h1>Statistiken</h1>
 <div>
@@ -73,84 +75,10 @@
     </table>
     <br><br>
     @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
-    Genres<br><br>
-    <table class="table">
-        <thead>
-        <tr>
-            <?php foreach ($genreStats->getHeader() as $column) { ?>
-            <td><?php echo $column; ?></td>
-            <?php } ?>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($genreStats->getResult() as $row) { ?>
-            <tr>
-                <?php foreach ($row as $value) { ?>
-                <td><?php echo $value; ?></td>
-                <?php } ?>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    Stichwort-Analyse<br><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <?php foreach ($keywordStats->getHeader() as $column) { ?>
-                <td><?php echo $column; ?></td>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($keywordStats->getResult() as $row) { ?>
-        <tr>
-            <?php foreach ($row as $value) { ?>
-            <td><?php echo $value; ?></td>
-            <?php } ?>
-        </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    Keine Laufzeit<br><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <?php foreach ($noDurationStats->getHeader() as $column) { ?>
-                <td><?php echo $column; ?></td>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($noDurationStats->getResult() as $row) { ?>
-            <tr>
-                <?php foreach ($row as $value) { ?>
-                <td><?php echo $value; ?></td>
-                <?php } ?>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    nicht genutzte Stichworte<br><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <?php foreach ($notUsedKeywordsStats->getHeader() as $column) { ?>
-                <td><?php echo $column; ?></td>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($notUsedKeywordsStats->getResult() as $row) { ?>
-            <tr>
-                <?php foreach ($row as $value) { ?>
-                <td><?php echo $value; ?></td>
-                <?php } ?>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
+    @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])
+    @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])
+    @include('stats.tableResult', ['headline' => 'Stichwort-Analyse', 'tableResult' => $keywordStats])
+    @include('stats.tableResult', ['headline' => 'Keine Laufzeit', 'tableResult' => $noDurationStats])
+    @include('stats.tableResult', ['headline' => 'nicht genutzte Stichworte', 'tableResult' => $notUsedKeywordsStats])
 </div>
 @endsection

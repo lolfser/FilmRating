@@ -7,6 +7,7 @@
     th, td {
         border: 1px solid black;
         padding: 12px;
+        vertical-align: top
     }
     .p-checkbox-box {
         background-color: #DDD;
