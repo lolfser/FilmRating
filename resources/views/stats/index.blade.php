@@ -8,6 +8,7 @@
 
 @section('content')
 <?php
+    /** @var \App\Services\Statistic\Model\TableResult $statsGlobalRatingCount */
     /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
     /** @var \App\Services\Statistic\Model\TableResult $genreStats */
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
@@ -54,26 +55,7 @@
         </tbody>
     </table>
     <br><br>
-    Anzahl der bewerteten Filme<br><br>
-    <table class="table">
-        <thead>
-        <tr>
-            <td>Anzahl Bewertung</td>
-            <td>Anzahl Film</td>
-            <td>Laufzeit in Stunden</td>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($statsGlobalRatingCount as $key => $stat) { ?>
-        <tr>
-            <td><?php echo $stat['r']; ?></td>
-            <td><?php echo $stat['c']; ?></td>
-            <td><?php echo $stat['d']; ?></td>
-        </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
+    @include('stats.tableResult', ['headline' => 'Anzahl der bewerteten Filme', 'tableResult' => $statsGlobalRatingCount])
     @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
     @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])
     @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])

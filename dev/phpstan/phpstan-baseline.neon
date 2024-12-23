@@ -162,7 +162,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:fill\\(\\)\\.$#"
-			count: 2
+			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-

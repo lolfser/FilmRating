@@ -15,12 +15,13 @@ class StatsController extends Controller {
 
         /** @var array<int, int> $allUsedGrades Like [3 => 3] */
         $allUsedGrades = [];
-        $globalRating = $this->receiveStatsGlobalRatingCount();
+        $globalRating = (new \App\Services\Statistic\GlobalFilmsStatsService())->receive();
+        $globalRatingResults = $globalRating->getResult();
 
-		$globalCount = array_column($globalRating, "c");
+		$globalCount = array_column($globalRatingResults, "countRatings");
 		$filmsCount = (array_sum($globalCount)); // todo if empty?
 
-		$globalDuration = array_column($globalRating, "d");
+		$globalDuration = array_column($globalRatingResults, "durationInHour");
         $filmsDuration = (array_sum($globalDuration)); // todo if empty?
 
         $films = DB::select(
@@ -99,40 +100,5 @@ class StatsController extends Controller {
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             ]
         );
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function receiveStatsGlobalRatingCount(): array {
-
-        $stats = DB::select("
-            SELECT '0' AS r, COUNT(1) AS c, (sum(films.duration) / 60 / 60) AS d
-            FROM films
-            LEFT JOIN ratings ON ratings.films_id = films.id
-            WHERE ratings.films_id IS NULL
-            UNION
-            (
-                SELECT
-                c_inner AS r,
-                COUNT(1) AS c,
-                (SUM(Y) / 60 / 60) AS d
-                FROM (
-                    SELECT COUNT(1) AS c_inner, films.duration AS Y
-                    FROM films
-                    JOIN ratings ON ratings.films_id = films.id
-                    GROUP BY ratings.films_id, Y
-                ) AS s
-                GROUP BY r
-            )
-            ORDER BY 'Anzahl Bewertung', r
-        ");
-
-        $statsJson = json_encode($stats);
-        $statsJson = $statsJson !== false ? $statsJson : '';
-
-        $stats = (array) json_decode($statsJson, true);
-        return $stats;
-
     }
 }
