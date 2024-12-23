@@ -2,17 +2,25 @@
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
 import FilmRow from "@/FilmRatingComponents/RatingRow.vue";
-import PrimaryButton from '../Components/PrimaryButton.vue';
 import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
 
 </script>
 <template>
     <Headline :headline="headline" />
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <form method="post" action="/rating/filter">
+        <form method="post" action="/rating/filter" name="filter-form">
             <input type="hidden" name="_token" :value="_token" />
-            <input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
-            Seite: <input type="number" name="page" :value="currentPage" placeholder="Seite" style="max-width: 90px"> von {{ totalPages }}
+            <input type="button" name="filter-button" value="Filtern"
+                   :onClick="filterFunction"
+                   class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+            />
+            Seite: <input
+                type="number" name="page"
+                style="max-width: 90px"
+                :value="currentPage"
+                placeholder="Seite"
+                @keyup.enter="filterInputs"
+            > von {{ totalPages }}
             <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
                 placeholder="Nach Status filtern"
                 name="fl_filmstatus"
@@ -49,7 +57,12 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 v-model="selectedFilmSource"
                 style="display: inline"
             />
-            <label><input type="text" name="fl_title_description" placeholder="Nach Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
+            <label>
+                <input type="text" name="fl_title_description"
+                       placeholder="Nr. / Namen / Beschreibung filtern"
+                       :value="selectedTitleDescription"
+                       @keyup.enter="filterInputs"
+                /></label>
         </form>
     </div>
     <div>
@@ -123,6 +136,11 @@ export default {
         },
         getElementName: function (element) {
             return element.name;
+        },
+        filterInputs(event) {
+            if (event.key === "Enter") {
+                document.getElementsByName("filter-button")[0].click();
+            }
         },
         filterFunction: function (event) {
             let data = new FormData();

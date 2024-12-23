@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Inertia\Inertia;
 
 class StatsController extends Controller {
 
@@ -14,18 +13,16 @@ class StatsController extends Controller {
             return redirect(route('rating.index'));
         }
 
+        /** @var array<int, int> $allUsedGrades Like [3 => 3] */
         $allUsedGrades = [];
-        $globalRating = $this->receiveStatsGlobalRatingCount();
+        $globalRating = (new \App\Services\Statistic\GlobalFilmsStatsService())->receive();
+        $globalRatingResults = $globalRating->getResult();
 
-		$globalCount = array_column($globalRating, "c");
-		$filmsCountFirst = array_shift($globalCount);
-        $filmsCount = (array_sum($globalCount)); // todo if empty?
-		array_unshift($globalCount, $filmsCountFirst);
+		$globalCount = array_column($globalRatingResults, "countRatings");
+		$filmsCount = (array_sum($globalCount)); // todo if empty?
 
-		$globalDuration = array_column($globalRating, "d");
-		$filmsDurationFirst = array_shift($globalDuration);
+		$globalDuration = array_column($globalRatingResults, "durationInHour");
         $filmsDuration = (array_sum($globalDuration)); // todo if empty?
-		array_unshift($globalDuration, $filmsDurationFirst);
 
         $films = DB::select(
            "SELECT
@@ -69,7 +66,7 @@ class StatsController extends Controller {
             $c = $filmsCount;
             $d = $filmsDuration;
             foreach ($dataRow as $dataColum) {
-                // var_dump($dataColum);
+
                 if (isset($dataColum[0])) {
                     $c -= $dataColum[0];
                     $d -= $dataColum[1];
@@ -94,69 +91,14 @@ class StatsController extends Controller {
             [
                 'stats' => $arr,
                 'statsGlobalRatingCount' => $globalRating,
-                'genreStats' => (new \App\Services\Stats\GenresService())->receive(),
-                'keywordStats' => (new \App\Services\Stats\KeywordsService())->receive(),
-                'noDurationStats' => $this->receiveFilmsWithoutDuration(),
+                'genreStats' => (new \App\Services\Statistic\GenresService())->receive(),
+                'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),
+                'noDurationStats' => (new \App\Services\Statistic\FilmsWithoutDurationService())->receive(),
+                'notUsedKeywordsStats' => (new \App\Services\Statistic\NotUsedKeywordsService())->receive(),
+                'filmCountDurationGroupStats' => (new \App\Services\Statistic\FilmCountDurationGroupService())->receive(),
+                'possibleDuplicatesStats' => (new \App\Services\Statistic\PossibleDuplicatesService())->receive(),
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-                'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
             ]
         );
     }
-
-    /**
-     * @return array<mixed>
-     */
-    private function receiveStatsGlobalRatingCount(): array {
-
-        $stats = DB::select("
-            SELECT '0' AS r, COUNT(1) AS c, (sum(films.duration) / 60 / 60) AS d
-            FROM films
-            LEFT JOIN ratings ON ratings.films_id = films.id
-            WHERE ratings.films_id IS NULL
-            UNION
-            (
-                SELECT
-                c_inner AS r,
-                COUNT(1) AS c,
-                (SUM(Y) / 60 / 60) AS d
-                FROM (
-                    SELECT COUNT(1) AS c_inner, films.duration AS Y
-                    FROM films
-                    JOIN ratings ON ratings.films_id = films.id
-                    GROUP BY ratings.films_id, Y
-                ) AS s
-                GROUP BY r
-            )
-            ORDER BY 'Anzahl Bewertung', r
-        ");
-
-        $statsJson = json_encode($stats);
-        $statsJson = $statsJson !== false ? $statsJson : '';
-
-        $stats = (array) json_decode($statsJson, true);
-        return $stats;
-
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function receiveFilmsWithoutDuration(): array {
-
-        $stats = DB::select("
-            SELECT *
-            FROM films
-            WHERE films.duration = 0
-        ");
-
-        $statsJson = json_encode($stats);
-        $statsJson = $statsJson !== false ? $statsJson : '';
-
-        $stats = (array) json_decode($statsJson, true);
-        $header = ['film_identifier' => 'Film-Identifier', 'name' => 'Film'];
-        array_unshift($stats, $header);
-        return $stats;
-    }
-
 }

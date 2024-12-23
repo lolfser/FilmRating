@@ -42,7 +42,7 @@ class RatingsController extends Controller {
         $filmStatusIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmstatus'] ?? '')));
         $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['fl_keywords'] ?? '')));
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
-        $titleDescription = trim($requestParam['fl_title_description'] ?? '');
+        $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
         $ratedIds = array_filter(array_map('intval', explode(',', $requestParam['fl_rated'] ?? '')));
         $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmSource'] ?? '')));
 
@@ -53,7 +53,7 @@ class RatingsController extends Controller {
             $keywordIds,
             $filmModificationsIds,
             $filmSourceIds,
-            $titleDescription,
+            $filmNrTitleDescription,
             false,
             $ratedIds[0] ?? 0,
             $viewerId
@@ -106,7 +106,7 @@ class RatingsController extends Controller {
             'fl_filmmodifications' => $filmModificationsIds,
             'fl_filmSource' => $filmSourceIds,
             'fl_keywords' => $keywordIds,
-            'fl_title_description' => $titleDescription,
+            'fl_title_description' => $filmNrTitleDescription,
         ];
 
         return Inertia::render('Ratings', [

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -21,14 +20,10 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
-     *
-     * @var string
      */
-    protected $redirectAfterLogout = '/';
+    protected string $redirectAfterLogout = '/';
 
     /**
      * Create a new controller instance.
@@ -43,12 +38,11 @@ class LoginController extends Controller
     /**
      * Logout, Clear Session, and Return.
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function logout()
     {
         // $user = Auth::user();
-        // Log::info('User Logged Out. ', [$user]);
         Auth::logout();
         Session::flush();
 

@@ -11,7 +11,9 @@ use App\Services\SaveFilmsGenresServices;
 use App\Services\SaveFilmsLanguagesServices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class FilmsController extends Controller {
 
@@ -27,9 +29,15 @@ class FilmsController extends Controller {
         'updated' => '',
     ];
 
-    public function index(): \Inertia\Response {
+    public function index(): View {
 
-        $films = Films::orderBy('film_identifier')->whereNot('film_identifier', '')->get();
+        // @TODO: new feature: dynamic via config in DB table filmsources
+        $films = Films::orderBy(DB::raw("filmsources_id = 3"))
+            ->orderBy(DB::raw("filmsources_id = 1"))
+            ->orderBy(DB::raw("filmsources_id = 2"))
+            ->orderBy("id")
+            ->whereNot('film_identifier', '')
+            ->get();
 
         $editFilmsIsAllowed = (new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS);
 
@@ -37,6 +45,7 @@ class FilmsController extends Controller {
             // Loading pivots
             $film->languages;
             $film->genres;
+            $film->userActions = [];
             if ($editFilmsIsAllowed) {
                 $film->userActions = [
                     [
@@ -48,11 +57,13 @@ class FilmsController extends Controller {
             }
         }
 
-        return Inertia::render('FilmsList', [
-            'films' => $films,
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-            'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
-        ]);
+        return view(
+            'films/list',
+            [
+                'films' => $films,
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
+            ]
+        );
     }
 
     public function store(Request $request) {
@@ -74,13 +85,26 @@ class FilmsController extends Controller {
         return redirect(route("films.index"));
     }
 
-    public function show(Films $film): \Inertia\Response {
+    public function show(Films $film): View {
         $film->languages; // Loading pivots
         $film->genres; // Loading pivots
-        return Inertia::render('FilmsShow', [
-            'film' => $film,
-            'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
-        ]);
+        $film->userActions = [];
+        if ((new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_EDIT_FILMS)) {
+                $film->userActions = [
+                    [
+                        'icon' => '/svgs/pen.svg',
+                        'title' => 'bearbeiten',
+                        'href' => '/films/' . $film->id . '/cu',
+                    ]
+                ];
+            }
+        return view(
+            'films/show',
+            [
+                'films' => [$film],
+                'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
+            ]
+        );
     }
 
     public function createAndUpdate(int $filmId = 0, array $errors = [], $films = null) {
@@ -118,12 +142,13 @@ class FilmsController extends Controller {
             $errors[] = 'no permission';
         }
 
+        $film->fill($newData);
+
         if ($errors !== []) {
-            $film->fill($newData);
             return $this->createAndUpdate((int) $request->all()['id'], $errors, $film);
         }
 
-        $film->fill($newData); // @todo unique check of film identifier
+        // @todo unique check of film identifier
         $film->save();
 
         (new SaveFilmsGenresServices())->save($film, $request->all());

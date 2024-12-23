@@ -26,6 +26,9 @@
         <p class="mt-6 text-gray-500 leading-relaxed">
             Vielen Dank, dass du uns bei der Sichtung von Filmen bewerten möchtest. Für die Sichtung hast du verschiedene Möglichkeiten.
         </p>
+        <?php if ($hasPermRating) { ?>
+            <p style="margin-bottom: 10px; margin-top: 10px;">Das aktuelle Passwort für click-for-festival ist <b>[passwort]</b></p>
+        <?php } ?>
         <ul>
             <?php if ($hasPermRating) { ?>
             <li>

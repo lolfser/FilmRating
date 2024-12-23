@@ -16,7 +16,7 @@ class FilmsQueryBuilderService {
      * @param int[] $keywordIds
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
-     * @param string $titleDescription
+     * @param string $filmNrTitleDescription
      * @param bool $onlyNotSetInProgram
      *
      * @return \Illuminate\Database\Eloquent\Builder<Films>
@@ -26,13 +26,13 @@ class FilmsQueryBuilderService {
         array $keywordIds,
         array $filmModificationIds,
         array $filmSourceIds,
-        string $titleDescription,
+        string $filmNrTitleDescription,
         bool $onlyNotSetInProgram,
         int $rated,
         int $viewerId
     ): \Illuminate\Database\Eloquent\Builder {
 
-        $films = Films::query()->select('films.*');
+        $films = Films::query()->select('films.*')->distinct();
 
         if ($filmStatusIds !== []) {
             $films = $films->whereIn('filmstatus_id', $filmStatusIds);
@@ -52,11 +52,12 @@ class FilmsQueryBuilderService {
             $films = $films->whereIn('filmsources_id', $filmSourceIds);
         }
 
-        if ($titleDescription !== '') {
+        if ($filmNrTitleDescription !== '') {
             $films = $films->whereNested(
-                function($query) use ($titleDescription) {
-                    $query->where('name', 'like', '%' . $titleDescription . '%')
-                        ->orWhere('description', 'like', '%' . $titleDescription . '%');
+                function($query) use ($filmNrTitleDescription) {
+                    $query->where('name', 'like', '%' . $filmNrTitleDescription . '%')
+                        ->orWhere('description', 'like', '%' . $filmNrTitleDescription . '%')
+                        ->orWhere('film_identifier', '=', $filmNrTitleDescription);
                 }
             );
         }

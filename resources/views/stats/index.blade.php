@@ -4,22 +4,21 @@
 @endsection
 
 @section('style')
-    table {
-        width: 100%;
-        spacing: 0;
-        border-collapse: collapse;
-    }
-    thead td {
-        font-weight: bold;
-    }
-    th, td {
-        border: 1px solid black;
-        padding: 12px;
-    }
 @endsection
 
 @section('content')
-<div class="p-6 lg:p-8 bg-white border-b border-gray-200 stats">
+<?php
+    /** @var \App\Services\Statistic\Model\TableResult $statsGlobalRatingCount */
+    /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
+    /** @var \App\Services\Statistic\Model\TableResult $genreStats */
+    /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
+    /** @var \App\Services\Statistic\Model\TableResult $notUsedKeywordsStats */
+    /** @var \App\Services\Statistic\Model\TableResult $filmCountDurationGroupStats */
+    /** @var \App\Services\Statistic\Model\TableResult $possibleDuplicatesStats */
+
+?>
+<h1>Statistiken</h1>
+<div>
     Angaben der Laufzeit in Stunden (Anzahl der Filme)<br><br>
     <?php
         $firstKey = array_key_first($stats);
@@ -56,71 +55,12 @@
         </tbody>
     </table>
     <br><br>
-    Anzahl der bewerteten Filme<br><br>
-    <table class="table">
-        <thead>
-        <tr>
-            <td>Anzahl Bewertung</td>
-            <td>Anzahl Film</td>
-            <td>Laufzeit in Stunden</td>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($statsGlobalRatingCount as $key => $stat) { ?>
-        <tr>
-            <td><?php echo $stat['r']; ?></td>
-            <td><?php echo $stat['c']; ?></td>
-            <td><?php echo $stat['d']; ?></td>
-        </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    Genres<br><br>
-    <table class="table">
-        <thead>
-        <tr>
-            <td>Genre</td>
-            <td>Anzahl</td>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($genreStats as $key => $stat) { ?>
-            <tr>
-                <td><?php echo $stat['name']; ?></td>
-                <td><?php echo $stat['counter']; ?></td>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    Stichwort-Analyse<br><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Stichwort</td>
-                <td>Anzahl</td>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($keywordStats as $key => $stat) { ?>
-        <tr>
-            <td><?php echo $stat['name']; ?></td>
-            <td><?php echo $stat['counter']; ?></td>
-        </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
-    Keine Laufzeit<br><br>
-    <table class="table">
-        <?php foreach ($noDurationStats as $key => $stat) { ?>
-        <tr>
-            <td><?php echo $stat['film_identifier']; ?></td>
-            <td><?php echo $stat['name']; ?></td>
-        </tr>
-        <?php } ?>
-    </table>
-
+    @include('stats.tableResult', ['headline' => 'Anzahl der bewerteten Filme', 'tableResult' => $statsGlobalRatingCount])
+    @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
+    @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])
+    @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])
+    @include('stats.tableResult', ['headline' => 'Stichwort-Analyse', 'tableResult' => $keywordStats])
+    @include('stats.tableResult', ['headline' => 'Keine Laufzeit', 'tableResult' => $noDurationStats])
+    @include('stats.tableResult', ['headline' => 'nicht genutzte Stichworte', 'tableResult' => $notUsedKeywordsStats])
 </div>
 @endsection
