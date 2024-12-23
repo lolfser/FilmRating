@@ -9,6 +9,7 @@
 @section('content')
 <?php
     /** @var \App\Services\Statistic\Model\TableResult $statsGlobalRatingCount */
+    /** @var \App\Services\Statistic\Model\TableResult $viewerStats */
     /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
     /** @var \App\Services\Statistic\Model\TableResult $genreStats */
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
@@ -19,42 +20,7 @@
 ?>
 <h1>Statistiken</h1>
 <div>
-    Angaben der Laufzeit in Stunden (Anzahl der Filme)<br><br>
-    <?php
-        $firstKey = array_key_first($stats);
-        $firstRow = array_merge([0 => [1 => $firstKey]], array_shift($stats));
-    ?>
-    <table class="table">
-        <thead>
-            <tr>
-            <?php foreach ($firstRow as $key => $stat) { ?>
-                <td>
-                   <?php echo $stat[1]; ?>
-                </td>
-            <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($stats as $key => $stat) { ?>
-        <tr>
-            <td>
-               <?php echo $key; ?>
-            </td>
-            <?php foreach ($stat as $key2 => $grade) { ?>
-            <td>
-                <?php
-                    echo $grade[1];
-                    if ($grade[0] !== "") {
-                        echo ' (' . $grade[0] . ')';
-                    }
-                ?>
-            </td>
-            <?php } ?>
-        </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <br><br>
+    @include('stats.tableResult', ['headline' => 'Angaben der Laufzeit in Stunden (Anzahl der Filme)', 'tableResult' => $viewerStats])
     @include('stats.tableResult', ['headline' => 'Anzahl der bewerteten Filme', 'tableResult' => $statsGlobalRatingCount])
     @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
     @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])

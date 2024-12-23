@@ -371,11 +371,6 @@ parameters:
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/StatsController.php
-
-		-
 			message: "#^Method App\\\\Http\\\\Middleware\\\\HandleInertiaRequests\\:\\:share\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../../app/Http/Middleware/HandleInertiaRequests.php
