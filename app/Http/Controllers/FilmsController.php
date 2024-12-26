@@ -132,6 +132,8 @@ class FilmsController extends Controller {
     public function update(Request $request) {
 
         $newData = $request->except(['_method', '_token', 'id']);
+        $duration = $newData['duration'] ?? '';
+        $newData['duration'] = str_replace(['.', ','], '', $duration);
 
         $film = Films::find($request->all()['id']) ?? new Films();
 
