@@ -86,11 +86,15 @@ class FilmsForVierwerService implements StatisticInterface {
             $arr[$key] = $dataRow;
         }
 
+        $daysTilDeadline = (new \DateTime())->diff(new \DateTime('2025-05-01'))->days;
+        $daysTilDeadline = $daysTilDeadline < 1 ? 1 : $daysTilDeadline;
+
         $header = ['Sichter'];
         foreach($allUsedGrades as $grade) {
             $header[] = 'Note "' . $grade . '"';
         }
         $header[] = 'offen';
+        $header[] = '⌀ bis 01.05.2025';
 
         $result = [];
         foreach ($arr as $viewerInitials => $dataRow) {
@@ -99,6 +103,7 @@ class FilmsForVierwerService implements StatisticInterface {
             foreach ($dataRow as $dataColum) {
                 $result[$viewerInitials][] = $dataColum[1] . ' (' . $dataColum[0] . ')';
             }
+            $result[$viewerInitials][] = (round($dataColum[1] / $daysTilDeadline, 1)) . ' (' . (round($dataColum[0] / $daysTilDeadline, 1)) . ')';
         }
 
         return new TableResult($header, $result);

@@ -25,9 +25,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::loginView(function () {
-            return file_exists(resource_path('views/auth/login.blade.php'))
-                ? view('auth.login')
-                : view('orchid-fortify::auth.login');
+            return view('auth.login');
+        });
+
+        Fortify::registerView(function () {
+            return view('auth.register');
         });
 
         Gate::define(\App\Models\Permissions::PERMISSION_ADD_FILMS, function (Users $user) {
