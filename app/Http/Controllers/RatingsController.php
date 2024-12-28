@@ -26,7 +26,7 @@ class RatingsController extends Controller {
 
     private const ITEMS_PER_PAGE = 100;
 
-    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse|\Illuminate\View\View {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
             return redirect(route('home'));
@@ -231,7 +231,7 @@ class RatingsController extends Controller {
 
     }
 
-    public function rate(string $filmIdentifier): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+    public function rate(string $filmIdentifier): \Illuminate\View\View|\Illuminate\Http\RedirectResponse {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
             return redirect(route('home'));
@@ -252,7 +252,7 @@ class RatingsController extends Controller {
         $film->keywords;
 
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
-        $viewerRating = [];
+        $viewerRating = null;
 
         foreach ($film->ratings as $key => $rating) {
             if ($rating->viewers_id === $viewersId) {
@@ -261,17 +261,19 @@ class RatingsController extends Controller {
             }
         }
 
-        return Inertia::render('RatingEdit', [
-            'film' => $film,
-            'rating' => $viewerRating,
-            'languages' => Languages::all()->groupBy('type'),
-            '_token' => csrf_token(),
-            'grades' => Grades::all(),
-            'filmstatus' => Filmstatus::all(),
-            'genres' => Genres::all(),
-            'filmModifications' => Filmmodifications::all(),
-            'keywords' => Keywords::all(),
-        ]);
+         return view(
+            'films/rating',
+            [
+                'film' => $film,
+                'rating' => $viewerRating,
+                'languages' => Languages::all()->groupBy('type'),
+                'grades' => Grades::all(),
+                'filmstatus' => Filmstatus::all(),
+                'genres' => Genres::all(),
+                'filmModifications' => Filmmodifications::all(),
+                'keywords' => Keywords::all(),
+            ]
+         );
 
     }
 

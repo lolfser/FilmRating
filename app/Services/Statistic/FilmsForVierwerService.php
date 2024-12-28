@@ -103,7 +103,8 @@ class FilmsForVierwerService implements StatisticInterface {
             foreach ($dataRow as $dataColum) {
                 $result[$viewerInitials][] = $dataColum[1] . ' (' . $dataColum[0] . ')';
             }
-            $result[$viewerInitials][] = (round($dataColum[1] / $daysTilDeadline, 1)) . ' (' . (round($dataColum[0] / $daysTilDeadline, 1)) . ')';
+            $result[$viewerInitials][] = (round(($dataColum[1] ?? 0) / $daysTilDeadline, 1))
+                . ' (' . (round(($dataColum[0] ?? 0) / $daysTilDeadline, 1)) . ')';
         }
 
         return new TableResult($header, $result);
