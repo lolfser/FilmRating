@@ -94,7 +94,7 @@ class FilmsForVierwerService implements StatisticInterface {
             $header[] = 'Note "' . $grade . '"';
         }
         $header[] = 'offen';
-        $header[] = '⌀ bis 01.05.2025';
+        $header[] = '⌀ bis 01.05.2025 (' . $daysTilDeadline . ' Tage)';
 
         $result = [];
         foreach ($arr as $viewerInitials => $dataRow) {
