@@ -157,7 +157,7 @@
                 <input v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
                 <img src="/svgs/floppy-disk.svg"
                      class="save"
-                     style="height: 20px; cursor: pointer; display: inline"
+                     style="height: 20px; cursor: pointer; display: none"
                      v-on:click="loadQuickSaveUrl($event, film, 'all');"
                      title="Schnellspeichern"
                 />
