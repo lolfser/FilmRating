@@ -12,7 +12,6 @@ class StatsController extends Controller {
             return redirect(route('rating.index'));
         }
 
-
         return view(
             'stats/index',
             [
