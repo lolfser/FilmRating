@@ -117,7 +117,7 @@ class RatingsController extends Controller {
             'filmstatus' => $hasPermSetFilmStatus
                 ? Filmstatus::all()
                 : [['id' => 0, 'name' => 'keine Rechte']],
-            'genres' => Genres::all(),
+            'genres' => Genres::orderBy('name')->get(),
             'active_filter' => $filter,
             'filterRateOptions' => [
                 [
@@ -269,7 +269,7 @@ class RatingsController extends Controller {
                 'languages' => Languages::all()->groupBy('type'),
                 'grades' => Grades::all(),
                 'filmstatus' => Filmstatus::all(),
-                'genres' => Genres::all(),
+                'genres' => Genres::orderBy('name')->get(),
                 'filmModifications' => Filmmodifications::all(),
                 'keywords' => Keywords::all(),
             ]
