@@ -23,6 +23,7 @@ import CompFilmViewer from '@/FilmRatingComponents/Rating.vue';
                         :filmstatus="filmstatus"
                         :active_filter="active_filter"
                         :filterRateOptions="filterRateOptions"
+                        :filterRateCountOptions="filterRateCountOptions"
                         :filmModifications="filmModifications"
                         :filmsources="filmsources"
                         :keywords="keywords"
@@ -41,7 +42,7 @@ import CompFilmViewer from '@/FilmRatingComponents/Rating.vue';
 export default {
   props: [
       'films', 'grades', 'viewerId', 'footerLinks', 'user', 'viewers', 'filmsources',
-      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filterRateOptions', 'filmModifications', 'keywords',
+      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filterRateOptions', 'filterRateCountOptions', 'filmModifications', 'keywords',
       'totalPages', 'currentPage'
   ],
   computed: {

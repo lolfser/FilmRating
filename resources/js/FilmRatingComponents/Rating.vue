@@ -22,36 +22,43 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 @keyup.enter="filterInputs"
             > von {{ totalPages }}
             <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Nach Status filtern"
+                placeholder="Status filtern"
                 name="fl_filmstatus"
                 autoFilterFocus
                 v-model="selectedFilmStatus"
                 style="display: inline"
             />
             <MultiSelect :options="keywords" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Nach Stichwörtern filtern"
+                placeholder="Stichwörtern filtern"
                 name="fl_keywords"
                 autoFilterFocus
                 v-model="selectedKeywords"
                 style="display: inline"
             />
             <MultiSelect :options="filmModifications" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Nach Modifikationen filtern"
+                placeholder="Modifikationen filtern"
                 name="fl_filmmodifications"
                 autoFilterFocus
                 v-model="selectedFilmModifications"
                 style="display: inline"
             />
             <MultiSelect :options="filterRateOptions" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Nach Bewertung filtern"
+                placeholder="Bewertung filtern"
                 name="fl_rated"
                 autoFilterFocus
                 v-model="selectedRateOption"
                 style="display: inline"
                 :selectionLimit="1"
             />
+            <MultiSelect :options="filterRateCountOptions" :optionLabel="getElementName" :optionValue="getElementId"
+                placeholder="Anzahl Bewertungen filtern"
+                name="fl_ratedCount"
+                autoFilterFocus
+                v-model="selectedRateCountOption"
+                style="display: inline"
+            />
             <MultiSelect :options="filmsources" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Nach Film-Source filtern"
+                placeholder="Film-Source filtern"
                 name="fl_filmSource"
                 autoFilterFocus
                 v-model="selectedFilmSource"
@@ -109,6 +116,7 @@ export default {
         'viewerId',
         'active_filter',
         'filterRateOptions',
+        'filterRateCountOptions',
         'headline',
         'footerLinks',
         'filmModifications',
@@ -127,6 +135,7 @@ export default {
             selectedFilmModifications: this.active_filter.fl_filmmodifications,
             selectedTitleDescription: this.active_filter.fl_title_description,
             selectedRateOption: this.active_filter.fl_rated,
+            selectedRateCountOption: this.active_filter.fl_ratedCount,
             selectedFilmSource: this.active_filter.fl_filmSource
         }
     },
@@ -148,6 +157,7 @@ export default {
             data.append('fl_filmstatus', this.selectedFilmStatus);
             data.append('fl_keywords', this.selectedKeywords);
             data.append('fl_rated', this.selectedRateOption);
+            data.append('fl_ratedCount', this.selectedRateCountOption);
             data.append('fl_filmSource', this.selectedFilmSource);
             if (typeof this.selectedFilmModifications !== "undefined") {
                 data.append('fl_filmmodifications', this.selectedFilmModifications);

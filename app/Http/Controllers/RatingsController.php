@@ -44,19 +44,21 @@ class RatingsController extends Controller {
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
         $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
         $ratedIds = array_filter(array_map('intval', explode(',', $requestParam['fl_rated'] ?? '')));
+        $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['fl_ratedCount'] ?? '')));
         $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmSource'] ?? '')));
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         $filmsQuery = (new FilmsQueryBuilderService())->buildFilmsQuery(
-            $filmStatusIds,
-            $keywordIds,
-            $filmModificationsIds,
-            $filmSourceIds,
-            $filmNrTitleDescription,
-            false,
-            $ratedIds[0] ?? 0,
-            $viewerId
+            filmStatusIds: $filmStatusIds,
+            keywordIds: $keywordIds,
+            filmModificationIds: $filmModificationsIds,
+            filmSourceIds: $filmSourceIds,
+            filmNrTitleDescription: $filmNrTitleDescription,
+            onlyNotSetInProgram: false,
+            rated: $ratedIds[0] ?? 0,
+            ratedCount: $ratedCounts,
+            viewerId: $viewerId
         );
 
         $pageCount = ((int) (count($filmsQuery->get()) / self::ITEMS_PER_PAGE)) + 1;
@@ -101,6 +103,7 @@ class RatingsController extends Controller {
 
         $filter = [
             'fl_rated' => $ratedIds,
+            'fl_ratedCount' => $ratedCounts,
             'fl_page' => $page,
             'fl_filmstatus' => $filmStatusIds,
             'fl_filmmodifications' => $filmModificationsIds,
@@ -132,10 +135,14 @@ class RatingsController extends Controller {
                     'id' => FilmsQueryBuilderService::RATED_I_RATED,
                     'name' => 'ich habe bereits bewertet',
                 ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_NOBODY,
-                    'name' => 'von niemanden bewertet',
-                ],
+            ],
+            'filterRateCountOptions' => [
+                // TODO: Dynamic all counts via query?
+                ['id' => 0, 'name' => '0',],
+                ['id' => 1, 'name' => '1',],
+                ['id' => 2, 'name' => '2',],
+                ['id' => 3, 'name' => '3',],
+                ['id' => 4, 'name' => '4+',],
             ],
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),

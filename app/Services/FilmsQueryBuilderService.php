@@ -7,17 +7,15 @@ use Illuminate\Support\Facades\DB;
 
 class FilmsQueryBuilderService {
 
-    public const RATED_NOBODY = 1;
-    public const RATED_I_RATED = 2;
-    public const RATED_I_NOT_RATED = 3;
+    public const RATED_I_RATED = 1;
+    public const RATED_I_NOT_RATED = 2;
 
     /**
      * @param int[] $filmStatusIds
      * @param int[] $keywordIds
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
-     * @param string $filmNrTitleDescription
-     * @param bool $onlyNotSetInProgram
+     * @param int[] $ratedCount
      *
      * @return \Illuminate\Database\Eloquent\Builder<Films>
      */
@@ -29,6 +27,7 @@ class FilmsQueryBuilderService {
         string $filmNrTitleDescription,
         bool $onlyNotSetInProgram,
         int $rated,
+        array $ratedCount,
         int $viewerId
     ): \Illuminate\Database\Eloquent\Builder {
 
@@ -73,12 +72,6 @@ class FilmsQueryBuilderService {
                 ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
                 ->where('viewers.id', $viewerId)
                 ->where('ratings.grades_id', '>', 0);
-
-        } elseif ($rated === self::RATED_NOBODY) {
-            $films = $films
-                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
-                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
-                ->where('viewers.id', null);
         } elseif ($rated === self::RATED_I_NOT_RATED) {
             $films = $films
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
@@ -101,6 +94,13 @@ class FilmsQueryBuilderService {
                         );
                     }
                 );
+        }
+
+        if ($ratedCount !== []) {
+            $films = $films->select(
+                'films.*',
+                DB::raw('(SELECT COUNT(1) FROM ratings WHERE ratings.films_id = films.id AND ratings.grades_id > 0) AS rateCount')
+            )->havingRaw('rateCount IN (' . implode(', ', $ratedCount) . ')');
         }
 
         // @TODO: new feature: dynamic via config in DB table filmsources

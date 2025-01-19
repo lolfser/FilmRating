@@ -190,14 +190,15 @@ class ProgramblocksController extends Controller {
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
-            array_filter(explode(',', $filmStatus)),
-            array_filter(explode(',', $keywords)),
-            array_filter(explode(',', $filmModifications)),
-            [],
-            $titleDescription,
-            $onlyNotSet,
-            0,
-            0
+            filmStatusIds: array_filter(explode(',', $filmStatus)),
+            keywordIds: array_filter(explode(',', $keywords)),
+            filmModificationIds: array_filter(explode(',', $filmModifications)),
+            filmSourceIds: [],
+            filmNrTitleDescription: $titleDescription,
+            onlyNotSetInProgram: $onlyNotSet,
+            rated: 0,
+            ratedCount: [],
+            viewerId: 0
         );
 
         return $films;
