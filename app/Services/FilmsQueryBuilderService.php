@@ -97,10 +97,14 @@ class FilmsQueryBuilderService {
         }
 
         if ($ratedCount !== []) {
+            $having = 'rateCount IN (' . implode(', ', $ratedCount) . ')';
+            if (in_array(4, $ratedCount, true)) {
+                $having .= ' OR rateCount > 4';
+            }
             $films = $films->select(
                 'films.*',
                 DB::raw('(SELECT COUNT(1) FROM ratings WHERE ratings.films_id = films.id AND ratings.grades_id > 0) AS rateCount')
-            )->havingRaw('rateCount IN (' . implode(', ', $ratedCount) . ')');
+            )->havingRaw($having);
         }
 
         // @TODO: new feature: dynamic via config in DB table filmsources
