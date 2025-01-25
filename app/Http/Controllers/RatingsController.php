@@ -44,7 +44,12 @@ class RatingsController extends Controller {
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
         $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
         $ratedIds = array_filter(array_map('intval', explode(',', $requestParam['fl_rated'] ?? '')));
+        $rateCountData = explode(',', $requestParam['fl_ratedCount'] ?? '');
+        $addZero = (in_array('0', $rateCountData, true));
         $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['fl_ratedCount'] ?? '')));
+        if ($addZero) {
+            $ratedCounts[] = 0;
+        }
         $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmSource'] ?? '')));
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
