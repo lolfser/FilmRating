@@ -196,7 +196,7 @@ class ProgramblocksController extends Controller {
             filmSourceIds: [],
             filmNrTitleDescription: $titleDescription,
             onlyNotSetInProgram: $onlyNotSet,
-            rated: 0,
+            rated: [],
             ratedCount: [],
             viewerId: 0
         );

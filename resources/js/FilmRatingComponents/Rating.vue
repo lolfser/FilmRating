@@ -43,12 +43,11 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 style="display: inline"
             />
             <MultiSelect :options="filterRateOptions" :optionLabel="getElementName" :optionValue="getElementId"
-                placeholder="Bewertung filtern"
+                placeholder="eigene Bewertung filtern"
                 name="fl_rated"
                 autoFilterFocus
                 v-model="selectedRateOption"
                 style="display: inline"
-                :selectionLimit="1"
             />
             <MultiSelect :options="filterRateCountOptions" :optionLabel="getElementName" :optionValue="getElementId"
                 placeholder="Anzahl Bewertungen filtern"

@@ -43,7 +43,7 @@ class RatingsController extends Controller {
         $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['fl_keywords'] ?? '')));
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
         $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
-        $ratedIds = array_filter(array_map('intval', explode(',', $requestParam['fl_rated'] ?? '')));
+        $rated = array_filter(explode(',', $requestParam['fl_rated'] ?? ''));
         $rateCountData = explode(',', $requestParam['fl_ratedCount'] ?? '');
         $addZero = (in_array('0', $rateCountData, true));
         $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['fl_ratedCount'] ?? '')));
@@ -61,7 +61,7 @@ class RatingsController extends Controller {
             filmSourceIds: $filmSourceIds,
             filmNrTitleDescription: $filmNrTitleDescription,
             onlyNotSetInProgram: false,
-            rated: $ratedIds[0] ?? 0,
+            rated: $rated,
             ratedCount: $ratedCounts,
             viewerId: $viewerId
         );
@@ -81,7 +81,6 @@ class RatingsController extends Controller {
             $film->ratings;
 
             if (!$hasPermSeeGrades) {
-                $viewerRating = [];
                 foreach ($film->ratings as $rating) {
                     if ($rating->viewers_id === $viewerId) {
                         unset($film->ratings);
@@ -107,7 +106,7 @@ class RatingsController extends Controller {
         }
 
         $filter = [
-            'fl_rated' => $ratedIds,
+            'fl_rated' => $rated,
             'fl_ratedCount' => $ratedCounts,
             'fl_page' => $page,
             'fl_filmstatus' => $filmStatusIds,
@@ -116,6 +115,24 @@ class RatingsController extends Controller {
             'fl_keywords' => $keywordIds,
             'fl_title_description' => $filmNrTitleDescription,
         ];
+
+        $filterRateOptions = [
+            [
+                'id' => FilmsQueryBuilderService::RATED_I_NOT_RATED,
+                'name' => 'ich habe noch nicht bewertet',
+            ],
+            [
+                'id' => FilmsQueryBuilderService::RATED_I_RATED,
+                'name' => 'ich habe bewertet',
+            ],
+        ];
+
+        foreach (Grades::all() as $grade) {
+            $filterRateOptions[] = [
+                'id' => (string) $grade->id,
+                'name' => 'ich habe mit ' . $grade->value . $grade->trend . ' bewertet',
+            ];
+        }
 
         return Inertia::render('Ratings', [
             'films' => $films,
@@ -127,20 +144,7 @@ class RatingsController extends Controller {
                 : [['id' => 0, 'name' => 'keine Rechte']],
             'genres' => Genres::orderBy('name')->get(),
             'active_filter' => $filter,
-            'filterRateOptions' => [
-                [
-                    'id' => 0,
-                    'name' => 'ohne Einschränkung',
-                ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_I_NOT_RATED,
-                    'name' => 'ich habe noch nicht bewertet',
-                ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_I_RATED,
-                    'name' => 'ich habe bereits bewertet',
-                ],
-            ],
+            'filterRateOptions' => $filterRateOptions,
             'filterRateCountOptions' => [
                 // TODO: Dynamic all counts via query?
                 ['id' => 0, 'name' => '0',],

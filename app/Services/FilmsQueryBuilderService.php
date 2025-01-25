@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class FilmsQueryBuilderService {
 
-    public const RATED_I_RATED = 1;
-    public const RATED_I_NOT_RATED = 2;
+    public const RATED_I_RATED = 'any';
+    public const RATED_I_NOT_RATED = 'not-rated';
 
     /**
      * @param int[] $filmStatusIds
@@ -16,6 +16,7 @@ class FilmsQueryBuilderService {
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
      * @param int[] $ratedCount
+     * @param string[] $rated
      *
      * @return \Illuminate\Database\Eloquent\Builder<Films>
      */
@@ -26,7 +27,7 @@ class FilmsQueryBuilderService {
         array $filmSourceIds,
         string $filmNrTitleDescription,
         bool $onlyNotSetInProgram,
-        int $rated,
+        array $rated,
         array $ratedCount,
         int $viewerId
     ): \Illuminate\Database\Eloquent\Builder {
@@ -66,13 +67,13 @@ class FilmsQueryBuilderService {
             $films = $films->whereNotIn('id', $filmsAlreadyUsed);
         }
 
-        if ($rated === self::RATED_I_RATED) {
+        if (in_array(self::RATED_I_RATED, $rated, true)) {
             $films = $films
                 ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
                 ->where('viewers.id', $viewerId)
                 ->where('ratings.grades_id', '>', 0);
-        } elseif ($rated === self::RATED_I_NOT_RATED) {
+        } elseif (in_array(self::RATED_I_NOT_RATED, $rated, true)) {
             $films = $films
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
@@ -94,6 +95,17 @@ class FilmsQueryBuilderService {
                         );
                     }
                 );
+        } else {
+
+            $filteredRated = array_filter(array_map('intval', $rated));
+            if ($filteredRated !== []) {
+                $films = $films
+                    ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
+                    ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
+                    ->where('viewers.id', $viewerId)
+                    ->whereIn('ratings.grades_id', $filteredRated);
+            }
+
         }
 
         if ($ratedCount !== []) {
