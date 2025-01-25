@@ -216,7 +216,13 @@ class RatingsController extends Controller {
             $rating = $ratings->first();
         }
 
-        if (array_key_exists('grades_id', $requestData)) {
+        if (
+            array_key_exists('grades_id', $requestData)
+            && (
+                    ($requestData['grades_id'] ?? 0) !== 0
+                    || $rating->id !== NULL
+                )
+        ) {
             // TODO: on default first DB-table item, not 1
             $rating->grades_id = $requestData['grades_id'] ?? 0;
             $isModified = true;
