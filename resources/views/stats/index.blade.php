@@ -16,6 +16,7 @@
     /** @var \App\Services\Statistic\Model\TableResult $genreStats */
     /** @var \App\Services\Statistic\Model\TableResult $keywordStats */
     /** @var \App\Services\Statistic\Model\TableResult $noDurationStats */
+    /** @var \App\Services\Statistic\Model\TableResult $duplicateRatedStats */
     /** @var \App\Services\Statistic\Model\TableResult $notUsedKeywordsStats */
 
 ?>
@@ -29,6 +30,8 @@
     @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])
     @include('stats.tableResult', ['headline' => 'Stichwort-Analyse', 'tableResult' => $keywordStats])
     @include('stats.tableResult', ['headline' => 'Keine Laufzeit', 'tableResult' => $noDurationStats])
+    @include('stats.tableResult', ['headline' => 'Doppelte Bewertungen', 'tableResult' => $duplicateRatedStats])
+
     @include('stats.tableResult', ['headline' => 'nicht genutzte Stichworte', 'tableResult' => $notUsedKeywordsStats])
 </div>
 @endsection

@@ -5,7 +5,7 @@ namespace App\Services\Statistic;
 use App\Services\Statistic\Model\TableResult;
 use Illuminate\Support\Facades\DB;
 
-class FilmsForVierwerService implements StatisticInterface {
+class FilmsForViewerService implements StatisticInterface {
 
     public function receive(): TableResult {
 
@@ -34,7 +34,7 @@ class FilmsForVierwerService implements StatisticInterface {
                 viewers.initials AS \"Sichter\",
                 COUNT(1) AS \"Anzahl Filme\"
             FROM films
-            JOIN ratings ON ratings.films_id = films.id
+            JOIN ratings ON ratings.films_id = films.id AND ratings.grades_id > 0
             JOIN viewers ON viewers.id = ratings.viewers_id
             JOIN grades ON ratings.grades_id = grades.id
             GROUP BY viewers.id, grades.value, viewers.initials
