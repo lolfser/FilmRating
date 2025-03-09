@@ -65,6 +65,10 @@ class ProgramblocksController extends Controller {
                     ($request->all()['filmstatus'] ?? '') === ''
                         ? ''
                         : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                'filmmodifications' =>
+                    ($request->all()['filmmodifications'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmmodifications'] ?? '')),
                 'keywords' =>
                     ($request->all()['keywords'] ?? '') === ''
                         ? ''

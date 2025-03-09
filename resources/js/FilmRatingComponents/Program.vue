@@ -1,35 +1,31 @@
 <script setup>
 import Headline from './Headline.vue';
 import Footer from './Footer.vue';
+import MultiSelectTemplate from './MultiSelectTemplate.vue';
 import ProgramDragableContent from './ProgramDragableContent.vue';
 import draggable from "vuedraggable"
-import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
-
 </script>
 <template>
     <Headline :headline="headline" />
-    <div>
+    <div style="display: flex;">
         <input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
-        <MultiSelect :options="filmstatus" :optionLabel="getElementName" :optionValue="getElementId"
-            placeholder="Nach Status filtern"
+        <MultiSelectTemplate
             name="filmstatus"
-            autoFilterFocus
-            v-model="selectedFilmStatus"
-            style="display: inline"
+            :options="filmstatus"
+            :selected-options="filter.filmstatus"
+            placeholder="Nach Filmstatus filtern"
         />
-        <MultiSelect :options="keywords" :optionLabel="getElementName" :optionValue="getElementId"
-            placeholder="Nach Stichwörtern filtern"
+        <MultiSelectTemplate
             name="keywords"
-            autoFilterFocus
-            v-model="selectedKeywords"
-            style="display: inline"
+            :options="keywords"
+            :selected-options="filter.keywords"
+            placeholder="Nach Stichwörtern filtern"
         />
-        <MultiSelect :options="filmmodifications" :optionLabel="getElementName" :optionValue="getElementId"
-            placeholder="Nach Modifikationen filtern"
+        <MultiSelectTemplate
             name="filmmodifications"
-            autoFilterFocus
-            v-model="selectedFilmModifications"
-            style="display: inline"
+            :options="filmmodifications"
+            :selected-options="filter.filmmodifications"
+            placeholder="Nach Modifikationen filtern!"
         />
         <label><input type="text" name="title_description" placeholder="Nr. / Namen / Beschreibung filtern" :value="selectedTitleDescription"/></label>
         &nbsp;&nbsp;&nbsp;
@@ -149,9 +145,6 @@ export default {
         return {
             availableFilms: this.prepareAvailableFilms(this.films),
             'lists': this.receiveLists(),
-            selectedFilmStatus: this.filter.filmstatus,
-            selectedKeywords: this.filter.keywords,
-            selectedFilmModifications: this.filter.filmmodifications,
             selectedTitleDescription: this.filter.title_description,
             onlyNotSet: this.filter.only_not_set
         };
@@ -344,10 +337,21 @@ export default {
         },
         filterFunction: function (event) {
             let data = new FormData();
-            data.append('filmstatus', this.selectedFilmStatus);
-            data.append('keywords', this.selectedKeywords);
-            if (typeof this.selectedFilmModifications !== "undefined")
-            data.append('filmmodifications', this.selectedFilmModifications);
+            let filmStatus = [];
+            document.querySelectorAll('.checkbox-option-filmstatus:checked').forEach(function(element) {
+                filmStatus.push(element.value);
+            });
+            data.append('filmstatus', filmStatus.join(','));
+            let keywords = [];
+            document.querySelectorAll('.checkbox-option-keywords:checked').forEach(function(element) {
+                keywords.push(element.value);
+            });
+            data.append('keywords', keywords.join(','));
+            let filmmodifications = [];
+            document.querySelectorAll('.checkbox-option-filmmodifications:checked').forEach(function(element) {
+                filmmodifications.push(element.value);
+            });
+            data.append('filmmodifications', filmmodifications.join(','));
             data.append('only_not_set', document.getElementsByName('only_not_set')[0].checked);
             this.selectedTitleDescription = document.getElementsByName('title_description')[0].value;
             data.append('title_description', this.selectedTitleDescription);

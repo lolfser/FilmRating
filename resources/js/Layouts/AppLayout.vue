@@ -15,7 +15,6 @@ const logout = () => {
 <template>
     <div>
         <Head :title="title" />
-
         <header style="background-color: #f7f7f7; padding: 10px;">
             <div style="display: flex;
                         justify-content: center;
@@ -40,15 +39,14 @@ const logout = () => {
                         {{ $page.props.auth.user.name }}
                     </a>
                     <br>
-                                        <form method="post" @submit.prevent="logout">
-                                            <DropdownLink as="button">
-                                                Logout
-                                            </DropdownLink>
-                                        </form>
+                    <form method="post" @submit.prevent="logout">
+                        <DropdownLink as="button">
+                            Logout
+                        </DropdownLink>
+                    </form>
                 </span>
             </div>
         </header>
-
         <!-- Page Content -->
         <main>
             <slot />
@@ -80,5 +78,4 @@ const logout = () => {
         font-size: 9px !important;
         line-height: 6px !important;
     }
-
 </style>
