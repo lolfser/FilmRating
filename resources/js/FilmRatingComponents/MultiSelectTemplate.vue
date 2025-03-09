@@ -94,6 +94,9 @@ export default {
 
 .filter-item .selected-list {
     font-size: 12px;
+    max-width: 240px;
+    display: block;
+    overflow: hidden;
 }
 
 .selected-options {
@@ -105,6 +108,8 @@ export default {
     list-style-type: none;
     padding: 5px;
     display: none;
+    max-height: 150px;
+    overflow-y: scroll;
     position: absolute;
     background: white;
     border: 1px solid #ccc;
