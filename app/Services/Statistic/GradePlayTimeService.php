@@ -13,41 +13,41 @@ class GradePlayTimeService implements StatisticInterface {
 
         $films = DB::select("
         (SELECT
-	        '1' AS 'Note',
+            '1' AS 'Note',
             COUNT(1) AS 'Anzahl Filme',
-	        SUM(filmDuration) / 60 / 60 AS 'Dauer in Stunden'
+            SUM(filmDuration) / 60 / 60 AS 'Dauer in Stunden'
         FROM (
-	            SELECT
+                SELECT
                     DISTINCT films.id AS filmsId,
                     films.duration AS filmDuration
-	            FROM films
-	            JOIN ratings ON ratings.films_id = films.id
-	            JOIN grades ON ratings.grades_id = grades.id
-	            WHERE grades.value = 1
-	            GROUP BY films.id, films.duration
+                FROM films
+                JOIN ratings ON ratings.films_id = films.id
+                JOIN grades ON ratings.grades_id = grades.id
+                WHERE grades.value = 1
+                GROUP BY films.id, films.duration
             ) AS innerMain1
         )
         UNION
         (SELECT
-	        '2 (ohne 1en)' AS 'Note',
-	        COUNT(1) AS 'Anzahl Filme',
-	        SUM(filmDuration) / 60 / 60 AS 'Dauer in Stunden'
+            '2 (ohne 1en)' AS 'Note',
+            COUNT(1) AS 'Anzahl Filme',
+            SUM(filmDuration) / 60 / 60 AS 'Dauer in Stunden'
         FROM (
-	            SELECT
-		            DISTINCT films.id AS filmsId,
-	                films.duration AS filmDuration
-	            FROM films
-	            JOIN ratings ON ratings.films_id = films.id
-	            JOIN grades ON ratings.grades_id = grades.id
-	            WHERE grades.value = 2
-		            AND films.id NOT IN (
-				        SELECT films.id
-			            FROM films
-			            JOIN ratings ON ratings.films_id = films.id
-			            JOIN grades ON ratings.grades_id = grades.id
-			            WHERE grades.value = 1
-			        )
-	            GROUP BY films.id, films.duration
+                SELECT
+                    DISTINCT films.id AS filmsId,
+                    films.duration AS filmDuration
+                FROM films
+                JOIN ratings ON ratings.films_id = films.id
+                JOIN grades ON ratings.grades_id = grades.id
+                WHERE grades.value = 2
+                    AND films.id NOT IN (
+                        SELECT films.id
+                        FROM films
+                        JOIN ratings ON ratings.films_id = films.id
+                        JOIN grades ON ratings.grades_id = grades.id
+                        WHERE grades.value = 1
+                    )
+                GROUP BY films.id, films.duration
             ) AS innerMain2
         )
         ");

@@ -22,10 +22,10 @@
 ?>
 <h1>Statistiken</h1>
 <div>
+    @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (dabei / drin / vielleicht)', 'tableResult' => $gradePlayTimeStats])
     @include('stats.tableResult', ['headline' => 'Angaben der Laufzeit in Stunden (Anzahl der Filme)', 'tableResult' => $viewerStats])
     @include('stats.tableResult', ['headline' => 'Anzahl der bewerteten Filme', 'tableResult' => $statsGlobalRatingCount])
     @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
-    @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten', 'tableResult' => $gradePlayTimeStats])
     @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])
     @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])
     @include('stats.tableResult', ['headline' => 'Stichwort-Analyse', 'tableResult' => $keywordStats])
