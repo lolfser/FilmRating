@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GenresService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT g.name, COUNT(1) AS counter

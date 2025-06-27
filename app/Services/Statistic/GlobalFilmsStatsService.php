@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GlobalFilmsStatsService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT '0' AS numberRatings, COUNT(1) AS countRatings, (sum(films.duration) / 60 / 60) AS durationInHour

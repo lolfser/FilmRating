@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class KeywordsService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT k.name, COUNT(1) AS counter

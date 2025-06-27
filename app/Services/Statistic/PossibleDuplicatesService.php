@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class PossibleDuplicatesService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select('
             SELECT films.name, COUNT(1) AS filmCount, GROUP_CONCAT(films.film_identifier SEPARATOR ", ") AS duplicates

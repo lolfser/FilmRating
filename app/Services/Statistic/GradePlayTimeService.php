@@ -7,9 +7,17 @@ use Illuminate\Support\Facades\DB;
 
 class GradePlayTimeService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
-         // hier wird doppelte Anzahl und dauer gezählt
+        $statusIn = [];
+
+        foreach ($options['status'] ?? [] as $status) {
+            $statusIn[] = (int) $status;
+        }
+
+        $statusInClause = $statusIn === []
+            ? ''
+            : ' AND films.filmstatus_id IN (' . implode(',', $statusIn) . ')';
 
         $films = DB::select("
         (SELECT
@@ -24,6 +32,7 @@ class GradePlayTimeService implements StatisticInterface {
                 JOIN ratings ON ratings.films_id = films.id
                 JOIN grades ON ratings.grades_id = grades.id
                 WHERE grades.value = 1
+                    " . $statusInClause . "
                 GROUP BY films.id, films.duration
             ) AS innerMain1
         )
@@ -40,6 +49,7 @@ class GradePlayTimeService implements StatisticInterface {
                 JOIN ratings ON ratings.films_id = films.id
                 JOIN grades ON ratings.grades_id = grades.id
                 WHERE grades.value = 2
+                    " . $statusInClause . "
                     AND films.id NOT IN (
                         SELECT films.id
                         FROM films

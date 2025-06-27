@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class FilmsForViewerService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $films = DB::select(
            "SELECT sum(duration) / 60 / 60 as duration, count(1) as filmsCount

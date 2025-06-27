@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class FilmsWithoutDurationService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT film_identifier, name

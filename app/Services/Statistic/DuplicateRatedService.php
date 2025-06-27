@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class DuplicateRatedService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT COUNT(1) AS c, ratings.films_id, films.film_identifier, viewers.initials
