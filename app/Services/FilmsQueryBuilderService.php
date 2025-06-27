@@ -13,6 +13,7 @@ class FilmsQueryBuilderService {
     /**
      * @param int[] $filmStatusIds
      * @param int[] $keywordIds
+     * @param int[] $genreIds
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
      * @param int[] $ratedCount
@@ -23,6 +24,7 @@ class FilmsQueryBuilderService {
     public function buildFilmsQuery(
         array $filmStatusIds,
         array $keywordIds,
+        array $genreIds,
         array $filmModificationIds,
         array $filmSourceIds,
         string $filmNrTitleDescription,
@@ -41,6 +43,11 @@ class FilmsQueryBuilderService {
         if ($keywordIds !== []) {
             $films = $films->join('films_keywords', 'id', '=', 'films_id')
                 ->whereIn('keywords_id', $keywordIds);
+        }
+
+        if ($genreIds !== []) {
+            $films = $films->join('films_genres', 'id', '=', 'films_id')
+                ->whereIn('genres_id', $genreIds);
         }
 
         if ($filmModificationIds !== []) {

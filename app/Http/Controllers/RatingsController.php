@@ -57,6 +57,7 @@ class RatingsController extends Controller {
         $filmsQuery = (new FilmsQueryBuilderService())->buildFilmsQuery(
             filmStatusIds: $filmStatusIds,
             keywordIds: $keywordIds,
+            genreIds: [],
             filmModificationIds: $filmModificationsIds,
             filmSourceIds: $filmSourceIds,
             filmNrTitleDescription: $filmNrTitleDescription,
@@ -322,7 +323,6 @@ class RatingsController extends Controller {
         $film->ratings;
 
         if (!$hasPermSeeGrades) {
-            $viewerRating = [];
             foreach ($film->ratings as $rating) {
                 if ($rating->viewers_id === $viewerId) {
                     unset($film->ratings);

@@ -17,6 +17,7 @@ import Programm from '@/FilmRatingComponents/Program.vue';
                         :_token="_token"
                         :filter="filter"
                         :keywords="keywords"
+                        :genres="genres"
                         :filmmodifications="filmmodifications"
                      />
                 </div>
@@ -27,7 +28,7 @@ import Programm from '@/FilmRatingComponents/Program.vue';
 <script>
 export default {
   props: [
-      'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'filter', 'keywords', 'filmmodifications'
+      'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'filter', 'keywords', 'genres', 'filmmodifications'
   ]
 }
 </script>

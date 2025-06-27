@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Filmmodifications;
 use App\Models\Films;
 use App\Models\Filmstatus;
+use App\Models\Genres;
 use App\Models\Keywords;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
@@ -57,6 +58,7 @@ class ProgramblocksController extends Controller {
             'programmetas' => $metas,
             'filmstatus' => Filmstatus::all(),
             'keywords' => Keywords::all(),
+            'genres' => Genres::all(),
             'filmmodifications' => Filmmodifications::all(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -74,6 +76,10 @@ class ProgramblocksController extends Controller {
                     ($request->all()['keywords'] ?? '') === ''
                         ? ''
                         : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['keywords'] ?? '')),
+                'genres' =>
+                    ($request->all()['genres'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['genres'] ?? '')),
                 'title_description' => $request->all()['title_description'] ?? '',
                 'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
             ]
@@ -189,6 +195,7 @@ class ProgramblocksController extends Controller {
         }
 
         $filmStatus = $requestParam['filmstatus'] ?? '';
+        $genres = $requestParam['genres'] ?? '';
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
         $titleDescription = trim($requestParam['title_description'] ?? '');
@@ -197,6 +204,7 @@ class ProgramblocksController extends Controller {
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
             filmStatusIds: array_filter(explode(',', $filmStatus)),
             keywordIds: array_filter(explode(',', $keywords)),
+            genreIds: array_filter(explode(',', $genres)),
             filmModificationIds: array_filter(explode(',', $filmModifications)),
             filmSourceIds: [],
             filmNrTitleDescription: $titleDescription,

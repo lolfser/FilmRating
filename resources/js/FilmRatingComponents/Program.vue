@@ -16,6 +16,12 @@ import draggable from "vuedraggable"
             placeholder="Nach Filmstatus filtern"
         />
         <MultiSelectTemplate
+            name="genres"
+            :options="genres"
+            :selected-options="filter.genres"
+            placeholder="Nach Genres filtern"
+        />
+        <MultiSelectTemplate
             name="keywords"
             :options="keywords"
             :selected-options="filter.keywords"
@@ -136,7 +142,7 @@ import draggable from "vuedraggable"
 
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords', 'filmmodifications'
+        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords', 'genres', 'filmmodifications'
     ],
     components: {
         draggable
@@ -347,6 +353,11 @@ export default {
                 keywords.push(element.value);
             });
             data.append('keywords', keywords.join(','));
+            let genres = [];
+            document.querySelectorAll('.checkbox-option-genres:checked').forEach(function(element) {
+                genres.push(element.value);
+            });
+            data.append('genres', genres.join(','));
             let filmmodifications = [];
             document.querySelectorAll('.checkbox-option-filmmodifications:checked').forEach(function(element) {
                 filmmodifications.push(element.value);
