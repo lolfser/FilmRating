@@ -19,6 +19,7 @@ class StatsController extends Controller
             'stats/index',
             [
                 'statsGlobalRatingCount' => (new \App\Services\Statistic\GlobalFilmsStatsService())->receive(),
+                'statusStats' => (new \App\Services\Statistic\StatusService())->receive(),
                 'viewerStats' => (new \App\Services\Statistic\FilmsForViewerService())->receive(),
                 'genreStats' => (new \App\Services\Statistic\GenresService())->receive(),
                 'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),

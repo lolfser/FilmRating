@@ -10,6 +10,7 @@
 <?php
     /** @var \App\Services\Statistic\Model\TableResult $viewerStats */
     /** @var \App\Services\Statistic\Model\TableResult $statsGlobalRatingCount */
+    /** @var \App\Services\Statistic\Model\TableResult $statsCountAndDurationStats */
     /** @var \App\Services\Statistic\Model\TableResult $filmCountDurationGroupStats */
     /** @var \App\Services\Statistic\Model\TableResult $gradePlayTimeStatsOverAll */
     /** @var \App\Services\Statistic\Model\TableResult $gradePlayTimeStatsOpen */
@@ -28,6 +29,7 @@
 ?>
 <h1>Statistiken</h1>
 <div>
+    @include('stats.tableResult', ['headline' => 'Laufzeit Filme nach Status', 'tableResult' => $statusStats])
     @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (alle Status)', 'tableResult' => $gradePlayTimeStatsOverAll])
     @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (offen / dabei / vielleicht)', 'tableResult' => $gradePlayTimeStatsODV])
     @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (offen)', 'tableResult' => $gradePlayTimeStatsOpen])
