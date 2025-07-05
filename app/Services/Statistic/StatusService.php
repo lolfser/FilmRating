@@ -10,7 +10,7 @@ class StatusService implements StatisticInterface {
     public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
-            SELECT filmstatus.name, COUNT(1), COUNT(duration) / 60
+            SELECT filmstatus.name, COUNT(1), SUM(duration) / 60 / 60
             FROM films
             JOIN filmstatus ON filmstatus.id = films.filmstatus_id
             GROUP BY filmstatus.name
@@ -25,7 +25,7 @@ class StatusService implements StatisticInterface {
         $stats = is_array($stats) ? $stats : [];
 
         return new TableResult(
-            ['Status', 'Anzahl Filme', 'Laufzeit in Stunden'],
+            ['Status', 'Anzahl Filme', 'Laufzeit in Std'],
             $stats
         );
 

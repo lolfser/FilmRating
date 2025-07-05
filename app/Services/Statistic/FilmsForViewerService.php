@@ -10,7 +10,7 @@ class FilmsForViewerService implements StatisticInterface {
     public function receive(array $options = []): TableResult {
 
         $films = DB::select(
-           "SELECT sum(duration) / 60 / 60 as duration, count(1) as filmsCount
+           "SELECT SUM(duration) / 60 / 60 as duration, count(1) as filmsCount
             FROM films
         ");
 
@@ -29,7 +29,7 @@ class FilmsForViewerService implements StatisticInterface {
 
         $films = DB::select(
            "SELECT
-                sum(duration) / 60 / 60 AS \"Laufzeit in Stunden\",
+                SUM(duration) / 60 / 60 AS \"Laufzeit in Stunden\",
                 grades.value AS \"Note\" ,
                 viewers.initials AS \"Sichter\",
                 COUNT(1) AS \"Anzahl Filme\"

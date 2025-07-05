@@ -8,9 +8,9 @@
 
 @section('content')
 <?php
-    /** @var \App\Services\Statistic\Model\TableResult $viewerStats */
     /** @var \App\Services\Statistic\Model\TableResult $statsGlobalRatingCount */
-    /** @var \App\Services\Statistic\Model\TableResult $statsCountAndDurationStats */
+    /** @var \App\Services\Statistic\Model\TableResult $viewerStats */
+    /** @var \App\Services\Statistic\Model\TableResult $statusStats */
     /** @var \App\Services\Statistic\Model\TableResult $filmCountDurationGroupStats */
     /** @var \App\Services\Statistic\Model\TableResult $gradePlayTimeStatsOverAll */
     /** @var \App\Services\Statistic\Model\TableResult $gradePlayTimeStatsOpen */
@@ -29,6 +29,15 @@
 ?>
 <h1>Statistiken</h1>
 <div>
+	<h6>Schnelllinks zu verfügbaren Statistiken</h6>
+	<ul style="padding-left: 20px">
+		<li><a href="#genres" style="color: blue">Genres</a></li>
+		<li><a href="#keineLaufzeit" style="color: blue">Keine Laufzeit</a></li>
+		<li><a href="#unKey" style="color: blue">ungenutzte Stichworte</a></li>
+	</ul>
+</div>
+<br><br>
+<div>
     @include('stats.tableResult', ['headline' => 'Laufzeit Filme nach Status', 'tableResult' => $statusStats])
     @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (alle Status)', 'tableResult' => $gradePlayTimeStatsOverAll])
     @include('stats.tableResult', ['headline' => 'Filme 1 + 2-Noten (offen / dabei / vielleicht)', 'tableResult' => $gradePlayTimeStatsODV])
@@ -41,11 +50,13 @@
     @include('stats.tableResult', ['headline' => 'Anzahl der bewerteten Filme', 'tableResult' => $statsGlobalRatingCount])
     @include('stats.tableResult', ['headline' => 'Filmdaueranalyse', 'tableResult' => $filmCountDurationGroupStats])
     @include('stats.tableResult', ['headline' => 'mögliche Duplikate', 'tableResult' => $possibleDuplicatesStats])
+	<span id="genres"></span>
     @include('stats.tableResult', ['headline' => 'Genres', 'tableResult' => $genreStats])
     @include('stats.tableResult', ['headline' => 'Stichwort-Analyse', 'tableResult' => $keywordStats])
+	<span id="keineLaufzeit"></span>
     @include('stats.tableResult', ['headline' => 'Keine Laufzeit', 'tableResult' => $noDurationStats])
     @include('stats.tableResult', ['headline' => 'Doppelte Bewertungen', 'tableResult' => $duplicateRatedStats])
-
+	<span id="unKey"></span>
     @include('stats.tableResult', ['headline' => 'nicht genutzte Stichworte', 'tableResult' => $notUsedKeywordsStats])
 </div>
 @endsection
