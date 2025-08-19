@@ -12,7 +12,7 @@ import CompFilmViewer from '@/FilmRatingComponents/Rating.vue';
         </template>
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white shadow-xl sm:rounded-lg">
                     <CompFilmViewer
                         :films="films"
                         :headline="headline"
@@ -23,6 +23,7 @@ import CompFilmViewer from '@/FilmRatingComponents/Rating.vue';
                         :filmstatus="filmstatus"
                         :active_filter="active_filter"
                         :filterRateOptions="filterRateOptions"
+                        :filterRateCountOptions="filterRateCountOptions"
                         :filmModifications="filmModifications"
                         :filmsources="filmsources"
                         :keywords="keywords"
@@ -41,7 +42,7 @@ import CompFilmViewer from '@/FilmRatingComponents/Rating.vue';
 export default {
   props: [
       'films', 'grades', 'viewerId', 'footerLinks', 'user', 'viewers', 'filmsources',
-      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filterRateOptions', 'filmModifications', 'keywords',
+      'genres', '_token', 'languages', 'filmstatus', 'active_filter', 'filterRateOptions', 'filterRateCountOptions', 'filmModifications', 'keywords',
       'totalPages', 'currentPage'
   ],
   computed: {

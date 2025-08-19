@@ -1,102 +1,40 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class StatsController extends Controller {
+class StatsController extends Controller
+{
 
-    public function index(): View|\Illuminate\Http\RedirectResponse {
+    public function index(): View|\Illuminate\Http\RedirectResponse
+    {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_STATICS)) {
             return redirect(route('rating.index'));
         }
 
-        /** @var array<int, int> $allUsedGrades Like [3 => 3] */
-        $allUsedGrades = [];
-        $globalRating = (new \App\Services\Statistic\GlobalFilmsStatsService())->receive();
-        $globalRatingResults = $globalRating->getResult();
-
-		$globalCount = array_column($globalRatingResults, "countRatings");
-		$filmsCount = (array_sum($globalCount)); // todo if empty?
-
-		$globalDuration = array_column($globalRatingResults, "durationInHour");
-        $filmsDuration = (array_sum($globalDuration)); // todo if empty?
-
-        $films = DB::select(
-           "SELECT
-                sum(duration) / 60 / 60 AS \"Laufzeit in Stunden\",
-                grades.value AS \"Note\" ,
-                viewers.initials AS \"Sichter\",
-                COUNT(1) AS \"Anzahl Filme\"
-            FROM films
-            JOIN ratings ON ratings.films_id = films.id
-            JOIN viewers ON viewers.id = ratings.viewers_id
-            JOIN grades ON ratings.grades_id = grades.id
-            GROUP BY viewers.id, grades.value, viewers.initials
-            ORDER BY viewers.initials, grades.value
-        ");
-
-        $filmsJson = json_encode($films);
-        $filmsJson = $filmsJson !== false ? $filmsJson : '';
-
-        $films = json_decode($filmsJson, true);
-
-        $arr = ['Sichter' => []];
-
-        foreach ($films as $key => $dataRow) {
-            if (!is_array($dataRow)) {
-                // Todo: Error handling
-                continue;
-            }
-            $allUsedGrades[$dataRow['Note']] = $dataRow['Note'];
-            $arr[$dataRow['Sichter']][$dataRow['Note']] = [$dataRow['Anzahl Filme'], round((float)$dataRow['Laufzeit in Stunden'], 2)];
-        }
-
-        ksort($allUsedGrades);
-
-        foreach ($arr as $key => $dataRow) {
-            foreach($allUsedGrades as $grade) {
-                if (!isset($dataRow[$grade])) {
-                    $dataRow[$grade] = [0, 0];
-                }
-            }
-            ksort($dataRow);
-            $c = $filmsCount;
-            $d = $filmsDuration;
-            foreach ($dataRow as $dataColum) {
-
-                if (isset($dataColum[0])) {
-                    $c -= $dataColum[0];
-                    $d -= $dataColum[1];
-                }
-
-            }
-
-            $dataRow[99] = [$c, round($d, 2)];
-
-            $arr[$key] = $dataRow;
-        }
-
-        $header = [];
-        foreach($allUsedGrades as $grade) {
-            array_push($header, ['', 'Note "' . $grade . '"']);
-        }
-        array_push($header, ['', "offen"]);
-        $arr['Sichter'] = $header;
-
         return view(
             'stats/index',
             [
-                'stats' => $arr,
-                'statsGlobalRatingCount' => $globalRating,
+                'statsGlobalRatingCount' => (new \App\Services\Statistic\GlobalFilmsStatsService())->receive(),
+                'statusStats' => (new \App\Services\Statistic\StatusService())->receive(),
+                'viewerStats' => (new \App\Services\Statistic\FilmsForViewerService())->receive(),
                 'genreStats' => (new \App\Services\Statistic\GenresService())->receive(),
                 'keywordStats' => (new \App\Services\Statistic\KeywordsService())->receive(),
                 'noDurationStats' => (new \App\Services\Statistic\FilmsWithoutDurationService())->receive(),
                 'notUsedKeywordsStats' => (new \App\Services\Statistic\NotUsedKeywordsService())->receive(),
                 'filmCountDurationGroupStats' => (new \App\Services\Statistic\FilmCountDurationGroupService())->receive(),
                 'possibleDuplicatesStats' => (new \App\Services\Statistic\PossibleDuplicatesService())->receive(),
+                'gradePlayTimeStatsOverAll' => (new \App\Services\Statistic\GradePlayTimeService())->receive(),
+                'gradePlayTimeStatsOpen' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [1]]),
+                'gradePlayTimeStatsDabei' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [2]]),
+                'gradePlayTimeStatsRaus' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [3]]),
+                'gradePlayTimeStatsKPJ' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [4]]),
+                'gradePlayTimeStatsVielleicht' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [5]]),
+                'gradePlayTimeStatsODV' => (new \App\Services\Statistic\GradePlayTimeService())->receive(['status' => [1,2,5]]),
+                'duplicateRatedStats' => (new \App\Services\Statistic\DuplicateRatedService())->receive(),
                 'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             ]
         );

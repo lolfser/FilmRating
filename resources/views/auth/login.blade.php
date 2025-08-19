@@ -66,15 +66,15 @@
                     {{ __('Remember Me') }}
                 </label>
                 <div>
-                <span><a href="/register" style="position: relative; top: 12px; font-size: 12px; padding-right: 15px">noch nicht registriert</a></span>
-                <button type="submit" class="btn btn-primary" style="display: inline-block; padding-left: 30px; padding-right: 30px;">
-                    {{ __('Login') }}
-                </button>
-                @if (false && Route::has('password.request'))
-                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}-->
-                    </a>
-                @endif
+                    <span><a href="/register" style="position: relative; top: 12px; font-size: 12px; padding-right: 15px">noch nicht registriert?</a></span>
+                    <button type="submit" class="btn btn-primary" style="display: inline-block; padding-left: 30px; padding-right: 30px;">
+                        {{ __('Login') }}
+                    </button>
+                    @if (false && Route::has('password.request'))
+                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                            {{ __('Forgot Your Password?') }}-->
+                        </a>
+                    @endif
                 </div>
             </div>
         </form>

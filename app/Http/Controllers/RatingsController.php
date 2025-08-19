@@ -26,7 +26,7 @@ class RatingsController extends Controller {
 
     private const ITEMS_PER_PAGE = 100;
 
-    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+    public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse|\Illuminate\View\View {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
             return redirect(route('home'));
@@ -43,20 +43,28 @@ class RatingsController extends Controller {
         $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['fl_keywords'] ?? '')));
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
         $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
-        $ratedIds = array_filter(array_map('intval', explode(',', $requestParam['fl_rated'] ?? '')));
+        $rated = array_filter(explode(',', $requestParam['fl_rated'] ?? ''));
+        $rateCountData = explode(',', $requestParam['fl_ratedCount'] ?? '');
+        $addZero = (in_array('0', $rateCountData, true));
+        $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['fl_ratedCount'] ?? '')));
+        if ($addZero) {
+            $ratedCounts[] = 0;
+        }
         $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmSource'] ?? '')));
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         $filmsQuery = (new FilmsQueryBuilderService())->buildFilmsQuery(
-            $filmStatusIds,
-            $keywordIds,
-            $filmModificationsIds,
-            $filmSourceIds,
-            $filmNrTitleDescription,
-            false,
-            $ratedIds[0] ?? 0,
-            $viewerId
+            filmStatusIds: $filmStatusIds,
+            keywordIds: $keywordIds,
+            genreIds: [],
+            filmModificationIds: $filmModificationsIds,
+            filmSourceIds: $filmSourceIds,
+            filmNrTitleDescription: $filmNrTitleDescription,
+            onlyNotSetInProgram: false,
+            rated: $rated,
+            ratedCount: $ratedCounts,
+            viewerId: $viewerId
         );
 
         $pageCount = ((int) (count($filmsQuery->get()) / self::ITEMS_PER_PAGE)) + 1;
@@ -74,7 +82,6 @@ class RatingsController extends Controller {
             $film->ratings;
 
             if (!$hasPermSeeGrades) {
-                $viewerRating = [];
                 foreach ($film->ratings as $rating) {
                     if ($rating->viewers_id === $viewerId) {
                         unset($film->ratings);
@@ -100,7 +107,8 @@ class RatingsController extends Controller {
         }
 
         $filter = [
-            'fl_rated' => $ratedIds,
+            'fl_rated' => $rated,
+            'fl_ratedCount' => $ratedCounts,
             'fl_page' => $page,
             'fl_filmstatus' => $filmStatusIds,
             'fl_filmmodifications' => $filmModificationsIds,
@@ -108,6 +116,24 @@ class RatingsController extends Controller {
             'fl_keywords' => $keywordIds,
             'fl_title_description' => $filmNrTitleDescription,
         ];
+
+        $filterRateOptions = [
+            [
+                'id' => FilmsQueryBuilderService::RATED_I_NOT_RATED,
+                'name' => 'ich habe noch nicht bewertet',
+            ],
+            [
+                'id' => FilmsQueryBuilderService::RATED_I_RATED,
+                'name' => 'ich habe bewertet',
+            ],
+        ];
+
+        foreach (Grades::all() as $grade) {
+            $filterRateOptions[] = [
+                'id' => (string) $grade->id,
+                'name' => 'ich habe mit ' . $grade->value . $grade->trend . ' bewertet',
+            ];
+        }
 
         return Inertia::render('Ratings', [
             'films' => $films,
@@ -117,25 +143,16 @@ class RatingsController extends Controller {
             'filmstatus' => $hasPermSetFilmStatus
                 ? Filmstatus::all()
                 : [['id' => 0, 'name' => 'keine Rechte']],
-            'genres' => Genres::all(),
+            'genres' => Genres::orderBy('name')->get(),
             'active_filter' => $filter,
-            'filterRateOptions' => [
-                [
-                    'id' => 0,
-                    'name' => 'ohne Einschränkung',
-                ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_I_NOT_RATED,
-                    'name' => 'ich habe noch nicht bewertet',
-                ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_I_RATED,
-                    'name' => 'ich habe bereits bewertet',
-                ],
-                [
-                    'id' => FilmsQueryBuilderService::RATED_NOBODY,
-                    'name' => 'von niemanden bewertet',
-                ],
+            'filterRateOptions' => $filterRateOptions,
+            'filterRateCountOptions' => [
+                // TODO: Dynamic all counts via query?
+                ['id' => 0, 'name' => '0',],
+                ['id' => 1, 'name' => '1',],
+                ['id' => 2, 'name' => '2',],
+                ['id' => 3, 'name' => '3',],
+                ['id' => 4, 'name' => '4+',],
             ],
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
@@ -200,7 +217,13 @@ class RatingsController extends Controller {
             $rating = $ratings->first();
         }
 
-        if (array_key_exists('grades_id', $requestData)) {
+        if (
+            array_key_exists('grades_id', $requestData)
+            && (
+                    ($requestData['grades_id'] ?? 0) !== 0
+                    || $rating->id !== NULL
+                )
+        ) {
             // TODO: on default first DB-table item, not 1
             $rating->grades_id = $requestData['grades_id'] ?? 0;
             $isModified = true;
@@ -231,7 +254,7 @@ class RatingsController extends Controller {
 
     }
 
-    public function rate(string $filmIdentifier): \Inertia\Response|\Illuminate\Http\RedirectResponse {
+    public function rate(string $filmIdentifier): \Illuminate\View\View|\Illuminate\Http\RedirectResponse {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
             return redirect(route('home'));
@@ -252,7 +275,7 @@ class RatingsController extends Controller {
         $film->keywords;
 
         $viewersId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
-        $viewerRating = [];
+        $viewerRating = null;
 
         foreach ($film->ratings as $key => $rating) {
             if ($rating->viewers_id === $viewersId) {
@@ -261,17 +284,19 @@ class RatingsController extends Controller {
             }
         }
 
-        return Inertia::render('RatingEdit', [
-            'film' => $film,
-            'rating' => $viewerRating,
-            'languages' => Languages::all()->groupBy('type'),
-            '_token' => csrf_token(),
-            'grades' => Grades::all(),
-            'filmstatus' => Filmstatus::all(),
-            'genres' => Genres::all(),
-            'filmModifications' => Filmmodifications::all(),
-            'keywords' => Keywords::all(),
-        ]);
+         return view(
+            'films/rating',
+            [
+                'film' => $film,
+                'rating' => $viewerRating,
+                'languages' => Languages::all()->groupBy('type'),
+                'grades' => Grades::all(),
+                'filmstatus' => Filmstatus::all(),
+                'genres' => Genres::orderBy('name')->get(),
+                'filmModifications' => Filmmodifications::all(),
+                'keywords' => Keywords::all(),
+            ]
+         );
 
     }
 
@@ -298,7 +323,6 @@ class RatingsController extends Controller {
         $film->ratings;
 
         if (!$hasPermSeeGrades) {
-            $viewerRating = [];
             foreach ($film->ratings as $rating) {
                 if ($rating->viewers_id === $viewerId) {
                     unset($film->ratings);

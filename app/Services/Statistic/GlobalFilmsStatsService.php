@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class GlobalFilmsStatsService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
-            SELECT '0' AS numberRatings, COUNT(1) AS countRatings, (sum(films.duration) / 60 / 60) AS durationInHour
+            SELECT '0' AS numberRatings, COUNT(1) AS countRatings, (SUM(films.duration) / 60 / 60) AS durationInHour
             FROM films
             LEFT JOIN ratings ON ratings.films_id = films.id
             WHERE ratings.films_id IS NULL

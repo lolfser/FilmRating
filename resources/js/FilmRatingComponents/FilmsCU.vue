@@ -40,7 +40,7 @@ import { translate } from '../trans.js';
                 <tr v-for="(language, type) in languages">
                   <td>Sprache: {{ type }}</td>
                   <td>
-                    <span v-for="lang in language" value="a">
+                    <span v-for="lang in language">
                         <label><input :checked="isSelected(film.languages, lang.id)" type="radio" :name="'language_' + type" :value="lang.id" /> {{lang.language}}</label>
                         &nbsp;&nbsp;&nbsp;
                     </span>

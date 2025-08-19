@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +21,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/user/profile', [App\Http\Controllers\UserProfileController::class, 'index'])->name('user.profile');
+    Route::post('/user/profile-information', [App\Http\Controllers\UserProfileController::class, 'updateUserDetails'])->name('user.profile.update');
+    Route::post('/user/change-password', [App\Http\Controllers\UserProfileController::class, 'updateUserPassword'])->name('user.profile.updatePassword');
     Route::resource('films', \App\Http\Controllers\FilmsController::class);
     Route::get('/films/{id}/cu',[\App\Http\Controllers\FilmsController::class, 'createAndUpdate'])->middleware(
         'can:' . \App\Models\Permissions::PERMISSION_ADD_FILMS . ',App\Models\Films'

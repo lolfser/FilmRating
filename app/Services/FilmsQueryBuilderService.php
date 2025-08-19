@@ -7,28 +7,30 @@ use Illuminate\Support\Facades\DB;
 
 class FilmsQueryBuilderService {
 
-    public const RATED_NOBODY = 1;
-    public const RATED_I_RATED = 2;
-    public const RATED_I_NOT_RATED = 3;
+    public const RATED_I_RATED = 'any';
+    public const RATED_I_NOT_RATED = 'not-rated';
 
     /**
      * @param int[] $filmStatusIds
      * @param int[] $keywordIds
+     * @param int[] $genreIds
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
-     * @param string $filmNrTitleDescription
-     * @param bool $onlyNotSetInProgram
+     * @param int[] $ratedCount
+     * @param string[] $rated
      *
      * @return \Illuminate\Database\Eloquent\Builder<Films>
      */
     public function buildFilmsQuery(
         array $filmStatusIds,
         array $keywordIds,
+        array $genreIds,
         array $filmModificationIds,
         array $filmSourceIds,
         string $filmNrTitleDescription,
         bool $onlyNotSetInProgram,
-        int $rated,
+        array $rated,
+        array $ratedCount,
         int $viewerId
     ): \Illuminate\Database\Eloquent\Builder {
 
@@ -41,6 +43,11 @@ class FilmsQueryBuilderService {
         if ($keywordIds !== []) {
             $films = $films->join('films_keywords', 'id', '=', 'films_id')
                 ->whereIn('keywords_id', $keywordIds);
+        }
+
+        if ($genreIds !== []) {
+            $films = $films->join('films_genres', 'id', '=', 'films_id')
+                ->whereIn('genres_id', $genreIds);
         }
 
         if ($filmModificationIds !== []) {
@@ -67,19 +74,13 @@ class FilmsQueryBuilderService {
             $films = $films->whereNotIn('id', $filmsAlreadyUsed);
         }
 
-        if ($rated === self::RATED_I_RATED) {
+        if (in_array(self::RATED_I_RATED, $rated, true)) {
             $films = $films
                 ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
                 ->where('viewers.id', $viewerId)
                 ->where('ratings.grades_id', '>', 0);
-
-        } elseif ($rated === self::RATED_NOBODY) {
-            $films = $films
-                ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
-                ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
-                ->where('viewers.id', null);
-        } elseif ($rated === self::RATED_I_NOT_RATED) {
+        } elseif (in_array(self::RATED_I_NOT_RATED, $rated, true)) {
             $films = $films
                 ->leftJoin('ratings','ratings.films_id', '=', 'films.id')
                 ->leftJoin('viewers','ratings.viewers_id', '=', 'viewers.id')
@@ -101,6 +102,28 @@ class FilmsQueryBuilderService {
                         );
                     }
                 );
+        } else {
+
+            $filteredRated = array_filter(array_map('intval', $rated));
+            if ($filteredRated !== []) {
+                $films = $films
+                    ->leftJoin('ratings', 'ratings.films_id', '=', 'films.id')
+                    ->leftJoin('viewers', 'viewers.id', '=', 'ratings.viewers_id')
+                    ->where('viewers.id', $viewerId)
+                    ->whereIn('ratings.grades_id', $filteredRated);
+            }
+
+        }
+
+        if ($ratedCount !== []) {
+            $having = 'rateCount IN (' . implode(', ', $ratedCount) . ')';
+            if (in_array(4, $ratedCount, true)) {
+                $having .= ' OR rateCount > 4';
+            }
+            $films = $films->select(
+                'films.*',
+                DB::raw('(SELECT COUNT(1) FROM ratings WHERE ratings.films_id = films.id AND ratings.grades_id > 0) AS rateCount')
+            )->havingRaw($having);
         }
 
         // @TODO: new feature: dynamic via config in DB table filmsources

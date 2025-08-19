@@ -16,7 +16,14 @@ class Days extends Model {
     protected $table    = 'days';
     protected $fillable = ['date'];
     protected $casts    = ['id' => 'int', 'date' => 'datetime'];
+    protected $appends  = ['dateString'];
     public $timestamps = false;
 
-    public string $dateString = '';
+    public function getDateStringAttribute(): string {
+        return $this->attributes['dateString'] ?? '';
+    }
+
+    public function setDateStringAttribute(string $value) {
+        $this->attributes['dateString'] = $value;
+    }
 }

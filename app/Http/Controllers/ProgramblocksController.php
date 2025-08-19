@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Filmmodifications;
 use App\Models\Films;
 use App\Models\Filmstatus;
+use App\Models\Genres;
 use App\Models\Keywords;
 use App\Models\Programblockmetas;
 use App\Models\Programblocks;
@@ -30,13 +31,14 @@ class ProgramblocksController extends Controller {
         foreach ($metas as $meta) {
             $meta->location;
             if ($meta->day !== null) {
-                $meta->day->dateString = (new \DateTime($meta->day->date))->format('l, d.m.Y');
-                $meta->day->dateString .= ', ';
-                $meta->day->dateString .= $meta->start;
-                $meta->day->dateString .= ' - ';
+                $dateString = (new \DateTime($meta->day->date))->format('l, d.m.Y');
+                $dateString .= ', ';
+                $dateString .= $meta->start;
+                $dateString .= ' - ';
                 $dateTime = new \DateTime($meta->start ?? '');
                 $dateTime->add(new \DateInterval('PT' . ($meta->total_length ?? 0) . 'M'));
-                $meta->day->dateString .= $dateTime->format('H:i');
+                $dateString .= $dateTime->format('H:i');
+                $meta->day->setDateStringAttribute($dateString);
             }
             foreach (Programblocks::where('programblockmetas_id', $meta->id)->get() as $block) {
                 /** @var Programblocks $block */
@@ -56,6 +58,7 @@ class ProgramblocksController extends Controller {
             'programmetas' => $metas,
             'filmstatus' => Filmstatus::all(),
             'keywords' => Keywords::all(),
+            'genres' => Genres::all(),
             'filmmodifications' => Filmmodifications::all(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -65,10 +68,18 @@ class ProgramblocksController extends Controller {
                     ($request->all()['filmstatus'] ?? '') === ''
                         ? ''
                         : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                'filmmodifications' =>
+                    ($request->all()['filmmodifications'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmmodifications'] ?? '')),
                 'keywords' =>
                     ($request->all()['keywords'] ?? '') === ''
                         ? ''
                         : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['keywords'] ?? '')),
+                'genres' =>
+                    ($request->all()['genres'] ?? '') === ''
+                        ? ''
+                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['genres'] ?? '')),
                 'title_description' => $request->all()['title_description'] ?? '',
                 'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
             ]
@@ -184,20 +195,23 @@ class ProgramblocksController extends Controller {
         }
 
         $filmStatus = $requestParam['filmstatus'] ?? '';
+        $genres = $requestParam['genres'] ?? '';
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
         $titleDescription = trim($requestParam['title_description'] ?? '');
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
-            array_filter(explode(',', $filmStatus)),
-            array_filter(explode(',', $keywords)),
-            array_filter(explode(',', $filmModifications)),
-            [],
-            $titleDescription,
-            $onlyNotSet,
-            0,
-            0
+            filmStatusIds: array_filter(explode(',', $filmStatus)),
+            keywordIds: array_filter(explode(',', $keywords)),
+            genreIds: array_filter(explode(',', $genres)),
+            filmModificationIds: array_filter(explode(',', $filmModifications)),
+            filmSourceIds: [],
+            filmNrTitleDescription: $titleDescription,
+            onlyNotSetInProgram: $onlyNotSet,
+            rated: [],
+            ratedCount: [],
+            viewerId: 0
         );
 
         return $films;

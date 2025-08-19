@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class NotUsedKeywordsService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select("
             SELECT k.id, k.name

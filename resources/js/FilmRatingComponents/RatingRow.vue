@@ -157,7 +157,7 @@
                 <input v-for="(lang, type) in languages" type="hidden" :name="'language_' + type" />
                 <img src="/svgs/floppy-disk.svg"
                      class="save"
-                     style="height: 20px; cursor: pointer; display: inline"
+                     style="height: 20px; cursor: pointer; display: none"
                      v-on:click="loadQuickSaveUrl($event, film, 'all');"
                      title="Schnellspeichern"
                 />
@@ -486,13 +486,18 @@ export default {
 
             if (autoSaveColumn === "all" || autoSaveColumn === 'grade') {
                 let gradeInput = tr.querySelector('.td_grades input.p-autocomplete-input').value;
-                this.grades.every(function(grade) {
-                    if (grade.value + grade.trend == gradeInput) {
-                        data.append('grades_id', grade.id);
-                        return false; // break
-                    }
-                    return true; // continue
-                });
+                if (gradeInput === "") {
+                    data.append('grades_id', '');
+                } else {
+                    this.grades.every(function(grade) {
+                        console.log(grade.value, grade.trend, gradeInput);
+                        if (grade.value + grade.trend === gradeInput) {
+                            data.append('grades_id', grade.id);
+                            return false; // break
+                        }
+                        return true; // continue
+                    });
+                }
             }
 
             function update(url, xFunction, film_id, saveCallBackSuccess, saveCallBackFail, autoSaveColumn) {

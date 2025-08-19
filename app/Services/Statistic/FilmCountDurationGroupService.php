@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class FilmCountDurationGroupService implements StatisticInterface {
 
-    public function receive(): TableResult {
+    public function receive(array $options = []): TableResult {
 
         $stats = DB::select('
             SELECT "0 - 5 min" AS duration_label, COUNT(1) AS count, SUM(duration) / 60 / 60 AS duration_h

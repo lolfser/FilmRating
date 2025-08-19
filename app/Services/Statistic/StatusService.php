@@ -5,17 +5,16 @@ namespace App\Services\Statistic;
 use App\Services\Statistic\Model\TableResult;
 use Illuminate\Support\Facades\DB;
 
-class PossibleDuplicatesService implements StatisticInterface {
+class StatusService implements StatisticInterface {
 
     public function receive(array $options = []): TableResult {
 
-        $stats = DB::select('
-            SELECT films.name, COUNT(1) AS filmCount, GROUP_CONCAT(films.film_identifier SEPARATOR ", ") AS duplicates
+        $stats = DB::select("
+            SELECT filmstatus.name, COUNT(1), SUM(duration) / 60 / 60
             FROM films
-            GROUP BY films.name
-            HAVING filmCount > 1
-            ORDER BY 2 DESC
-        ');
+            JOIN filmstatus ON filmstatus.id = films.filmstatus_id
+            GROUP BY filmstatus.name
+        ");
 
         $statsString = json_encode($stats);
 
@@ -26,7 +25,7 @@ class PossibleDuplicatesService implements StatisticInterface {
         $stats = is_array($stats) ? $stats : [];
 
         return new TableResult(
-            ['Film', 'Anzahl', 'Film-Identifier'],
+            ['Status', 'Anzahl Filme', 'Laufzeit in Std'],
             $stats
         );
 

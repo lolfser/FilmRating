@@ -9,7 +9,6 @@ use App\Models\Programblockmetas;
 use App\Models\Programblocks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 class ExportController extends Controller {
 
@@ -207,15 +206,15 @@ class ExportController extends Controller {
 
         $data = DB::table('films')
             ->selectRaw('
-                fs.name AS source,
+                fs.name AS `source`,
                 films.id, film_identifier, films.name, films.description,
-                CONCAT(g.value, g.trend) AS grade,
-                duration/60 AS duration,
-                fst.name AS status,
-                GROUP_CONCAT(DISTINCT fm.name SEPARATOR ", ") as modifications,
-                GROUP_CONCAT(DISTINCT gr.name SEPARATOR ", ") as genres,
-                count(rating_count.id) as rating_count,
-                GROUP_CONCAT(CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", ") as rating_initials
+                CONCAT(g.value, g.trend) AS `grade`,
+                duration/60 AS `duration`,
+                fst.name AS `status`,
+                GROUP_CONCAT(DISTINCT fm.name SEPARATOR ", ") as `modifications`,
+                GROUP_CONCAT(DISTINCT gr.name SEPARATOR ", ") as `genres`,
+                COUNT(DISTINCT rating_count.id) as `rating_count`,
+                GROUP_CONCAT(DISTINCT CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", ") as `rating_initials`
             ')
             ->leftJoin(DB::raw('filmsources fs'), 'filmsources_id', '=', 'fs.id')
             ->leftJoin(
@@ -238,27 +237,34 @@ class ExportController extends Controller {
 
         /*
             SELECT
-                fs.name AS source, films.id, film_identifier, films.name, films.description,
+                fs.name AS source,
+                films.id,
+                film_identifier,
+                films.name,
+                films.description,
                 CONCAT(g.value, g.trend) AS grade,
-                duration/60 AS duration,
+                films.duration / 60 AS duration,
                 fst.name AS status,
                 GROUP_CONCAT(DISTINCT fm.name SEPARATOR ", ") as modifications,
                 GROUP_CONCAT(DISTINCT gr.name SEPARATOR ", ") as genres,
-                count(rating_count.id) as rating_count,
-                GROUP_CONCAT(CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", ") as rating_initials
-            FROM films f
-            LEFT JOIN filmsources fs ON f.filmsources_id = fs.id
-            LEFT JOIN ratings r ON r.films_id = f.id AND r.viewers_id = 1
-            LEFT JOIN grades g ON g.id = r.grades_id
-            LEFT JOIN filmstatus fst ON fst.id = f.filmstatus_id
-            LEFT JOIN filmmodifications_films fmm ON fmm.films_id = films.id
-            LEFT JOIN filmmodifications fm ON fm.id = fmm.filmmodifications_id
-            LEFT JOIN films_genres fg ON fg.films_id = films.id
-            LEFT JOIN genres gr ON gr.id = fg.genres_id
-            LEFT JOIN ratings rating_count ON rating_count.films_id = f.id
-            LEFT JOIN viewers ON rating_count.viewers_id = viewers.id
-            LEFT JOIN grades vg ON vg.id = rating_count.grades_id
-            GROUP BY source, id, film_identifier, name, description, grade, duration, status, fm.name
+                COUNT(DISTINCT rating_count.id) as rating_count,
+                GROUP_CONCAT(
+                    DISTINCT CONCAT(viewers.initials, " ", vg.value, vg.trend) SEPARATOR ", "
+                ) as rating_initials
+            FROM `films`
+            LEFT JOIN filmsources fs on `filmsources_id` = `fs`.`id`
+            LEFT JOIN ratings r on r.films_id = films.id and r.viewers_id = 1
+            LEFT JOIN grades g on `g`.`id` = `r`.`grades_id`
+            LEFT JOIN filmstatus fst on `fst`.`id` = `films`.`filmstatus_id`
+            LEFT JOIN filmmodifications_films fmm on `fmm`.`films_id` = `films`.`id`
+            LEFT JOIN filmmodifications fm on `fm`.`id` = `fmm`.`filmmodifications_id`
+            LEFT JOIN films_genres fg on `fg`.`films_id` = `films`.`id`
+            LEFT JOIN genres gr on `gr`.`id` = `fg`.`genres_id`
+            LEFT JOIN ratings rating_count on `rating_count`.`films_id` = `films`.`id`
+            LEFT JOIN viewers on `rating_count`.`viewers_id` = `viewers`.`id`
+            LEFT JOIN grades vg on `vg`.`id` = `rating_count`.`grades_id`
+            GROUP BY
+                `source`, `id`, `film_identifier`, `name`, `description`, `grade`, `duration`, `status`, `fm`.`name`
         */
 
         $output = 'Quelle;id;FFW-ID;name;Beschreibung;deine Note;dauer;status;Modifikationen;Genres;Anzahl Bewertungen;Bewertung von';
