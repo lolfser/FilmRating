@@ -12,7 +12,7 @@ import Footer from './Footer.vue';
             <input type="hidden" name="_token" v-model="token" />
             <table>
                 <tbody>
-                    <tr><td>Jahr:</td><td><input type="text" name="year" value="49" /></td></tr>
+                    <tr><td>Jahr:</td><td><input type="text" name="year" value="50" /></td></tr>
                     <tr><td>Title-Header:</td><td><input type="text" name="title" value="Originalfilmtitel" /></td></tr>
                     <tr><td>Film-Nr.</td><td><input type="text" name="film-id" value="Schlüssel Nr." /></td></tr>
                     <tr><td>Duration-Header:</td><td><input type="text" name="duration" value="Laufzeit" /></td></tr>
