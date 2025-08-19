@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06020fcaa294dae2a564ba8c869e5321",
+    "content-hash": "5bae895723886a8ecb415fd7212535d5",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2866,6 +2866,28 @@
                 }
             ],
             "time": "2024-12-08T08:18:47+00:00"
+        },
+        {
+            "name": "lolfser/filmrating-models",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:lolfser/FilmRating-Models.git",
+                "reference": "fccaa04637bda72350f8f4abec02ed604d0d5bbd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lolfser/FilmRating-Models/zipball/fccaa04637bda72350f8f4abec02ed604d0d5bbd",
+                "reference": "fccaa04637bda72350f8f4abec02ed604d0d5bbd",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "support": {
+                "source": "https://github.com/lolfser/FilmRating-Models/tree/main",
+                "issues": "https://github.com/lolfser/FilmRating-Models/issues"
+            },
+            "time": "2025-08-19T22:09:56+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -9752,7 +9774,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "lolfser/filmrating-models": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
