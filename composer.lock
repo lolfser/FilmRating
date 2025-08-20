@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bae895723886a8ecb415fd7212535d5",
+    "content-hash": "201c1716ac050f05cad8f3e1c902c8fd",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2873,21 +2873,37 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:lolfser/FilmRating-Models.git",
-                "reference": "fccaa04637bda72350f8f4abec02ed604d0d5bbd"
+                "reference": "8926ce20675598599de4a45148b7748a1db72a3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lolfser/FilmRating-Models/zipball/fccaa04637bda72350f8f4abec02ed604d0d5bbd",
-                "reference": "fccaa04637bda72350f8f4abec02ed604d0d5bbd",
+                "url": "https://api.github.com/repos/lolfser/FilmRating-Models/zipball/8926ce20675598599de4a45148b7748a1db72a3c",
+                "reference": "8926ce20675598599de4a45148b7748a1db72a3c",
                 "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^12.25",
+                "nesbot/carbon": "^3.10",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1"
             },
             "default-branch": true,
             "type": "library",
+            "scripts": {
+                "phpstan": [
+                    "./vendor/bin/phpstan analyse --configuration dev/phpstan/phpstan.neon"
+                ],
+                "phpstan:baseline": [
+                    "./vendor/bin/phpstan analyse --configuration dev/phpstan/phpstan.neon --generate-baseline dev/phpstan/phpstan-baseline.neon"
+                ]
+            },
             "support": {
                 "source": "https://github.com/lolfser/FilmRating-Models/tree/main",
                 "issues": "https://github.com/lolfser/FilmRating-Models/issues"
             },
-            "time": "2025-08-19T22:09:56+00:00"
+            "time": "2025-08-20T06:18:04+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
