@@ -76,8 +76,8 @@
                             <label>
                                 <input
                                 <?php if ($checked) {echo 'checked';} ?>
-                                type="radio"
-                                name="language_<?php echo $type; ?>"
+                                type="checkbox"
+                                name="language_<?php echo $film->id . '_' . $lang->id; ?>"
                                 value="<?php echo $lang->id; ?>" />
                                     <?php echo $lang->language?>
                             </label>

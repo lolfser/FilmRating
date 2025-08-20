@@ -1,456 +1,709 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method App\\\\Actions\\\\Fortify\\\\CreateNewUser\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:passwordRules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Actions/Fortify/CreateNewUser.php
 
 		-
-			message: "#^Method App\\\\Actions\\\\Fortify\\\\ResetUserPassword\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Actions\\Fortify\\ResetUserPassword\:\:passwordRules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Actions/Fortify/ResetUserPassword.php
 
 		-
-			message: "#^Method App\\\\Actions\\\\Fortify\\\\UpdateUserPassword\\:\\:passwordRules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Actions\\Fortify\\UpdateUserPassword\:\:passwordRules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Actions/Fortify/UpdateUserPassword.php
 
 		-
-			message: "#^Parameter \\#1 \\$photo of method App\\\\Models\\\\Users\\:\\:updateProfilePhoto\\(\\) expects Illuminate\\\\Http\\\\UploadedFile, string given\\.$#"
+			message: '#^Parameter \#1 \$photo of method App\\Models\\Users\:\:updateProfilePhoto\(\) expects Illuminate\\Http\\UploadedFile, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Actions/Fortify/UpdateUserProfileInformation.php
 
 		-
-			message: "#^Argument of an invalid type App\\\\Models\\\\Genres supplied for foreach, only iterables are supported\\.$#"
+			message: '#^Call to function property_exists\(\) with \$this\(App\\Http\\Controllers\\Auth\\LoginController\) and ''redirectAfterLogout'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../app/Http/Controllers/Auth/LoginController.php
+
+		-
+			message: '#^Argument of an invalid type App\\Models\\Genres supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 1
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Argument of an invalid type App\\\\Models\\\\Genres\\|array supplied for foreach, only iterables are supported\\.$#"
+			message: '#^Argument of an invalid type App\\Models\\Genres\|array supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 1
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Argument of an invalid type App\\\\Models\\\\Keywords supplied for foreach, only iterables are supported\\.$#"
+			message: '#^Argument of an invalid type App\\Models\\Keywords supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 1
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Called 'first' on Laravel collection, but could have been retrieved as a query\\.$#"
+			message: '#^Called ''first'' on Laravel collection, but could have been retrieved as a query\.$#'
+			identifier: larastan.noUnnecessaryCollectionCall
 			count: 2
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Cannot access property \\$description on mixed\\.$#"
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
 			count: 1
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Cannot access property \\$duration on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$film_identifier on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$genres on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$grade on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$id on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$modifications on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$name on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$rating_count on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$rating_initials on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$source on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Cannot access property \\$status on mixed\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Empty array passed to foreach\\.$#"
-			count: 1
-			path: ../../app/Http/Controllers/ExportController.php
-
-		-
-			message: "#^Parameter \\#1 \\$datetime of class DateTime constructor expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$datetime of class DateTime constructor expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 2
 			path: ../../app/Http/Controllers/ExportController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:create\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:create\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:destroy\(\) should return Illuminate\\Http\\Response but returns Illuminate\\Http\\RedirectResponse\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:edit\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:edit\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:index\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\View\\\\View\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:show\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:store\(\) should return Illuminate\\Http\\Response but returns Illuminate\\Http\\RedirectResponse\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmmodificationsController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmmodificationsController\:\:update\(\) should return Illuminate\\Http\\Response but returns Illuminate\\Http\\RedirectResponse\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$filmmodification$#"
+			message: '#^PHPDoc tag @param references unknown parameter\: \$filmmodification$#'
+			identifier: parameter.notFound
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Undefined variable\\: \\$filmmodification$#"
+			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
+			identifier: argument.type
+			count: 4
+			path: ../../app/Http/Controllers/FilmmodificationsController.php
+
+		-
+			message: '#^Undefined variable\: \$filmmodification$#'
+			identifier: variable.undefined
 			count: 1
 			path: ../../app/Http/Controllers/FilmmodificationsController.php
 
 		-
-			message: "#^Access to an undefined property App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:\\$id\\.$#"
+			message: '#^Access to an undefined property App\\Models\\Films\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Films\>\:\:\$id\.$#'
+			identifier: property.notFound
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:fill\\(\\)\\.$#"
+			message: '#^Call to an undefined method App\\Models\\Films\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Films\>\:\:fill\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\>\\:\\:save\\(\\)\\.$#"
+			message: '#^Call to an undefined method App\\Models\\Films\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Films\>\:\:save\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>genres" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>languages" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmsController\:\:createAndUpdate\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has parameter \\$errors with no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmsController\:\:createAndUpdate\(\) has parameter \$errors with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:createAndUpdate\\(\\) has parameter \\$films with no type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmsController\:\:createAndUpdate\(\) has parameter \$films with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:store\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmsController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\FilmsController\\:\\:update\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\FilmsController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\> given\\.$#"
+			message: '#^Parameter \#1 \$film of method App\\Services\\SaveFilmsGenresServices\:\:save\(\) expects App\\Models\\Films, App\\Models\\Films\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Films\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Parameter \\#1 \\$film of method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) expects App\\\\Models\\\\Films, App\\\\Models\\\\Films\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Models\\\\Films\\> given\\.$#"
+			message: '#^Parameter \#1 \$film of method App\\Services\\SaveFilmsLanguagesServices\:\:save\(\) expects App\\Models\\Films, App\\Models\\Films\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Films\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Http/Controllers/FilmsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:import\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\ImportController\:\:import\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\ImportController\\:\\:index\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Http\\Controllers\\ImportController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Http/Controllers/ImportController.php
 
 		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<App\\\\Models\\\\Films\\>\\|Illuminate\\\\Http\\\\RedirectResponse\\:\\:get\\(\\)\\.$#"
+			message: '#^Offset 0 on non\-empty\-list\<string\> on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Parameter \#1 \$durationString of method App\\Http\\Controllers\\ImportController\:\:receiveDuration\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Property App\\Models\\Films\:\:\$film_identifier \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Property App\\Models\\Films\:\:\$name \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Films\>\|Illuminate\\Http\\RedirectResponse\:\:get\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$block\\-\\>film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$block\-\>film\-\>filmmodifications" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$block\\-\\>film\\-\\>filmstatus\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$block\-\>film\-\>filmstatus" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$block\\-\\>film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$block\-\>film\-\>genres" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$block\\-\\>film\\-\\>keywords\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$block\-\>film\-\>keywords" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$block\\-\\>film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$block\-\>film\-\>languages" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>filmmodifications" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>filmstatus\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>filmstatus" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>genres" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>keywords\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>keywords" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>languages" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Expression \"\\$meta\\-\\>location\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$meta\-\>location" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Parameter \\#1 \\$filmStatusIds of method App\\\\Services\\\\FilmsQueryBuilderService\\:\\:buildFilmsQuery\\(\\) expects array\\<int\\>, array\\<int, string\\> given\\.$#"
+			message: '#^Parameter \$filmModificationIds of method App\\Services\\FilmsQueryBuilderService\:\:buildFilmsQuery\(\) expects array\<int\>, array\<int\<0, max\>, string\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Parameter \\#2 \\$keywordIds of method App\\\\Services\\\\FilmsQueryBuilderService\\:\\:buildFilmsQuery\\(\\) expects array\\<int\\>, array\\<int, string\\> given\\.$#"
+			message: '#^Parameter \$filmStatusIds of method App\\Services\\FilmsQueryBuilderService\:\:buildFilmsQuery\(\) expects array\<int\>, array\<int\<0, max\>, string\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Parameter \\#3 \\$filmModificationIds of method App\\\\Services\\\\FilmsQueryBuilderService\\:\\:buildFilmsQuery\\(\\) expects array\\<int\\>, array\\<int, string\\> given\\.$#"
+			message: '#^Parameter \$genreIds of method App\\Services\\FilmsQueryBuilderService\:\:buildFilmsQuery\(\) expects array\<int\>, array\<int\<0, max\>, string\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Http/Controllers/ProgramblocksController.php
 
 		-
-			message: "#^Argument of an invalid type App\\\\Models\\\\Ratings supplied for foreach, only iterables are supported\\.$#"
+			message: '#^Parameter \$keywordIds of method App\\Services\\FilmsQueryBuilderService\:\:buildFilmsQuery\(\) expects array\<int\>, array\<int\<0, max\>, string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Http/Controllers/ProgramblocksController.php
+
+		-
+			message: '#^Argument of an invalid type App\\Models\\Ratings supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 3
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Cannot access property \\$comment on App\\\\Models\\\\Ratings\\|null\\.$#"
+			message: '#^Cannot access property \$comment on App\\Models\\Ratings\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Cannot access property \\$grades_id on App\\\\Models\\\\Ratings\\|null\\.$#"
+			message: '#^Cannot access property \$grades_id on App\\Models\\Ratings\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Cannot call method save\\(\\) on App\\\\Models\\\\Ratings\\|null\\.$#"
+			message: '#^Cannot access property \$id on App\\Models\\Ratings\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>filmmodifications\" on a separate line does not do anything\\.$#"
-			count: 3
-			path: ../../app/Http/Controllers/RatingsController.php
-
-		-
-			message: "#^Expression \"\\$film\\-\\>filmsource\" on a separate line does not do anything\\.$#"
+			message: '#^Cannot call method save\(\) on App\\Models\\Ratings\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>filmstatus\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>filmmodifications" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>genres\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>filmsource" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: '#^Expression "\$film\-\>filmstatus" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>keywords\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>genres" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>languages\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>keywords" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 3
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Expression \"\\$film\\-\\>ratings\" on a separate line does not do anything\\.$#"
+			message: '#^Expression "\$film\-\>languages" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 3
+			path: ../../app/Http/Controllers/RatingsController.php
+
+		-
+			message: '#^Expression "\$film\-\>ratings" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 2
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Offset 'filmstatus' on array on left side of \\?\\? always exists and is not nullable\\.$#"
+			message: '#^Offset ''filmstatus'' on non\-empty\-array on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
 			count: 1
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Property App\\\\Models\\\\Films\\:\\:\\$filmstatus is not writable\\.$#"
+			message: '#^Property App\\Models\\Films\:\:\$filmstatus is not writable\.$#'
+			identifier: assign.propertyReadOnly
 			count: 2
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Property App\\\\Models\\\\Films\\:\\:\\$ratings is not writable\\.$#"
+			message: '#^Property App\\Models\\Films\:\:\$ratings is not writable\.$#'
+			identifier: assign.propertyReadOnly
 			count: 2
 			path: ../../app/Http/Controllers/RatingsController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Middleware\\\\HandleInertiaRequests\\:\\:share\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Called ''where'' on Laravel collection, but could have been retrieved as a query\.$#'
+			identifier: larastan.noUnnecessaryCollectionCall
+			count: 3
+			path: ../../app/Http/Controllers/UserProfileController.php
+
+		-
+			message: '#^Cannot call method update\(\) on App\\Models\\Users\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../../app/Http/Controllers/UserProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Illuminate\\Hashing\\HashManager\:\:check\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Http/Controllers/UserProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method Illuminate\\Support\\Facades\\Hash\:\:make\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Http/Controllers/UserProfileController.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\HandleInertiaRequests\:\:share\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Http/Middleware/HandleInertiaRequests.php
 
 		-
-			message: "#^Class App\\\\Models\\\\Users uses generic trait Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\HasFactory but does not specify its types\\: TFactory$#"
-			count: 1
-			path: ../../app/Models/Users.php
-
-		-
-			message: "#^Parameter \\#1 \\$ability of static method Illuminate\\\\Support\\\\Facades\\\\Gate\\:\\:define\\(\\) expects BackedEnum\\|string, int given\\.$#"
+			message: '#^Parameter \#1 \$ability of static method Illuminate\\Support\\Facades\\Gate\:\:define\(\) expects string\|UnitEnum, int given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Providers/AuthServiceProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Support\\\\Str\\:\\:lower\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#1 \$value of static method Illuminate\\Support\\Str\:\:lower\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../app/Providers/FortifyServiceProvider.php
 
 		-
-			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:jsonTranslations\\(\\) has no return type specified\\.$#"
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:jsonTranslations\\(\\) has parameter \\$locale with no type specified\\.$#"
+			message: '#^Method App\\Providers\\TranslationServiceProvider\:\:jsonTranslations\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:phpTranslations\\(\\) has no return type specified\\.$#"
+			message: '#^Method App\\Providers\\TranslationServiceProvider\:\:jsonTranslations\(\) has parameter \$locale with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Method App\\\\Providers\\\\TranslationServiceProvider\\:\\:phpTranslations\\(\\) has parameter \\$locale with no type specified\\.$#"
+			message: '#^Method App\\Providers\\TranslationServiceProvider\:\:phpTranslations\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			message: '#^Method App\\Providers\\TranslationServiceProvider\:\:phpTranslations\(\) has parameter \$locale with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../app/Providers/TranslationServiceProvider.php
 
 		-
-			message: "#^Cannot call method current\\(\\) on mixed\\.$#"
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Providers/TranslationServiceProvider.php
+
+		-
+			message: '#^Cannot call method current\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 2
 			path: ../../app/Services/HeaderLinkService.php
 
 		-
-			message: "#^Method App\\\\Services\\\\SaveFilmsGenresServices\\:\\:save\\(\\) has parameter \\$userInputs with no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Services\\SaveFilmsGenresServices\:\:save\(\) has parameter \$userInputs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Services/SaveFilmsGenresServices.php
 
 		-
-			message: "#^Method App\\\\Services\\\\SaveFilmsLanguagesServices\\:\\:save\\(\\) has parameter \\$inputLanguages with no value type specified in iterable type array\\.$#"
+			message: '#^Method App\\Services\\SaveFilmsLanguagesServices\:\:save\(\) has parameter \$inputLanguages with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../app/Services/SaveFilmsLanguagesServices.php
 
 		-
-			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			message: '#^Method App\\Services\\Statistic\\DuplicateRatedService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/DuplicateRatedService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/DuplicateRatedService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\FilmCountDurationGroupService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/FilmCountDurationGroupService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/FilmCountDurationGroupService.php
+
+		-
+			message: '#^Binary operation "\-\=" between mixed and 0\|float results in an error\.$#'
+			identifier: assignOp.invalid
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Cannot access offset ''duration'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\FilmsForViewerService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Parameter \#1 \$num of function round expects float\|int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<non\-empty\-list\<\(int\|string\)\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/FilmsForViewerService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\FilmsWithoutDurationService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/FilmsWithoutDurationService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/FilmsWithoutDurationService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\GenresService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/GenresService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/GenresService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\GlobalFilmsStatsService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/GlobalFilmsStatsService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/GlobalFilmsStatsService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\GradePlayTimeService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/GradePlayTimeService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/GradePlayTimeService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\KeywordsService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/KeywordsService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/KeywordsService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\NotUsedKeywordsService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/NotUsedKeywordsService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/NotUsedKeywordsService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\PossibleDuplicatesService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/PossibleDuplicatesService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/PossibleDuplicatesService.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\StatisticInterface\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/StatisticInterface.php
+
+		-
+			message: '#^Method App\\Services\\Statistic\\StatusService\:\:receive\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../app/Services/Statistic/StatusService.php
+
+		-
+			message: '#^Parameter \#2 \$result of class App\\Services\\Statistic\\Model\\TableResult constructor expects list\<list\<string\>\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../app/Services/Statistic/StatusService.php
+
+		-
+			message: '#^Parameter \#1 \$title of static method Illuminate\\Support\\Str\:\:slug\(\) expects string, bool\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../config/cache.php
 
 		-
-			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#1 \$title of static method Illuminate\\Support\\Str\:\:slug\(\) expects string, bool\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../config/database.php
 
 		-
-			message: "#^Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			message: '#^Parameter \#2 \$string of function explode expects string, bool\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../config/sanctum.php
 
 		-
-			message: "#^Parameter \\#1 \\$title of static method Illuminate\\\\Support\\\\Str\\:\\:slug\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#1 \$title of static method Illuminate\\Support\\Str\:\:slug\(\) expects string, bool\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../config/session.php
-
-		-
-			message: "#^Call to static method factory\\(\\) on an unknown class App\\\\Models\\\\Team\\.$#"
-			count: 1
-			path: ../../database/factories/UserFactory.php

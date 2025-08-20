@@ -38,7 +38,7 @@ class ImportController extends Controller {
 
         $data = $request->all();
 
-        $year = $data['year'] ?? 49;
+        $year = $data['year'] ?? 50;
         /** @var \Illuminate\Http\UploadedFile|null $importdata */
         $importdata = $data['importdata'] ?? null;
 

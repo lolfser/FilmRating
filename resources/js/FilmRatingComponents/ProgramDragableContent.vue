@@ -30,29 +30,18 @@ export default {
         defineAudioString: function (film) {
             let audioString = '';
             let subtitleString = '';
-            let lang1 = film.languages[0]?.language;
-            let type1 = film.languages[0]?.type;
-            let lang2 = film.languages[1]?.language;
-            let type2 = film.languages[1]?.type;
-            if (typeof lang1 !== "undefined") {
-                if (type1 === 'audio') {
-                    audioString = lang1.toUpperCase();
-                } else {
-                    subtitleString = lang1.toLowerCase();
-                }
-            }
-            if (typeof lang2 !== "undefined") {
-                if (type2 === 'audio') {
-                    audioString = lang2.toUpperCase();
-                } else {
-                    subtitleString = lang2.toLowerCase();
-                }
-            }
+            film.languages.forEach(function (language) {
+               if (language?.type === "audio") {
+                   audioString += (audioString === '' ? '' : '_') + language.language
+               } else if (language?.type === "subtitle") {
+                   subtitleString += (subtitleString === '' ? '' : '_') + language.language
+               }
+            });
             if (audioString !== "" || subtitleString !== "") {
                 if (subtitleString !== "") {
-                    return " (" + audioString + "_" + subtitleString + ")";
+                    return " (" + audioString.toUpperCase() + "_" + subtitleString.toLowerCase() + ")";
                 } else {
-                    return " (" + audioString + ")";
+                    return " (" + audioString.toUpperCase() + ")";
                 }
             }
             return '';
