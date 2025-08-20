@@ -10,6 +10,12 @@ import draggable from "vuedraggable"
     <div style="display: flex;">
         <input type="button" :onClick="filterFunction" value="Filtern" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" />
         <MultiSelectTemplate
+            name="year"
+            :options="years"
+            :selected-options="filter.years"
+            placeholder="Nach Jahr filtern"
+        />
+        <MultiSelectTemplate
             name="filmstatus"
             :options="filmstatus"
             :selected-options="filter.filmstatus"
@@ -142,7 +148,7 @@ import draggable from "vuedraggable"
 
 export default {
     props: [
-        'films', 'programmetas', 'footerLinks', '_token', 'filmstatus', 'headline', 'filter', 'keywords', 'genres', 'filmmodifications'
+        'films', 'programmetas', 'footerLinks', '_token', 'years', 'filmstatus', 'headline', 'filter', 'keywords', 'genres', 'filmmodifications'
     ],
     components: {
         draggable
@@ -353,6 +359,11 @@ export default {
                 keywords.push(element.value);
             });
             data.append('keywords', keywords.join(','));
+            let years = [];
+            document.querySelectorAll('.checkbox-option-year:checked').forEach(function(element) {
+                years.push(element.value);
+            });
+            data.append('years', years.join(','));
             let genres = [];
             document.querySelectorAll('.checkbox-option-genres:checked').forEach(function(element) {
                 genres.push(element.value);

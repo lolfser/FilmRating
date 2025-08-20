@@ -53,10 +53,39 @@ class ProgramblocksController extends Controller {
             }
         }
 
+        // A little bit hacky, because years are not in database with ids
+        $filterYearsOption = [];
+        $filterYearsOption[RatingsController::DEFAULT_YEAR] = [
+            'id' => (int) RatingsController::DEFAULT_YEAR,
+            'name' => (string) RatingsController::DEFAULT_YEAR,
+        ];
+        foreach (Films::all('year')->groupBy('year') as $year => $data) {
+            $filterYearsOption[$year] = [
+                'id' => (int) $year,
+                'name' => (string) $year,
+            ];
+        }
+        $filterYearsOption = array_values($filterYearsOption);
+        $userInputYears = explode(',', $request->all()['years'] ?? (string) RatingsController::DEFAULT_YEAR);
+        $userFilters = [];
+        foreach ($filterYearsOption as $index => $data) {
+            $filterYearsOption[$index]['name'] = (string) $filterYearsOption[$index]['name'];
+            if (in_array($filterYearsOption[$index]['name'], $userInputYears)) {
+                $userFilters[$index] = (int) $data['name'];
+            }
+        }
+
+        $userFilters = array_values($userFilters);
+
+        if ($userFilters === []) {
+            $userFilters[] = RatingsController::DEFAULT_YEAR;
+        }
+
         return Inertia::render('Program', [
             'films' => $allFilms,
             'programmetas' => $metas,
             'filmstatus' => Filmstatus::all(),
+            'years' => $filterYearsOption,
             'keywords' => Keywords::all(),
             'genres' => Genres::all(),
             'filmmodifications' => Filmmodifications::all(),
@@ -67,19 +96,20 @@ class ProgramblocksController extends Controller {
                 'filmstatus' =>
                     ($request->all()['filmstatus'] ?? '') === ''
                         ? ''
-                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmstatus'] ?? '')),
+                        : array_map(function ($i) {return (int) $i;}, explode(',', $request->all()['filmstatus'] ?? '')),
                 'filmmodifications' =>
                     ($request->all()['filmmodifications'] ?? '') === ''
                         ? ''
-                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['filmmodifications'] ?? '')),
+                        : array_map(function ($i) {return (int) $i;}, explode(',', $request->all()['filmmodifications'] ?? '')),
                 'keywords' =>
                     ($request->all()['keywords'] ?? '') === ''
                         ? ''
-                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['keywords'] ?? '')),
+                        : array_map(function ($i) {return (int) $i;}, explode(',', $request->all()['keywords'] ?? '')),
+                'years' => $userFilters,
                 'genres' =>
                     ($request->all()['genres'] ?? '') === ''
                         ? ''
-                        : array_map(function ($i) {return (int) $i;},explode(',', $request->all()['genres'] ?? '')),
+                        : array_map(function ($i) {return (int) $i;}, explode(',', $request->all()['genres'] ?? '')),
                 'title_description' => $request->all()['title_description'] ?? '',
                 'only_not_set' => ($request->all()['only_not_set'] ?? false) === 'true'
             ]
@@ -170,7 +200,6 @@ class ProgramblocksController extends Controller {
 
     /**
      * @param \Illuminate\Database\Eloquent\Collection<int, Films> $allFilms
-     * @return void
      */
     private function loadPivots(\Illuminate\Database\Eloquent\Collection $allFilms): void {
 
@@ -199,7 +228,7 @@ class ProgramblocksController extends Controller {
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
         $titleDescription = trim($requestParam['title_description'] ?? '');
-        $years = $requestParam['years'] ?? '';
+        $years = $requestParam['years'] ?? RatingsController::DEFAULT_YEAR;
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(

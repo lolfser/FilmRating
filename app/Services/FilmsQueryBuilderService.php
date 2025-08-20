@@ -48,12 +48,12 @@ class FilmsQueryBuilderService {
         }
 
         if ($genreIds !== []) {
-            $films = $films->join('films_genres', 'id', '=', 'films_id')
+            $films = $films->join('films_genres', 'films.id', '=', 'films_genres.films_id')
                 ->whereIn('genres_id', $genreIds);
         }
 
         if ($filmModificationIds !== []) {
-            $films = $films->join('filmmodifications_films', 'id', '=', 'films_id')
+            $films = $films->join('filmmodifications_films', 'films.id', '=', 'films_genres.films_id')
                 ->whereIn('filmmodifications_id', $filmModificationIds);
         }
 
@@ -72,7 +72,7 @@ class FilmsQueryBuilderService {
         }
 
         if ($years !== []) {
-            $films = $films->whereIn('year', $years);
+            $films = $films->whereIn('films.year', $years);
         }
 
         if ($onlyNotSetInProgram) {
