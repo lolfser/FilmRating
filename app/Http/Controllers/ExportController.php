@@ -31,7 +31,7 @@ class ExportController extends Controller {
             $timestampNext = (new \DateTime($meta->start))->setDate(1970, 1 ,1)->getTimestamp() + $startTime;
             echo '<tr>
                       <td>' . substr($meta->start ?? '', 0, -3) . ' ' . $meta->location->name . '</td>
-                      <td colspan="2">Puffer pro Film: ' . $meta->puffer_per_item . ' Minuten</td>
+                      <td colspan="2">Puffer pro Film: ' . ($meta->puffer_per_item ?? 0) . ' Minuten</td>
                   </tr>';
             foreach (
                 Programblocks::where('programblockmetas_id', $meta->id)

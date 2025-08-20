@@ -62,8 +62,8 @@
                                         <span v-for="lang in language">
                                             <label style="white-space:nowrap">
                                                 <input :checked="isSelected(film.languages, lang.id)"
-                                                   type="radio"
-                                                   :name="film.id + '_language_' + type"
+                                                   type="checkbox"
+                                                   :name="film.id + '_language_' + lang.id"
                                                    :value="lang.id"
                                                    v-on:click="triggerSave('languages', film.id, film.film_identifier)"
                                                 />&nbsp;{{lang.language}}
@@ -471,8 +471,7 @@ export default {
 
                 let languages = tr.querySelectorAll('[name^="' + film_id + '_language"]:checked');
                 languages.forEach(function(element) {
-                    let language = tr.querySelector('[name="' + element.name.split(film_id + '_')[1] + '"]');
-                    data.append(language.name, element.value);
+                    data.append('language_' + film_id + '_' + element.value, element.value);
                 });
 
             }
