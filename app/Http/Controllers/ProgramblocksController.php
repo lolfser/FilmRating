@@ -199,6 +199,7 @@ class ProgramblocksController extends Controller {
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
         $titleDescription = trim($requestParam['title_description'] ?? '');
+        $years = $requestParam['years'] ?? '';
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
@@ -208,6 +209,7 @@ class ProgramblocksController extends Controller {
             filmModificationIds: array_filter(explode(',', $filmModifications)),
             filmSourceIds: [],
             filmNrTitleDescription: $titleDescription,
+            years: array_filter(explode(',', $years)),
             onlyNotSetInProgram: $onlyNotSet,
             rated: [],
             ratedCount: [],

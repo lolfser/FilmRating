@@ -26,6 +26,8 @@ class RatingsController extends Controller {
 
     private const ITEMS_PER_PAGE = 100;
 
+    public const DEFAULT_YEAR = 50;
+
     public function index(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse|\Illuminate\View\View {
 
         if (!(new \App\Services\HasPermissionService())->receive(\App\Models\Permissions::PERMISSION_SEE_PAGE_RATING)) {
@@ -41,6 +43,7 @@ class RatingsController extends Controller {
         $requestParam = $request->all();
         $filmStatusIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmstatus'] ?? '')));
         $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['fl_keywords'] ?? '')));
+        $years = array_filter(array_map('intval', explode(',', $requestParam['fl_years'] ?? (string) self::DEFAULT_YEAR)));
         $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
         $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
         $rated = array_filter(explode(',', $requestParam['fl_rated'] ?? ''));
@@ -61,6 +64,7 @@ class RatingsController extends Controller {
             filmModificationIds: $filmModificationsIds,
             filmSourceIds: $filmSourceIds,
             filmNrTitleDescription: $filmNrTitleDescription,
+            years: $years,
             onlyNotSetInProgram: false,
             rated: $rated,
             ratedCount: $ratedCounts,
@@ -135,6 +139,37 @@ class RatingsController extends Controller {
             ];
         }
 
+        // A little bit hacky, because years are not in database with ids
+        $filterYearsOption = [];
+        $filterYearsOption[self::DEFAULT_YEAR] = [
+            'id' => (string) self::DEFAULT_YEAR,
+            'name' => (string) self::DEFAULT_YEAR,
+        ];
+        $filteredYears = [];
+
+        foreach (Films::all('year')->groupBy('year') as $year => $data) {
+            $filterYearsOption[$year] = [
+                'id' => (string) $year,
+                'name' => (string) $year,
+            ];
+        }
+
+        $filterYearsOption = array_values($filterYearsOption);
+
+        foreach ($filterYearsOption as $index => $yearData) {
+            if (in_array((int) $yearData['name'], $years, true)) {
+                $filteredYears[$index] = $yearData['name'];
+            }
+        }
+
+        $filteredYears = array_values($filteredYears);
+
+        if ($filteredYears === []) {
+            $filteredYears[] = [self::DEFAULT_YEAR];
+        }
+
+        $filter['fl_years'] = $filteredYears;
+
         return Inertia::render('Ratings', [
             'films' => $films,
             'grades' => Grades::all(),
@@ -154,6 +189,7 @@ class RatingsController extends Controller {
                 ['id' => 3, 'name' => '3',],
                 ['id' => 4, 'name' => '4+',],
             ],
+            'filterYears' => $filterYearsOption,
             'filmModifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
             'viewers' => Viewers::all(),
