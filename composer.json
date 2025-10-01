@@ -29,6 +29,7 @@
         "nunomaduro/larastan": "^3.6",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.3",
+        "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -63,6 +64,9 @@
         ],
         "phpstan:baseline": [
             "./vendor/bin/phpstan analyse --configuration dev/phpstan/phpstan.neon --generate-baseline dev/phpstan/phpstan-baseline.neon"
+        ],
+        "sec-check": [
+            "composer update --dry-run roave/security-advisories && npm audit"
         ]
     },
     "extra": {
