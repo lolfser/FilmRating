@@ -16,6 +16,7 @@ class FilmsQueryBuilderService {
      * @param int[] $genreIds
      * @param int[] $filmModificationIds
      * @param int[] $filmSourceIds
+     * @param int[] $years
      * @param int[] $ratedCount
      * @param string[] $rated
      *
@@ -28,6 +29,7 @@ class FilmsQueryBuilderService {
         array $filmModificationIds,
         array $filmSourceIds,
         string $filmNrTitleDescription,
+        array $years,
         bool $onlyNotSetInProgram,
         array $rated,
         array $ratedCount,
@@ -46,12 +48,12 @@ class FilmsQueryBuilderService {
         }
 
         if ($genreIds !== []) {
-            $films = $films->join('films_genres', 'id', '=', 'films_id')
+            $films = $films->join('films_genres', 'films.id', '=', 'films_genres.films_id')
                 ->whereIn('genres_id', $genreIds);
         }
 
         if ($filmModificationIds !== []) {
-            $films = $films->join('filmmodifications_films', 'id', '=', 'films_id')
+            $films = $films->join('filmmodifications_films', 'films.id', '=', 'films_genres.films_id')
                 ->whereIn('filmmodifications_id', $filmModificationIds);
         }
 
@@ -67,6 +69,10 @@ class FilmsQueryBuilderService {
                         ->orWhere('film_identifier', '=', $filmNrTitleDescription);
                 }
             );
+        }
+
+        if ($years !== []) {
+            $films = $films->whereIn('films.year', $years);
         }
 
         if ($onlyNotSetInProgram) {

@@ -63,6 +63,13 @@ import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
                 v-model="selectedFilmSource"
                 style="display: inline"
             />
+            <MultiSelect :options="filterYears" :optionLabel="getElementName" :optionValue="getElementId"
+                placeholder="Jahr filtern"
+                name="fl_years"
+                autoFilterFocus
+                v-model="selectedYear"
+                style="display: inline"
+            />
             <label>
                 <input type="text" name="fl_title_description"
                        placeholder="Nr. / Namen / Beschreibung filtern"
@@ -116,6 +123,7 @@ export default {
         'active_filter',
         'filterRateOptions',
         'filterRateCountOptions',
+        'filterYears',
         'headline',
         'footerLinks',
         'filmModifications',
@@ -135,7 +143,8 @@ export default {
             selectedTitleDescription: this.active_filter.fl_title_description,
             selectedRateOption: this.active_filter.fl_rated,
             selectedRateCountOption: this.active_filter.fl_ratedCount,
-            selectedFilmSource: this.active_filter.fl_filmSource
+            selectedFilmSource: this.active_filter.fl_filmSource,
+            selectedYear: this.active_filter.fl_years
         }
     },
     methods: {
@@ -158,6 +167,7 @@ export default {
             data.append('fl_rated', this.selectedRateOption);
             data.append('fl_ratedCount', this.selectedRateCountOption);
             data.append('fl_filmSource', this.selectedFilmSource);
+            data.append('fl_years', this.selectedYear);
             if (typeof this.selectedFilmModifications !== "undefined") {
                 data.append('fl_filmmodifications', this.selectedFilmModifications);
             }

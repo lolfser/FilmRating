@@ -2,7 +2,7 @@
     <div :id="'filter-item-' + name" class="filter-item">
         <input type="text" :id="'search-'+ name" :placeholder="placeholder">
         <br>
-        <div class="selected-options" :id="'selected-options-' +name">
+        <div class="selected-options" :id="'selected-options-' + name">
             <span :id="'selected-list-' + name" class="selected-list">keine Auswahl</span>
         </div>
         <ul class="checkbox-list" :id="'checkbox-list-' + name">
@@ -25,7 +25,6 @@ export default {
             let result = false;
             if (typeof this.selectedOptions === "object") {
                 this.selectedOptions.forEach(function (value, index) {
-                    console.log(id, value)
                     if (id === value) {
                         result = true;
                         return false;
@@ -77,8 +76,10 @@ export default {
             const selectedValues = Array.from(checkboxOptions)
                 .filter(checkbox => checkbox.checked)
                 .map(checkbox => checkbox.parentNode.textContent);
-
-            selectedList.textContent = selectedValues.length > 0 ? selectedValues.join(', ') : 'keine Auswahl';
+            let isYear = checkboxOptions[0]?.className.includes('checkbox-option-year');
+            selectedList.textContent = selectedValues.length > 0
+                ? selectedValues.join(', ')
+                : (!isYear ? 'keine Auswahl' : 'aktuelles Jahr'); // Todo on parent node via data attribute
         }
         updateSelectedOptions(checkboxOptions, selectedList);
     }
