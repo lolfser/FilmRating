@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="de">
     <head>
+        <meta name="robots" content="noindex, nofollow">
         <title>@yield('pageTitle') - Filme bewerten und Programme erstellen</title>
         <style>
             * {
