@@ -53,7 +53,7 @@ class FilmsQueryBuilderService {
         }
 
         if ($filmModificationIds !== []) {
-            $films = $films->join('filmmodifications_films', 'films.id', '=', 'films_genres.films_id')
+            $films = $films->join('filmmodifications_films', 'films.id', '=', 'filmmodifications_films.films_id')
                 ->whereIn('filmmodifications_id', $filmModificationIds);
         }
 
