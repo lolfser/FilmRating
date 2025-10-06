@@ -25,7 +25,7 @@ export default {
             let result = false;
             if (typeof this.selectedOptions === "object") {
                 this.selectedOptions.forEach(function (value, index) {
-                    if (id === value) {
+                    if (id + "" === value + "") {
                         result = true;
                         return false;
                     }
@@ -66,11 +66,11 @@ export default {
             updateSelectedOptions(checkboxOptions, selectedList);
         });
 
-        checkboxOptions.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
+        for (let checkboxOption of checkboxOptions) {
+            checkboxOption.addEventListener('change', function () {
                 updateSelectedOptions(checkboxOptions, selectedList);
             });
-        });
+        }
 
         function updateSelectedOptions(checkboxOptions, selectedList) {
             const selectedValues = Array.from(checkboxOptions)
