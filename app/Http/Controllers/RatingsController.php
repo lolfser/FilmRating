@@ -41,26 +41,27 @@ class RatingsController extends Controller {
         }
 
         $requestParam = $request->all();
-        $filmStatusIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmstatus'] ?? '')));
-        $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['fl_keywords'] ?? '')));
-        $years = array_filter(array_map('intval', explode(',', $requestParam['fl_years'] ?? (string) self::DEFAULT_YEAR)));
-        $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmmodifications'] ?? '')));
-        $filmNrTitleDescription = trim($requestParam['fl_title_description'] ?? '');
-        $rated = array_filter(explode(',', $requestParam['fl_rated'] ?? ''));
-        $rateCountData = explode(',', $requestParam['fl_ratedCount'] ?? '');
+        $filmStatusIds = array_filter(array_map('intval', explode(',', $requestParam['filmstatus'] ?? '')));
+        $keywordIds = array_filter(array_map('intval', explode(',', $requestParam['keywords'] ?? '')));
+        $genres = array_filter(array_map('intval', explode(',', $requestParam['genres'] ?? '')));
+        $years = array_filter(array_map('intval', explode(',', $requestParam['years'] ?? (string) self::DEFAULT_YEAR)));
+        $filmModificationsIds = array_filter(array_map('intval', explode(',', $requestParam['filmmodifications'] ?? '')));
+        $filmNrTitleDescription = trim($requestParam['title_description'] ?? '');
+        $rated = array_filter(explode(',', $requestParam['rated'] ?? ''));
+        $rateCountData = explode(',', $requestParam['ratedCount'] ?? '');
         $addZero = (in_array('0', $rateCountData, true));
-        $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['fl_ratedCount'] ?? '')));
+        $ratedCounts = array_filter(array_map('intval', explode(',', $requestParam['ratedCount'] ?? '')));
         if ($addZero) {
             $ratedCounts[] = 0;
         }
-        $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['fl_filmSource'] ?? '')));
+        $filmSourceIds = array_filter(array_map('intval', explode(',', $requestParam['filmsources'] ?? '')));
 
         $viewerId = (new \App\Services\ReceiveCurrentViewerIdService())->receive();
 
         $filmsQuery = (new FilmsQueryBuilderService())->buildFilmsQuery(
             filmStatusIds: $filmStatusIds,
             keywordIds: $keywordIds,
-            genreIds: [],
+            genreIds: $genres,
             filmModificationIds: $filmModificationsIds,
             filmSourceIds: $filmSourceIds,
             filmNrTitleDescription: $filmNrTitleDescription,
@@ -111,14 +112,15 @@ class RatingsController extends Controller {
         }
 
         $filter = [
-            'fl_rated' => $rated,
-            'fl_ratedCount' => $ratedCounts,
-            'fl_page' => $page,
-            'fl_filmstatus' => $filmStatusIds,
-            'fl_filmmodifications' => $filmModificationsIds,
-            'fl_filmSource' => $filmSourceIds,
-            'fl_keywords' => $keywordIds,
-            'fl_title_description' => $filmNrTitleDescription,
+            'rated' => $rated,
+            'ratedCount' => $ratedCounts,
+            'page' => $page,
+            'filmstatus' => $filmStatusIds,
+            'filmmodifications' => $filmModificationsIds,
+            'filmsources' => $filmSourceIds,
+            'keywords' => $keywordIds,
+            'genres' => $genres,
+            'title_description' => $filmNrTitleDescription,
         ];
 
         $filterRateOptions = [
@@ -168,7 +170,7 @@ class RatingsController extends Controller {
             $filteredYears[] = [self::DEFAULT_YEAR];
         }
 
-        $filter['fl_years'] = $filteredYears;
+        $filter['years'] = $filteredYears;
 
         return Inertia::render('Ratings', [
             'films' => $films,
@@ -190,7 +192,7 @@ class RatingsController extends Controller {
                 ['id' => 4, 'name' => '4+',],
             ],
             'filterYears' => $filterYearsOption,
-            'filmModifications' => Filmmodifications::all(),
+            'filmmodifications' => Filmmodifications::all(),
             'keywords' => Keywords::all(),
             'viewers' => Viewers::all(),
             'filmsources' => Filmsources::all(),
@@ -199,6 +201,16 @@ class RatingsController extends Controller {
             ],
             'totalPages' => $pageCount,
             'currentPage' => $page,
+            'years' => $this->receiveYearsFilter(),
+            'rated' => $filterRateOptions,
+            'ratedCount' => [
+                // TODO: Dynamic all counts via query?
+                ['id' => 0, 'name' => '0',],
+                ['id' => 1, 'name' => '1',],
+                ['id' => 2, 'name' => '2',],
+                ['id' => 3, 'name' => '3',],
+                ['id' => 4, 'name' => '4+',],
+            ],
             '_token' => csrf_token(),
             'headerLinks' => (new \App\Services\HeaderLinkService())->receive(),
             'footerLinks' => (new \App\Services\FooterLinkService())->receive(),
@@ -329,7 +341,7 @@ class RatingsController extends Controller {
                 'grades' => Grades::all(),
                 'filmstatus' => Filmstatus::all(),
                 'genres' => Genres::orderBy('name')->get(),
-                'filmModifications' => Filmmodifications::all(),
+                'filmmodifications' => Filmmodifications::all(),
                 'keywords' => Keywords::all(),
             ]
          );
@@ -384,5 +396,22 @@ class RatingsController extends Controller {
 
         return $film;
 
+    }
+
+    private function receiveYearsFilter(): array
+    {
+        // A little bit hacky, because years are not in database with ids
+        $filterYearsOption = [];
+        $filterYearsOption[RatingsController::DEFAULT_YEAR] = [
+            'id' => (int)RatingsController::DEFAULT_YEAR,
+            'name' => (string)RatingsController::DEFAULT_YEAR,
+        ];
+        foreach (Films::all('year')->groupBy('year') as $year => $data) {
+            $filterYearsOption[$year] = [
+                'id' => (int)$year,
+                'name' => (string)$year,
+            ];
+        }
+        return $filterYearsOption;
     }
 }

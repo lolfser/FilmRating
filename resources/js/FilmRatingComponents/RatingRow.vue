@@ -79,7 +79,7 @@
                 <tr>
                     <td class="td_filmnotifications" colspan="2">
                         <b>Modifikaitonen: </b>
-                        <label v-for="fmod of filmModifications" style="padding-right: 10px">
+                        <label v-for="fmod of filmmodifications" style="padding-right: 10px">
                             <Checkbox v-model="selectedModifications"
                                   :name="'filmModification_' + fmod.id"
                                   :value="fmod.id"
@@ -183,7 +183,7 @@ export default {
         'ratings',
         'grades',
         'genres',
-        'filmModifications',
+        'filmmodifications',
         'keywords',
         'viewers',
         'user',
