@@ -1,6 +1,7 @@
 parameters:
 	level: 9
 	reportUnmatchedIgnoredErrors: true
+	treatPhpDocTypesAsCertain: false
 	paths:
 		- ../../app
 		- ../../config

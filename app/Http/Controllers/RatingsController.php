@@ -268,9 +268,9 @@ class RatingsController extends Controller {
         if (
             array_key_exists('grades_id', $requestData)
             && (
-                    ($requestData['grades_id'] ?? 0) !== 0
-                    || $rating->id !== NULL
-                )
+                ($requestData['grades_id'] ?? 0) !== 0
+                || $rating->id !== NULL
+            )
         ) {
             // TODO: on default first DB-table item, not 1
             $rating->grades_id = $requestData['grades_id'] ?? 0;
@@ -398,6 +398,9 @@ class RatingsController extends Controller {
 
     }
 
+    /**
+     * @phpstan-return array<int, array{id: int, name: string}>
+     */
     private function receiveYearsFilter(): array
     {
         // A little bit hacky, because years are not in database with ids
