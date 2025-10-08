@@ -228,7 +228,7 @@ class ProgramblocksController extends Controller {
         $keywords = $requestParam['keywords'] ?? '';
         $filmModifications = $requestParam['filmmodifications'] ?? '';
         $titleDescription = trim($requestParam['title_description'] ?? '');
-        $years = $requestParam['years'] ?? RatingsController::DEFAULT_YEAR;
+        $years = $requestParam['years'] ?? (string) RatingsController::DEFAULT_YEAR;
         $onlyNotSet = ($requestParam['only_not_set'] ?? false) === 'true';
 
         $films = (new FilmsQueryBuilderService())->buildFilmsQuery(
