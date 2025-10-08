@@ -1,7 +1,6 @@
 <script setup>
     import AutoComplete from './PrimeVueAutoComplete.vue';
     import MultiSelect from "@/FilmRatingComponents/MultiSelect.vue";
-    import Checkbox from 'primevue/checkbox';
 </script>
 <style>
     th, td {
@@ -79,14 +78,18 @@
                 <tr>
                     <td class="td_filmnotifications" colspan="2">
                         <b>Modifikaitonen: </b>
-                        <label v-for="fmod of filmmodifications" style="padding-right: 10px">
-                            <Checkbox v-model="selectedModifications"
-                                  :name="'filmModification_' + fmod.id"
-                                  :value="fmod.id"
-                                  v-on:change="triggerSave('modifications', film.id, film.film_identifier)"
-                            />
-                            {{ fmod.name }}
-                        </label>
+                        <span v-for="fmod in filmmodifications">
+                            <label style="white-space:nowrap">
+                                <input :checked="isSelected(film.filmmodifications, fmod.id)"
+                                   type="checkbox"
+                                   :name="'filmModification_' + fmod.id"
+                                   :value="fmod.id"
+                                   v-on:click="triggerSave('modifications', film.id, film.film_identifier)"
+                                />
+                                &nbsp;{{fmod.name}}
+                            </label>
+                            &nbsp;&nbsp;&nbsp;
+                        </span>
                     </td>
                 </tr>
                 <tr>
@@ -272,10 +275,10 @@ export default {
             });
             return result.substring(2);
         },
-        isSelected: function (filmLanguages, currentLanguage) {
+        isSelected: function (availableItems, currentItem) {
             let result = false;
-            filmLanguages.every(function (l) {
-                if (l.id === currentLanguage) {
+            availableItems.every(function (l) {
+                if (l.id === currentItem) {
                     result = true;
                     return false; // break
                 }

@@ -32,54 +32,54 @@ import MultiSelectTemplate from './MultiSelectTemplate.vue';
                 name="year"
                 :options="years"
                 :selected-options="active_filter.years"
-                placeholder="Jahr filtern"
+                placeholder="Jahr"
             />
             <MultiSelectTemplate
                 name="filmstatus"
                 :options="filmstatus"
                 :selected-options="active_filter.filmstatus"
-                placeholder="Filmstatus filtern"
+                placeholder="Filmstatus"
             />
             <MultiSelectTemplate
                 name="filmsources"
                 :options="filmsources"
                 :selected-options="active_filter.filmsources"
-                placeholder="Filmsource filtern"
+                placeholder="Filmsource"
             />
             <MultiSelectTemplate
                 name="keywords"
                 :options="keywords"
                 :selected-options="active_filter.keywords"
-                placeholder="Stichwörtern filtern"
+                placeholder="Stichwörtern"
             />
             <MultiSelectTemplate
                 name="genres"
                 :options="genres"
                 :selected-options="active_filter.genres"
-                placeholder="Genres filtern"
+                placeholder="Genres"
             />
             <MultiSelectTemplate
                 name="filmmodifications"
                 :options="filmmodifications"
                 :selected-options="active_filter.filmmodifications"
-                placeholder="Modifikationen filtern"
+                placeholder="Modifikationen"
             />
             <MultiSelectTemplate
                 name="rated"
                 :options="rated"
                 :selected-options="active_filter.rated"
-                placeholder="eigene Bewertung filtern"
+                placeholder="eigene Bewertung"
             />
             <MultiSelectTemplate
                 name="ratedCount"
                 :options="ratedCount"
                 :selected-options="active_filter.ratedCount"
-                placeholder="Anzahl Bewertungen filtern"
+                placeholder="Anzahl Bewertungen"
             />
             <div class="filter-item">
                 <label>
                     <input type="text" name="title_description"
-                           placeholder="Nr. / Namen / Beschreibung filtern"
+                           placeholder="Nr. / Namen / Beschreibung"
                            :value="selectedTitleDescription"
                            @keyup.enter="filterInputs"
                     />
